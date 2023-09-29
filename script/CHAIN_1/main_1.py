@@ -3,17 +3,13 @@ from pinocchio import RobotWrapper
 from pinocchio.visualize import GepettoVisualizer
 import numpy as np
 import time
-import matplotlib.pyplot as plt
-
-import roboticstoolbox as rtb
-rtb.IK_GN()
-
-from inverse_geometry_1 import inverse_geometry_step
-
-from conf import *
 
 from os.path import dirname, join, abspath
 import sys
+
+from inverse_geometry_1 import inverse_geometry_step
+from conf_1 import *
+
 
 
 # NOTE: the coordinate system used in the URDF file is as follows

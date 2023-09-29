@@ -5,14 +5,11 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 
-from inverse_geometry_2 import inverse_geometry_step
-
-from conf import *
-ROD2_FRAME_INDEX = 8
-
 from os.path import dirname, join, abspath
 import sys
 
+from inverse_geometry_2 import inverse_geometry_step
+from conf_2 import *
 
 # NOTE: the coordinate system used in the URDF file is as follows
 # 

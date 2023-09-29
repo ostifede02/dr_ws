@@ -2,7 +2,7 @@ import pinocchio as pin
 from pinocchio import RobotWrapper
 import numpy as np
 import time
-from conf import *
+from script.CHAIN_12.conf import *
 
 from os.path import dirname, join, abspath
 

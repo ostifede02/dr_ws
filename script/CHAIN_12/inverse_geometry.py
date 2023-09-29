@@ -1,6 +1,6 @@
 import numpy as np
 from numpy.linalg import norm, inv
-from conf import *
+from script.CHAIN_12.conf import *
 
 
 def inverse_geometry_step(q, x, x_des, J, i, N, robot, frame_id):
