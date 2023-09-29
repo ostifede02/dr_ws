@@ -26,7 +26,7 @@ In the script folder there are three subfolders: CHAIN_12, CHAIN_1 and CHAIN_2. 
 
 
 ### problems
-The CHAIN_1 seems to be okay for small position displacements. However the Gauss-Newthon algorithm converges, but with to many iterations (from 50 to 300 iterations).
+The CHAIN_1 seems to be okay for small position displacements. However the Gauss-Newton algorithm converges, but with to many iterations (from 50 to 300 iterations).
 
 ![plot](./script/img/CHAIN_1_view.png)
 
