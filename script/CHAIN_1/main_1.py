@@ -93,4 +93,4 @@ for t in time_linspace:
         viz.display(q_1_next)
 
     q_1[:,0] = q_1[:,i-1]
-    time.sleep(0.05)
+    time.sleep(0.1)

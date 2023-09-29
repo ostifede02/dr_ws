@@ -69,10 +69,6 @@ x_des = np.empty(2)
 time_linspace = np.linspace(0, 100, 201)
 
 
-viz.display(q_2[:,0])
-time.sleep(3)
-
-
 for t in time_linspace:
 
     x_des[0] = t
