@@ -23,6 +23,7 @@ In the script folder there are three subfolders: CHAIN_12, CHAIN_1 and CHAIN_2. 
 
 #### problems
 The CHAIN_1 seems to be okay, for small position displacements, the Gauss-Newthon algorithm converges, but with to many iterations.
+![plot](./script/img/CHAIN_1_view.png)
 
 The CHAIN_2 converges to the wrong solution.
 ![plot](./script/img/CHAIN_2_problem.png)
