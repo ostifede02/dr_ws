@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<robot name="delta_robot">
+
+    <!-- RAILS -->
+    <link name="rails_link">
+
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="../meshes/rails.stl"/>
+            </geometry>
+            <material name="gray">
+              <color rgba="0.8 0.8 0.8 1"/>
+            </material>
+        </visual>
+    
+    </link>
+    <!-- RAILS END-->
+
+
+    <!-- CARRIAGE 1 -->
+    <link name="carriage_1_link">
+
+        <visual>
+            <origin xyz="0. 0. 0."/>
+            <geometry>
+                <mesh filename="../meshes/carriage_1.stl"/>
+            </geometry>
+            <material name="white">
+              <color rgba="1. 1. 1. 1."/>
+            </material>
+        </visual>
+
+    </link>
+
+    <joint name="carriage_1_joint" type="prismatic">
+        <origin xyz="0. 0. 0." rpy="0 0 0"/>
+        <parent link="rails_link"/>
+        <child link="carriage_1_link"/>
+        <axis xyz="-1 0 1"/>
+        <limit lower="60" upper="350" velocity="0" effort="0"/> 
+    </joint>
+    <!-- CARRIAGE 1 END-->
+
+    <!-- ROD 1 -->
+    <link name="rod_1_link">
+
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="../meshes/link_1.stl"/>
+            </geometry>
+            <material name="red">
+              <color rgba="1. 0.2 0.2 1."/>
+            </material>
+        </visual>
+
+    </link>
+
+    <joint name="rod_1_joint" type="revolute">
+        <origin xyz="0. 0. 0." rpy="0 0 0"/>
+        <parent link="carriage_1_link"/>
+        <child link="rod_1_link"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="0" upper="6.28" velocity="0" effort="0"/> 
+    </joint>
+
+    <link name="rod_1_end-effector_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="../meshes/end-effector_joint.stl"/>
+            </geometry>
+        </visual>
+    
+    </link>
+
+    <joint name="rod_1_end-effector_joint" type="fixed">
+        <origin xyz="450 0 0"/>
+        <parent link="rod_1_link"/>
+        <child link="rod_1_end-effector_link"/>
+    </joint>
+    <!-- ROD 1 END-->
+
+</robot>
