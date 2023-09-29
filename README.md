@@ -5,9 +5,9 @@
 Follow the tutorial at the link [here](https://stack-of-tasks.github.io/pinocchio/download.html)
 ### installing gepetto viewer
 If you are using Ubuntu 20.04 run:
-[
+{
     sudo apt install robotpkg-py38-pinocchio robotpkg-py38-example-robot-data robotpkg-urdfdom robotpkg-py38-qt5-gepetto-viewer-corba robotpkg-py38-quadprog robotpkg-py38-tsid
-]
+}
 
 
 
