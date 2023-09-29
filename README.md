@@ -15,14 +15,18 @@ sudo apt install robotpkg-py310-pinocchio robotpkg-py310-example-robot-data robo
 ~~~
 
 ## project setup
-### plan to solve the problem
+### how to solve the problem
 Since the URDF file and the ik algorithm can only solve for open chain systems, we are going to break down the problem, solving the ik for each pair of links, and let them converge to the same desired point.
 
+### variabels
+After the URDF file is imported and parsed, we are going to take into account only the Y and Z coordinates for the position of the end-effector and the Y and Z partial derivatives for the Jacobian matrix.
+
 ### script
-In the script folder there are three subfolders: CHAIN_12, CHAIN_1 and CHAIN_2. This has been done for troubleshooting purposes. The problem has been break down in two simpler problems. The CHAIN_1 folder contains the left (has only one pair of linkages) carriage and linkage, the CHAIN_2 folder contains the right (has two pair of linkages) carriage and linkage.
+In the script folder there are three subfolders: CHAIN_12, CHAIN_1 and CHAIN_2. This has been done for troubleshooting purposes. The problem has been break down in two simpler problems. The CHAIN_1 folder contains the left carriage and linkage (n.1 becuase has only one pair of linkages), the CHAIN_2 folder contains the right carriage and linkage (n.2 because has two pair of linkages).
+
 
 #### problems
-The CHAIN_1 seems to be okay, for small position displacements, the Gauss-Newthon algorithm converges, but with to many iterations.
+The CHAIN_1 seems to be okay for small position displacements. However the Gauss-Newthon algorithm converges, but with to many iterations (from 50 to 300 iterations).
 
 ![plot](./script/img/CHAIN_1_view.png)
 
