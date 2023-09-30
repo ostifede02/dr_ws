@@ -50,7 +50,7 @@ def inverse_geometry_step(q, x, x_des, J, i, N, robot, frame_id):
         if cost_new < (1.0-alpha*gamma)*cost:
             # print("Backtracking line search converged with log(alpha)=%.1f"%np.log10(alpha))
             break
-        elif(iter_line_search==N):
+        elif(iter_line_search==30):
             # print("Backtracking line search could not converge. log(alpha)=%.1f"%np.log10(alpha))
             break
                 

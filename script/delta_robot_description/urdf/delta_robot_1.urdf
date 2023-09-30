@@ -46,7 +46,7 @@
     <link name="rod_1_link">
 
         <visual>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 3.141592653589793 0"/>
             <geometry>
                 <mesh filename="../meshes/link_1.stl"/>
             </geometry>
@@ -76,7 +76,7 @@
     </link>
 
     <joint name="rod_1_end-effector_joint" type="fixed">
-        <origin xyz="450 0 0"/>
+        <origin xyz="0 0 -450"/>
         <parent link="rod_1_link"/>
         <child link="rod_1_end-effector_link"/>
     </joint>

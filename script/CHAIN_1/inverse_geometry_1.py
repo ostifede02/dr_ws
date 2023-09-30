@@ -12,7 +12,6 @@ from script.CHAIN_12.conf import *
 def inverse_geometry_step(q, x, x_des, J, i, N, robot, frame_id):
     e = x_des - x
     cost = norm(e)
-
     # gradient descent
     # q[:,i+1] = q[:,i] + alpha*J.T.dot(e)
     
@@ -43,14 +42,13 @@ def inverse_geometry_step(q, x, x_des, J, i, N, robot, frame_id):
         x_new = np.array([x_new[0], x_new[2]])
         cost_new = norm(x_des - x_new)
 
-
         alpha *= beta
         iter_line_search += 1
         
         if cost_new < (1.0-alpha*gamma)*cost:
             # print("Backtracking line search converged with log(alpha)=%.1f"%np.log10(alpha))
             break
-        elif(iter_line_search==N):
+        elif(iter_line_search==30):
             # print("Backtracking line search could not converge. log(alpha)=%.1f"%np.log10(alpha))
             break
                 

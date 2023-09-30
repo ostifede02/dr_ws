@@ -60,19 +60,22 @@ except AttributeError as err:
 # inverse geometry for chain 1
 q_1             = np.empty((robot.nq, N+1))  # joint angles
 x_1             = np.empty((2, N))           # frame position
-q_1[:,0]        = np.array([450, 0.78539])
+q_1[:,0]        = np.array([450, 0])
 cost_1          = np.empty(N)
 grad_norm_1     = np.empty(N)             # gradient norm
 
 x_des = np.empty(2)
-time_linspace = np.linspace(0, 6.28, 51)
+time_linspace = np.linspace(0, 5*np.pi, 101)
 
-time.sleep(1)
+
+viz.display(q_1[:,0])
+# time.sleep(3)
+
 
 for t in time_linspace:
 
-    x_des[0] = 100*np.cos(t + 1.5)
-    x_des[1] = -150 + 100*np.sin(t + 1.5)
+    x_des[0] = 120*np.cos(t + 1.5)
+    x_des[1] = -250 + 120*np.sin(t + 1.5)
 
     for i in range(N):
 

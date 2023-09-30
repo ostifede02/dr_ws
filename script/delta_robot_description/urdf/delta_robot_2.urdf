@@ -36,7 +36,7 @@
         <origin xyz="0. 0. 0." rpy="0 0 0"/>
         <parent link="rails_link"/>
         <child link="carriage_2_link"/>
-        <axis xyz="-1 0 -1"/>
+        <axis xyz="1 0 1"/>
         <limit lower="60" upper="350" velocity="0" effort="0"/> 
     </joint>
     <!-- CARRIAGE 2 END-->
@@ -45,7 +45,7 @@
     <link name="rod_2_link">
 
         <visual>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 3.141592653589793 0"/>
             <geometry>
                 <mesh filename="../meshes/link_2.stl"/>
             </geometry>
@@ -75,7 +75,7 @@
     </link>
 
     <joint name="rod_2_end-effector_joint" type="fixed">
-        <origin xyz="450 0 0"/>
+        <origin xyz="0 0 -450"/>
         <parent link="rod_2_link"/>
         <child link="rod_2_end-effector_link"/>
     </joint>

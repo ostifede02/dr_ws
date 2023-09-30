@@ -75,36 +75,17 @@ grad_norm_2     = np.empty(N)             # gradient norm
 
 
 x_des = np.empty(2)
-time_linspace = np.linspace(0, 6.28, 101)
+time_linspace = np.linspace(0, 10*np.pi, 400)
 
-viz.display(q_1[:,0])
-
-H1 = robot.framePlacement(q_1[:,0], ROD1_FRAME_INDEX)
-x_1[:,0] = np.array([H1.translation[0], H1.translation[2]])  # take the X-Z position of the end-effector
-
-J1_full = robot.computeFrameJacobian(q_1[:,0], ROD1_FRAME_INDEX)
-J1 = J1_full[[0,2],:]
-
-print(f"H1\n{H1}\n\n")
-print(f"J1\n{J1}\n\n")
-
-
-H2 = robot.framePlacement(q_2[:,0], ROD2_FRAME_INDEX)
-x_2[:,0] = np.array([H2.translation[0], H2.translation[2]])  # take the X-Z position of the end-effector
-J2_full = robot.computeFrameJacobian(q_2[:,0], ROD2_FRAME_INDEX)
-J2 = J2_full[[0,2],:]
-
-print(f"H1\n{H2}\n\n")
-print(f"J1\n{J2}\n\n")
+viz.display(q_2[:,0])
+time.sleep(2)
 
 
 for t in time_linspace:
 
-    # x_des[0] = 100*np.cos(t + 1.5)
-    # x_des[1] = -150 + 100*np.sin(t + 1.5)
-    x_des[0] = 0
-    x_des[1] = 0
-    time.sleep(0.1)
+    x_des[0] = 100*np.sin(t + 1.5)
+    x_des[1] = -250 + 100*np.cos(t + 1.5)
+    time.sleep(0.05)
 
     q_1_next = True
     q_2_next = True
