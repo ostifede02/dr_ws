@@ -14,15 +14,14 @@ If you are using Ubuntu 22.04 run:
 sudo apt install robotpkg-py310-pinocchio robotpkg-py310-example-robot-data robotpkg-urdfdom robotpkg-py310-qt5-gepetto-viewer-corba robotpkg-py310-quadprog robotpkg-py310-tsid
 ~~~
 
-## project setup
-### how to solve the problem
-Since the URDF file and the ik algorithm can only solve for open chain systems, we are going to break down the problem, solving the ik for each pair of links, and let them converge to the same desired point.
-
-### variabels
-After the URDF file is imported and parsed, we are going to take into account only the Y and Z coordinates for the position of the end-effector and the Y and Z partial derivatives for the Jacobian matrix.
+## project
+### inverse geomety of a closed chain robot
+Since the URDF file and the ik algorithm can only solve for open chain systems, we are going to break down the problem, solving the ik for each pair of links, and let them converge to the same desired position.
 
 ### script
-In the script folder there are three subfolders: CHAIN_12, CHAIN_1 and CHAIN_2. This has been done for troubleshooting purposes. The problem has been break down in two simpler problems. The CHAIN_1 folder contains the left carriage and linkage (n.1 becuase has only one pair of linkages), the CHAIN_2 folder contains the right carriage and linkage (n.2 because has two pair of linkages).
+The script uses an IK_solver class. The class has two instances, one for each link chain. The 'solve_GN' uses the Gasuss-Newton method in order to calculate the inverse geometry of the robot.
++ input:    (current joint position, desired end-effector position)
++ output:   (new joint position)
 
 
 ### problems
