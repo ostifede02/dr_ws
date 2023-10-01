@@ -68,8 +68,8 @@ x_des = np.empty(3)
 t_linspace = np.linspace(0, 10*2*np.pi, 500)
 
 for t in t_linspace:
-    x = 100*np.cos(t+1.5)
-    z = -200 + 100*np.sin(t+1.5)
+    x = 120*np.cos(t+1.5)
+    z = -250 + 120*np.sin(t+1.5)
     x_des = np.array([x, 0, z])
 
     q_1 = solver_1.solve_GN(q_1, x_des)
