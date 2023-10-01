@@ -19,9 +19,13 @@ sudo apt install robotpkg-py310-pinocchio robotpkg-py310-example-robot-data robo
 Since the URDF file and the ik algorithm can only solve for open chain systems, we are going to break down the problem, solving the ik for each pair of links, and let them converge to the same desired position.
 
 ### script
-The script implement a IK_solver class (see IK.solver.py). The class has two instances, one for each link chain. The **solve_GN** uses the Gasuss-Newton method in order to calculate the inverse geometry of the robot.
+#### IK_solver class
+The script implements a IK_solver class (see IK.solver.py). The class has two instances, one for each link chain. The **solve_GN** method uses the Gauss-Newton method in order to calculate the inverse geometry of the robot.
 + input:   (current joint position, desired end-effector position)
 + output:(new joint position)
+
+#### path planning
+Still to be done
 
 ### gepetto viewer
 
