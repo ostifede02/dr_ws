@@ -23,6 +23,7 @@ Since the URDF file and the ik algorithm can only solve for open chain systems, 
 The script implements a IK_solver class (see IK.solver.py). The class has two instances, one for each link chain. The **solve_GN** method uses the Gauss-Newton method in order to calculate the inverse geometry of the robot.
 + input:   (current joint position, desired end-effector position)
 + output:(new joint position)
+In addition all the configuration parameters are already built-in in the class.
 
 #### path planning
 Still to be done
