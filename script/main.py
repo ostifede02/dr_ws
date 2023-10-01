@@ -77,7 +77,7 @@ for t in t_linspace:
     q = np.concatenate([q_1[0:2], q_2[2:4]])
 
     viz.display(q)
-    time.sleep(0.1)
+    time.sleep(0.01)
 
     
 
