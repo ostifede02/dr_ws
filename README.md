@@ -25,8 +25,18 @@ The script implements a IK_solver class (see IK.solver.py). The class has two in
 + output:(new joint position)
 In addition all the configuration parameters are already built-in in the class.
 
-#### path planning
-Still to be done
+
+### What to do next
+#### path and trajectory planning
+Use B-splines for the path. Implement a time scaling function. Predetermine the time taken T for the movement, using acceleration and velocity contraints. (Implement also torque constraints?)
+
+#### collision checking
+Update the URDF file and check for collisions.
+
+#### create a data package for the microcontroller
+Extract the results from the inverse geometry algorithm, that will be sent to the microcontroller. The microcontroller act as a motor controller.
+##### Possible idea 
+The PC sends via UART (easy implementation) or canbus (better and more stable) a data package containing the number of steps that each stepper has to accomplish and a time interval, that gives the pace for velocity and acceleration control.
 
 ### gepetto viewer
 
