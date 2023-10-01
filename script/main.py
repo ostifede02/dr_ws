@@ -2,11 +2,14 @@ import pinocchio as pin
 from pinocchio import RobotWrapper
 from pinocchio.visualize import GepettoVisualizer
 import numpy as np
-import time
-from IK_solver import IK_solver
 
 from os.path import dirname, join, abspath
 import sys
+import time
+
+from IK_solver import IK_solver
+
+
 
 # Load the mesh files
 pinocchio_model_dir = join(dirname(str(abspath(__file__))),"delta_robot_description")
@@ -40,12 +43,24 @@ except AttributeError as err:
     sys.exit(0)
 
 
+# NOTE: the coordinate system used in the URDF file is as follows
+#       since the robot has only 2 DOF, the y-axis is not to be taken into account   
+#
+#           ^ z
+#           |
+#           |   ^ y
+#           |  /
+#           | /
+#           |/___________> x
+#           O
+# 
 
-# defining inverse kinematic solver
+
+# instance of inverse kinematic solver
 solver_1 = IK_solver(robot, frame_id=8)     # solver_1 solves the ik for the red left chain aka chain 1
 solver_2 = IK_solver(robot, frame_id=14)    # solver_2 solves the ik for the green green chain aka chain 2
 
-# defining intial joint position
+# defining intial neutral joint position
 q_1 = pin.neutral(model)
 q_2 = pin.neutral(model)
 
