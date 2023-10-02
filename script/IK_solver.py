@@ -18,12 +18,12 @@ def GN_ik_step_(self, q, x, x_des, J, i):
     grad_norm = norm(gradient)
     if(grad_norm < self.gradient_threshold):
         # print("Terminate because gradient is (almost) zero:", grad_norm)
-        print("Problem solved after %d iterations with error %f"%(i, norm(e)))
+        # print("Problem solved after %d iterations with error %f"%(i, norm(e)))
         return None
     
     # if error is null you are done
     if(cost < self.absolute_threshold):
-        print("Problem solved after %d iterations with error %f"%(i, norm(e)))
+        # print("Problem solved after %d iterations with error %f"%(i, norm(e)))
         return None
     
 

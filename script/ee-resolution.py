@@ -1,14 +1,11 @@
 import pinocchio as pin
 from pinocchio import RobotWrapper
-from pinocchio.visualize import GepettoVisualizer
 import numpy as np
+from numpy.linalg import norm
 
 from os.path import dirname, join, abspath
-import sys
-import time
 
 from IK_solver import IK_solver
-
 
 
 # Load the mesh files
@@ -26,34 +23,22 @@ data, collision_data, visual_data = pin.createDatas(model,collision_model,visual
 robot = RobotWrapper(model, collision_model, visual_model)
 
 
-# Initialize the viewer.
-viz = GepettoVisualizer(model, collision_model, visual_model)
-try:
-    viz.initViewer()
-except ImportError as err:
-    print("Error while initializing the viewer. It seems you should install gepetto-viewer")
-    print(err)
-    sys.exit(0)
-
-try:
-    viz.loadViewerModel("pinocchio")
-except AttributeError as err:
-    print("Error while loading the viewer model. It seems you should start gepetto-viewer")
-    print(err)
-    sys.exit(0)
 
 
-# NOTE: the coordinate system used in the URDF file is as follows
-#       since the robot has only 2 DOF, the y-axis is not to be taken into account   
-#
-#           ^ z
-#           |
-#           |   ^ y
-#           |  /
-#           | /
-#           |/___________> x
-#           O
-# 
+# stepper and pulley parameters
+n_teeth = 20
+module = 3
+c_pulley = n_teeth * module
+d_pulley = c_pulley / np.pi
+print(f"d_pulley = {d_pulley}")
+
+# steps per revolution
+n_steps = np.array([200, 400, 800, 1600, 3200])
+# minimum carriage displacement
+min_displacement = c_pulley / n_steps[1]
+print(f"n_steps = {n_steps[1]}")
+print(f"min_displacement = {min_displacement}\n")
+
 
 
 # instance of inverse kinematic solver
@@ -63,19 +48,35 @@ solver_2 = IK_solver(robot, frame_id=14)    # solver_2 solves the ik for the gre
 # defining intial neutral joint position
 q_1 = pin.neutral(model)
 q_2 = pin.neutral(model)
+# start point
+x0 = np.array([0, 0, -200])
 
-x_des = np.empty(3)
-t_linspace = np.linspace(0, 2*np.pi, 100)
+# joint configuration at start point
+q_1 = solver_1.solve_GN(q_1, x0)
+q_2 = solver_2.solve_GN(q_2, x0)
+q0 = np.concatenate((q_1[0:2], q_2[2:4]))
 
-for t in t_linspace:
-    x = 120*np.cos(t+1.5)
-    z = -250 + 120*np.sin(t+1.5)
-    x_des = np.array([x, 0, z])
+t_range = np.linspace(0, min_displacement+1, 10000)
+
+for t in t_range:
+    x_des = x0 + np.array([t, 0, 0])
 
     q_1 = solver_1.solve_GN(q_1, x_des)
     q_2 = solver_2.solve_GN(q_2, x_des)
     q = np.concatenate([q_1[0:2], q_2[2:4]])
 
-    viz.display(q)
-    time.sleep(0.1)
+
+    carriage_1_displacement = abs(q[0] - q0[0])
+    carriage_2_displacement = abs(q[2] - q0[2])
+    ee_displacement = norm(x_des - x0)
+
+    if(carriage_1_displacement >= min_displacement):
+        print(f"The carriage 1 moved {carriage_1_displacement} [mm], while the end effector moved {ee_displacement} [mm]")
+        break
+
+    if(carriage_2_displacement >= min_displacement):
+        print(f"The carriage 2 moved {carriage_2_displacement} [mm], while the end effector moved {ee_displacement} [mm]")
+        break
+
+
 
