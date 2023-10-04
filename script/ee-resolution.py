@@ -35,8 +35,8 @@ print(f"d_pulley = {d_pulley}")
 # steps per revolution
 n_steps = np.array([200, 400, 800, 1600, 3200])
 # minimum carriage displacement
-min_displacement = c_pulley / n_steps[1]
-print(f"n_steps = {n_steps[1]}")
+min_displacement = c_pulley / n_steps[2]
+print(f"n_steps = {n_steps[2]}")
 print(f"min_displacement = {min_displacement}\n")
 
 
@@ -49,17 +49,18 @@ solver_2 = IK_solver(robot, frame_id=14)    # solver_2 solves the ik for the gre
 q_1 = pin.neutral(model)
 q_2 = pin.neutral(model)
 # start point
-x0 = np.array([0, 0, -200])
+x0 = np.array([199.97249148, 0, -238.28600753])
 
 # joint configuration at start point
 q_1 = solver_1.solve_GN(q_1, x0)
 q_2 = solver_2.solve_GN(q_2, x0)
 q0 = np.concatenate((q_1[0:2], q_2[2:4]))
 
+
 t_range = np.linspace(0, min_displacement+1, 10000)
 
 for t in t_range:
-    x_des = x0 + np.array([t, 0, 0])
+    x_des = np.array([199.99476878, 0, -239.25018598])
 
     q_1 = solver_1.solve_GN(q_1, x_des)
     q_2 = solver_2.solve_GN(q_2, x_des)
@@ -72,10 +73,18 @@ for t in t_range:
 
     if(carriage_1_displacement >= min_displacement):
         print(f"The carriage 1 moved {carriage_1_displacement} [mm], while the end effector moved {ee_displacement} [mm]")
+        print(f"This took {int(carriage_1_displacement/min_displacement)} steps, with rest {carriage_1_displacement%min_displacement}\n")
+
+        print(f"The carriage 2 moved {carriage_2_displacement} [mm], while the end effector moved {ee_displacement} [mm]")
+        print(f"This took {int(carriage_2_displacement/min_displacement)} steps, with rest {carriage_2_displacement%min_displacement}")
         break
 
     if(carriage_2_displacement >= min_displacement):
+        print(f"The carriage 1 moved {carriage_1_displacement} [mm], while the end effector moved {ee_displacement} [mm]")
+        print(f"This took {int(carriage_1_displacement/min_displacement)} steps, with rest {carriage_1_displacement%min_displacement}\n")
+
         print(f"The carriage 2 moved {carriage_2_displacement} [mm], while the end effector moved {ee_displacement} [mm]")
+        print(f"This took {int(carriage_2_displacement/min_displacement)} steps, with rest {carriage_2_displacement%min_displacement}")
         break
 
 

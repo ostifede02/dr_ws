@@ -6,6 +6,7 @@ import numpy as np
 from os.path import dirname, join, abspath
 import sys
 import time
+import timeit
 
 from IK_solver import IK_solver
 
@@ -64,18 +65,40 @@ solver_2 = IK_solver(robot, frame_id=14)    # solver_2 solves the ik for the gre
 q_1 = pin.neutral(model)
 q_2 = pin.neutral(model)
 
+
+# start and end points
+P0 = np.array([-200, 0, -300])
+P3 = np.array([200, 0, -240])
+
+# via points
+z_offset = 120
+P1 = np.array([P0[0], 0, P0[2]+z_offset])
+P2 = np.array([P3[0], 0, P3[2]+z_offset])
+
+T = 1.5
+# time scaling function parameters
+a3 = 10 / pow(T, 3)
+a4 = -(15 / pow(T, 4))
+a5 = 6 / pow(T, 5)
+
 x_des = np.empty(3)
-t_linspace = np.linspace(0, 2*np.pi, 100)
 
-for t in t_linspace:
-    x = 120*np.cos(t+1.5)
-    z = -250 + 120*np.sin(t+1.5)
-    x_des = np.array([x, 0, z])
+q_steps = 50
+# q_linspace = np.linspace(0, T, q_steps)
+for i in range(1):
+    if(i%2 == 0):
+        q_linspace = np.linspace(0, T, q_steps)
+    else:
+        q_linspace = np.linspace(T, 0, q_steps)
 
-    q_1 = solver_1.solve_GN(q_1, x_des)
-    q_2 = solver_2.solve_GN(q_2, x_des)
-    q = np.concatenate([q_1[0:2], q_2[2:4]])
+    for q in q_linspace:
+        t = a3*pow(q, 3) + a4*pow(q, 4) + a5*pow(q, 5)
+        x_des = pow(1-t, 3)*P0 + 3*pow(1-t, 2)*t*P1 + 3*(1-t)*pow(t, 2)*P2 + pow(t, 3)*P3
+        print(x_des)
 
-    viz.display(q)
-    time.sleep(0.1)
+        q_1 = solver_1.solve_GN(q_1, x_des)
+        q_2 = solver_2.solve_GN(q_2, x_des)
+        q = np.concatenate([q_1[0:2], q_2[2:4]])
 
+        viz.display(q)
+        time.sleep(T/q_steps)
