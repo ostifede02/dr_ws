@@ -69,7 +69,7 @@ q_2 = pin.neutral(model)
 
 # start and end points
 P0 = np.array([-200, 0, -300])
-P3 = np.array([200, 0, -300])
+P3 = np.array([100, 0, -150])
 
 # via points
 z_offset = 200
