@@ -16,7 +16,7 @@ sudo apt install robotpkg-py310-pinocchio robotpkg-py310-example-robot-data robo
 
 ## project
 ### inverse geomety of a closed chain robot
-Since the URDF file and the ik algorithm can only solve for open chain systems, we are going to break down the problem, solving the ik for each pair of links, and let them converge to the same desired position.
+Since the URDF file and the ik algorithm can only solve for open chain systems, we are going to break down the problem, solving the ik for each pair of links, and let them converge to the same desired position. The ik of the third link pair (green right) is not computed, since it is equal to the other one.
 
 ### script
 #### IK_solver class
@@ -27,7 +27,7 @@ In addition all the configuration parameters are already built-in in the class.
 
 
 ### What to do next
-#### !. path and trajectory planning
+#### 1. path and trajectory planning
 Use B-splines for the path. Implement a time scaling function. Predetermine the time taken T for the movement, using acceleration and velocity contraints. (Implement also torque constraints?)
 
 #### 2. collision checking
