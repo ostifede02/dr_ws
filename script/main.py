@@ -2,6 +2,7 @@ import pinocchio as pin
 from pinocchio import RobotWrapper
 from pinocchio.visualize import GepettoVisualizer
 import numpy as np
+import matplotlib.pyplot as plt
 
 from os.path import dirname, join, abspath
 import sys
@@ -68,37 +69,67 @@ q_2 = pin.neutral(model)
 
 # start and end points
 P0 = np.array([-200, 0, -300])
-P3 = np.array([200, 0, -240])
+P3 = np.array([200, 0, -300])
 
 # via points
-z_offset = 120
+z_offset = 200
 P1 = np.array([P0[0], 0, P0[2]+z_offset])
 P2 = np.array([P3[0], 0, P3[2]+z_offset])
 
-T = 1.5
+# time taken
+T = 0.718346
 # time scaling function parameters
 a3 = 10 / pow(T, 3)
 a4 = -(15 / pow(T, 4))
 a5 = 6 / pow(T, 5)
 
+# resolution of parameterization
+s_steps = 50
+
+# desired ee position
 x_des = np.empty(3)
 
-q_steps = 50
-# q_linspace = np.linspace(0, T, q_steps)
+# used to plot carriage position
+C1_pos = np.empty(s_steps)
+C2_pos = np.empty(s_steps)
+plot_index = 0
+
+
+
+
 for i in range(1):
     if(i%2 == 0):
-        q_linspace = np.linspace(0, T, q_steps)
+        s_linspace = np.linspace(0, T, s_steps)
     else:
-        q_linspace = np.linspace(T, 0, q_steps)
+        s_linspace = np.linspace(T, 0, s_steps)
 
-    for q in q_linspace:
-        t = a3*pow(q, 3) + a4*pow(q, 4) + a5*pow(q, 5)
+    
+    for s in s_linspace:
+        # actual code
+        t = a3*pow(s, 3) + a4*pow(s, 4) + a5*pow(s, 5)
         x_des = pow(1-t, 3)*P0 + 3*pow(1-t, 2)*t*P1 + 3*(1-t)*pow(t, 2)*P2 + pow(t, 3)*P3
-        print(x_des)
+        x_des[0] -= (45/2)
 
         q_1 = solver_1.solve_GN(q_1, x_des)
         q_2 = solver_2.solve_GN(q_2, x_des)
-        q = np.concatenate([q_1[0:2], q_2[2:4]])
+             
+        q_2[4] = q_2[3]
+        q = np.concatenate((q_1[0:2], q_2[2:5]))
 
         viz.display(q)
-        time.sleep(T/q_steps)
+        time.sleep(T/s_steps)
+
+        # save data for plots
+        C1_pos[plot_index] = np.linalg.norm(robot.framePlacement(q_1, 4).translation)
+        C2_pos[plot_index] = np.linalg.norm(robot.framePlacement(q_2, 10).translation)
+        plot_index += 1
+
+
+# plot carriage position
+C_pos_plot = plt.figure("carriage position")
+C_pos_plot = plt.ylabel("distance from origin")
+C_pos_plot = plt.xlabel("time")
+C_pos_plot = plt.plot(C1_pos)
+C_pos_plot = plt.plot(C2_pos)
+
+plt.show()
