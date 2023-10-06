@@ -17,6 +17,31 @@
     </link>
     <!-- RAILS END-->
 
+    <!-- END EFFECTOR -->
+    <!-- <link name="end_effector_link">
+
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="../meshes/end_effector.stl"/>
+            </geometry>
+            <material name="gray">
+              <color rgba="0.8 0.8 0.8 1"/>
+            </material>
+        </visual>
+    
+    </link>
+
+    <joint name="end_effector_joint" type="floating">
+        <origin xyz="0. 0. 0." rpy="0 0 0"/>
+        <parent link="rails_link"/>
+        <child link="end_effector_link"/>
+        <axis xyz="0 1 0"/>
+        <limit velocity="0" effort="0"/>
+    </joint> -->
+    <!-- END EFFECTOR END-->
+
+
 
     <!-- CARRIAGE 1 -->
     <link name="carriage_1_link">
@@ -42,37 +67,11 @@
     </joint>
     <!-- CARRIAGE 1 END-->
 
-
-    <!-- CARRIAGE 2 -->
-    <link name="carriage_2_link">
-
-        <visual>
-            <origin xyz="0. 0. 0."/>
-            <geometry>
-                <mesh filename="../meshes/carriage_2.stl"/>
-            </geometry>
-            <material name="white">
-              <color rgba="1. 1. 1. 1."/>
-            </material>
-        </visual>
-
-    </link>
-
-    <joint name="carriage_2_joint" type="prismatic">
-        <origin xyz="0. 0. 0." rpy="0 0 0"/>
-        <parent link="rails_link"/>
-        <child link="carriage_2_link"/>
-        <axis xyz="1 0 1"/>
-        <limit lower="60" upper="350" velocity="0" effort="0"/> 
-    </joint>
-    <!-- CARRIAGE 2 END-->
-
-
     <!-- ROD 1 -->
     <link name="rod_1_link">
 
         <visual>
-            <origin xyz="0 0 0" rpy="0 3.141592653589793 0"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
                 <mesh filename="../meshes/link_1.stl"/>
             </geometry>
@@ -109,11 +108,37 @@
     <!-- ROD 1 END-->
 
 
+
+
+    <!-- CARRIAGE 2 -->
+    <link name="carriage_2_link">
+
+        <visual>
+            <origin xyz="0. 0. 0."/>
+            <geometry>
+                <mesh filename="../meshes/carriage_2.stl"/>
+            </geometry>
+            <material name="white">
+              <color rgba="1. 1. 1. 1."/>
+            </material>
+        </visual>
+
+    </link>
+
+    <joint name="carriage_2_joint" type="prismatic">
+        <origin xyz="0. 0. 0." rpy="0 0 0"/>
+        <parent link="rails_link"/>
+        <child link="carriage_2_link"/>
+        <axis xyz="1 0 1"/>
+        <limit lower="60" upper="350" velocity="0" effort="0"/> 
+    </joint>
+    <!-- CARRIAGE 2 END-->
+
     <!-- ROD 2 -->
     <link name="rod_2_link">
 
         <visual>
-            <origin xyz="0 0 0" rpy="0 3.141592653589793 0"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
                 <mesh filename="../meshes/link_2.stl"/>
             </geometry>
@@ -148,5 +173,46 @@
         <child link="rod_2_end-effector_link"/>
     </joint>
     <!-- ROD 2 END-->
+
+
+    <!-- ROD 3 -->
+    <link name="rod_3_link">
+
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="../meshes/link_1.stl"/>
+            </geometry>
+            <material name="green">
+              <color rgba="0 1 0 1"/>
+            </material>
+        </visual>
+
+    </link>
+
+    <joint name="rod_3_joint" type="revolute">
+        <origin xyz="45 0 0" rpy="0 0 0"/>
+        <parent link="carriage_2_link"/>
+        <child link="rod_3_link"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="0" upper="6.28" velocity="0" effort="0"/> 
+    </joint>
+
+    <link name="rod_3_end-effector_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="../meshes/end-effector_joint.stl"/>
+            </geometry>
+        </visual>
+    
+    </link>
+
+    <joint name="rod_3_end-effector_joint" type="fixed">
+        <origin xyz="0 0 -450"/>
+        <parent link="rod_3_link"/>
+        <child link="rod_3_end-effector_link"/>
+    </joint>
+    <!-- ROD 3 END-->
 
 </robot>
