@@ -40,4 +40,4 @@ The PC sends via UART (easy implementation) or canbus (better and more stable) a
 
 ### gepetto viewer
 
-![plot](./script/img/2dr.png)
+![plot](./script/img/2dr_all_link.png)
