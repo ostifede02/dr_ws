@@ -41,3 +41,5 @@ The PC sends via UART (easy implementation) or canbus (better and more stable) a
 ### gepetto viewer
 
 ![plot](./script/img/2dr_all_links.png)
+
+https://github.com/ostifede02/2dr/assets/113505533/8275950d-85f3-4202-8fd4-2156c668f8a0
