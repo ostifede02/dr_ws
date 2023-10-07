@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 from os.path import dirname, join, abspath
 import sys
 import time
-import timeit
 
 from IK_solver import IK_solver
 
@@ -58,6 +57,7 @@ except AttributeError as err:
 # 
 
 
+
 # instance of inverse kinematic solver
 solver_1 = IK_solver(robot, frame_id=8)     # solver_1 solves the ik for the red left chain aka chain 1
 solver_2 = IK_solver(robot, frame_id=14)    # solver_2 solves the ik for the green right chain aka chain 2
@@ -69,15 +69,15 @@ q_2 = pin.neutral(model)
 
 # start and end points
 P0 = np.array([-200, 0, -300])
-P3 = np.array([100, 0, -150])
+P3 = np.array([200, 0, -300])
 
 # via points
-z_offset = 200
+z_offset = 150
 P1 = np.array([P0[0], 0, P0[2]+z_offset])
 P2 = np.array([P3[0], 0, P3[2]+z_offset])
 
 # time taken
-T = 0.718346
+T = 2
 # time scaling function parameters
 a3 = 10 / pow(T, 3)
 a4 = -(15 / pow(T, 4))
@@ -89,20 +89,15 @@ s_steps = 50
 # desired ee position
 x_des = np.empty(3)
 
-# used to plot carriage position
-C1_pos = np.empty(s_steps)
-C2_pos = np.empty(s_steps)
-plot_index = 0
+time.sleep(2)
+is_collision = 0
 
-
-
-
-for i in range(1):
+for i in range(10):
     if(i%2 == 0):
         s_linspace = np.linspace(0, T, s_steps)
     else:
         s_linspace = np.linspace(T, 0, s_steps)
-
+    time.sleep(0.2)
     
     for s in s_linspace:
         # actual code
@@ -112,24 +107,29 @@ for i in range(1):
 
         q_1 = solver_1.solve_GN(q_1, x_des)
         q_2 = solver_2.solve_GN(q_2, x_des)
-             
-        q_2[4] = q_2[3]
-        q = np.concatenate((q_1[0:2], q_2[2:5]))
+
+        q_1[2] = q_1[1]
+        q_2[5] = q_2[4]
+        q = np.concatenate((q_1[0:3], q_2[3:6]))
+
+        # checking for collisions
+        robot.collision_model.addAllCollisionPairs()
+        robot.collision_data = pin.GeometryData(robot.collision_model)
+        pin.computeCollisions(robot.model, robot.data, robot.collision_model, robot.collision_data, q, False)
+
+        cr = 0
+        cp = 0
+        for k in range(len(robot.collision_model.collisionPairs)):
+            cr = robot.collision_data.collisionResults[k]
+            cp = robot.collision_model.collisionPairs[k]
+            if(cr.isCollision()):
+                if(int(cp.first) == 0 or int(cp.second) == 0):
+                    print("collision pair:",cp.first,",",cp.second) 
+                    is_collision = 1
+                    
+        if(is_collision):
+            print("break")
+            break
 
         viz.display(q)
         time.sleep(T/s_steps)
-
-        # save data for plots
-        C1_pos[plot_index] = np.linalg.norm(robot.framePlacement(q_1, 4).translation)
-        C2_pos[plot_index] = np.linalg.norm(robot.framePlacement(q_2, 10).translation)
-        plot_index += 1
-
-
-# plot carriage position
-C_pos_plot = plt.figure("carriage position")
-C_pos_plot = plt.ylabel("distance from origin")
-C_pos_plot = plt.xlabel("time")
-C_pos_plot = plt.plot(C1_pos)
-C_pos_plot = plt.plot(C2_pos)
-
-plt.show()
