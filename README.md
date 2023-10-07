@@ -41,3 +41,4 @@ The PC sends via UART (easy implementation) or canbus (better and more stable) a
 ### gepetto viewer
 
 ![plot](./script/img/2dr_all_links.png)
+![video](./script/img/2dr_picknplace.mp4)
