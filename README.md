@@ -27,6 +27,11 @@ The following contraints are applied to the joints:
 ![plot](/script/img/joint_diagram.png)
 
 #### open chains
+The robot model is described by three open kinematic chains.
++ chain 1 (red): carriage 1 -> rod 1 -> end effector
++ chain 2 (green): carriage 2 -> rod 2
++ chain 3 (blue): carriage 2 -> rod 3
+
 ![plot](/script/img/chain_diagram.png)
 
 ### script
