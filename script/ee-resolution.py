@@ -49,18 +49,23 @@ solver_2 = IK_solver(robot, frame_id=14)    # solver_2 solves the ik for the gre
 q_1 = pin.neutral(model)
 q_2 = pin.neutral(model)
 # start point
-x0 = np.array([199.97249148, 0, -238.28600753])
+x0 = np.array([200, 0, -250])
 
 # joint configuration at start point
 q_1 = solver_1.solve_GN(q_1, x0)
 q_2 = solver_2.solve_GN(q_2, x0)
-q0 = np.concatenate((q_1[0:2], q_2[2:4]))
+# configuring the joints for visualization
+# keeps the ee parallel to ground
+q_1[2] = q_1[1]
+# keeps rod_3 parallel to rod_2
+q_2[5] = q_2[4]
+q0 = np.concatenate((q_1[0:3], q_2[3:6]))
 
 
 t_range = np.linspace(0, min_displacement+1, 10000)
 
 for t in t_range:
-    x_des = np.array([199.99476878, 0, -239.25018598])
+    x_des = np.array([x0[0], 0, x0[2]+0.1])
 
     q_1 = solver_1.solve_GN(q_1, x_des)
     q_2 = solver_2.solve_GN(q_2, x_des)
