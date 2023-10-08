@@ -20,6 +20,10 @@ Since the URDF file and the ik algorithm can only solve for open chain systems, 
 
 ### URDF file structure
 #### joints
+The following contraints are applied to the joints:
++ q[2] = q[1], in order to keep the end effector parallel to the ground
++ q[5] = q[4], in order to keep the two rods parallel
+
 ![plot](/script/img/joint_diagram.png)
 
 #### open chains
