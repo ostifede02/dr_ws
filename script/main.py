@@ -9,6 +9,7 @@ import sys
 import time
 
 from IK_solver import IK_solver
+import path_planning as path
 
 
 
@@ -25,6 +26,8 @@ urdf_file_path = join(urdf_dir, urdf_filename)
 model, collision_model, visual_model = pin.buildModelsFromUrdf(urdf_file_path, mesh_dir, geometry_types=[pin.GeometryType.COLLISION,pin.GeometryType.VISUAL])
 data, collision_data, visual_data = pin.createDatas(model,collision_model,visual_model)
 robot = RobotWrapper(model, collision_model, visual_model)
+robot.collision_model.addAllCollisionPairs()
+robot.collision_data = pin.GeometryData(robot.collision_model)
 
 
 # Initialize the viewer.
@@ -65,71 +68,97 @@ solver_2 = IK_solver(robot, frame_id=14)    # solver_2 solves the ik for the gre
 # defining intial neutral joint position
 q_1 = pin.neutral(model)
 q_2 = pin.neutral(model)
-
-
-# start and end points
-P0 = np.array([-200, 0, -300])
-P3 = np.array([200, 0, -300])
-
-# via points
-z_offset = 150
-P1 = np.array([P0[0], 0, P0[2]+z_offset])
-P2 = np.array([P3[0], 0, P3[2]+z_offset])
-
-# time taken
-T = 2
-# time scaling function parameters
-a3 = 10 / pow(T, 3)
-a4 = -(15 / pow(T, 4))
-a5 = 6 / pow(T, 5)
-
-# resolution of parameterization
-s_steps = 50
-
 # desired ee position
 x_des = np.empty(3)
 
-time.sleep(2)
-is_collision = 0
+time.sleep(1)
+t_instance = np.linspace(0, path.T, path.t_intervals)
 
-for i in range(10):
-    if(i%2 == 0):
-        s_linspace = np.linspace(0, T, s_steps)
-    else:
-        s_linspace = np.linspace(T, 0, s_steps)
-    time.sleep(0.2)
+for t in t_instance:
+    # calculate the position of ee in time
+    x_des = path.Path_B_spline(t)
+
+    # solving the inverse geometry
+    q_1 = solver_1.solve_GN(q_1, x_des)
+    q_2 = solver_2.solve_GN(q_2, x_des)
+
+    # configuring the joints for visualization
+    # keeps the ee parallel to ground
+    q_1[2] = q_1[1]
+    # keeps rod_3 parallel to rod_2
+    q_2[5] = q_2[4]
+    q = np.concatenate((q_1[0:3], q_2[3:6]))
+
+
+    # checking for collisions
+    pin.computeCollisions(robot.model, robot.data, robot.collision_model, robot.collision_data, q, False)
+
+    if(robot.collision_data.collisionResults[0].isCollision()):
+        print("\n\nCollision between:")
+        print(robot.collision_model.collisionPairs[0])
+        print("at ", t)
+        break
+    elif(robot.collision_data.collisionResults[1].isCollision()):
+        print("\n\nCollision between:")
+        print(robot.collision_model.collisionPairs[1])
+        print("at ", t)
+        break
+
+    viz.display(q)
+    time.sleep(path.time_delay)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# for i in range(100):
+#     if(i%2 == 0):
+#         s_linspace = np.linspace(0, path.T, path.s_steps)
+#     else:
+#         s_linspace = np.linspace(path.T, 0, path.s_steps)
+#     time.sleep(0.2)
     
-    for s in s_linspace:
-        # actual code
-        t = a3*pow(s, 3) + a4*pow(s, 4) + a5*pow(s, 5)
-        x_des = pow(1-t, 3)*P0 + 3*pow(1-t, 2)*t*P1 + 3*(1-t)*pow(t, 2)*P2 + pow(t, 3)*P3
-        x_des[0] -= (45/2)
+#     for s in s_linspace:
+#         x_des = path.Path_B_spline(s)
 
-        q_1 = solver_1.solve_GN(q_1, x_des)
-        q_2 = solver_2.solve_GN(q_2, x_des)
+#         # actual code
+#         q_1 = solver_1.solve_GN(q_1, x_des)
+#         q_2 = solver_2.solve_GN(q_2, x_des)
 
-        q_1[2] = q_1[1]
-        q_2[5] = q_2[4]
-        q = np.concatenate((q_1[0:3], q_2[3:6]))
+#         q_1[2] = q_1[1]
+#         q_2[5] = q_2[4]
+#         q = np.concatenate((q_1[0:3], q_2[3:6]))
 
-        # checking for collisions
-        robot.collision_model.addAllCollisionPairs()
-        robot.collision_data = pin.GeometryData(robot.collision_model)
-        pin.computeCollisions(robot.model, robot.data, robot.collision_model, robot.collision_data, q, False)
+#         # checking for collisions
+#         robot.collision_model.addAllCollisionPairs()
+#         robot.collision_data = pin.GeometryData(robot.collision_model)
+#         pin.computeCollisions(robot.model, robot.data, robot.collision_model, robot.collision_data, q, False)
 
-        cr = 0
-        cp = 0
-        for k in range(len(robot.collision_model.collisionPairs)):
-            cr = robot.collision_data.collisionResults[k]
-            cp = robot.collision_model.collisionPairs[k]
-            if(cr.isCollision()):
-                if(int(cp.first) == 0 or int(cp.second) == 0):
-                    print("collision pair:",cp.first,",",cp.second) 
-                    is_collision = 1
+#         cr = 0
+#         cp = 0
+#         for k in range(len(robot.collision_model.collisionPairs)):
+#             cr = robot.collision_data.collisionResults[k]
+#             cp = robot.collision_model.collisionPairs[k]
+#             if(cr.isCollision()):
+#                 if(int(cp.first) == 0 or int(cp.second) == 0):
+#                     print("collision pair:",cp.first,",",cp.second) 
+#                     is_collision = 1
                     
-        if(is_collision):
-            print("break")
-            break
+#         if(is_collision):
+#             print("break")
+#             break
 
-        viz.display(q)
-        time.sleep(T/s_steps)
+#         viz.display(q)
+#         time.sleep(path.time_delay)

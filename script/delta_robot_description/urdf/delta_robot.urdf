@@ -14,9 +14,9 @@
             </material>
         </visual>
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 9" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="../meshes/rails_collision.stl" scale="0.6 1.5 0.6"/>
+                <mesh filename="../meshes/rails_collision.stl" scale="0.9 1.5 0.9"/>
             </geometry>
         </collision>
     </link>
