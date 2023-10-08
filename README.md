@@ -20,7 +20,7 @@ Since the URDF file and the ik algorithm can only solve for open chain systems, 
 
 ### URDF file structure
 #### joints
-![plot](/script/img/joint_diagram.png =250x)
+![plot](/script/img/joint_diagram.png){width=400px}
 
 #### open chains
 ![plot](/script/img/chain_diagram.png)
