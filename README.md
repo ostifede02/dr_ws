@@ -1,4 +1,4 @@
-# 2Delta robot
+# 2 axis delta robot
 
 ## setting up the environment
 ### installing the pinocchio library
