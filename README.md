@@ -18,6 +18,13 @@ sudo apt install robotpkg-py310-pinocchio robotpkg-py310-example-robot-data robo
 ### inverse geomety of a closed chain robot
 Since the URDF file and the ik algorithm can only solve for open chain systems, we are going to break down the problem, solving the ik for each pair of links, and let them converge to the same desired position. The ik of the third link pair (green right) is not computed, since it is equal to the other one.
 
+### URDF file structure
+#### joints
+![plot](/script/img/joint_diagram.png)
+
+#### open chains
+![plot](/script/img/chain_diagram.png)
+
 ### script
 #### IK_solver class
 The script implements a IK_solver class (see IK.solver.py). The class has two instances, one for each link chain. The **solve_GN** method uses the Gauss-Newton method in order to calculate the inverse geometry of the robot.
