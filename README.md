@@ -41,6 +41,9 @@ The script implements a IK_solver class (see IK.solver.py). The class has two in
 + output:(new joint position)
 In addition all the configuration parameters are already built-in in the class.
 
+#### Collision detection
+After computing the inverse geometry, the collision between the rods and the rails only is computed. If a collision is detect, the program stops.
+
 
 ### What to do next
 #### 1. path and trajectory planning
