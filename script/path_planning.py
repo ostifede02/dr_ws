@@ -2,11 +2,11 @@ import numpy as np
 
 
 # start and end points
-P0 = np.array([200, 0, -220])
-P3 = np.array([-200, 0, -220])
+P0 = np.array([-200, 0, -220])
+P3 = np.array([200, 0, -220])
 
 # via points
-z_offset = 150
+z_offset = 200
 P1 = np.array([P0[0], 0, P0[2]+z_offset])
 P2 = np.array([P3[0], 0, P3[2]+z_offset])
 
@@ -33,7 +33,6 @@ def Path_B_spline(s):
     # offset of end effector
     x_des[0] -= (45/2)
 
-    x_des = np.array([0, 0, -250])
     return x_des
 
 

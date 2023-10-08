@@ -90,19 +90,20 @@ for t in t_instance:
     q = np.concatenate((q_1[0:3], q_2[3:6]))
 
 
-    # checking for collisions
-    pin.computeCollisions(robot.model, robot.data, robot.collision_model, robot.collision_data, q, False)
+    ## checking for collisions
+    # Compute for each pair of collision
+    pin.updateGeometryPlacements(robot.model, robot.data, robot.collision_model, robot.collision_data, q)
+    pin.computeCollision(robot.collision_model, robot.collision_data, 0) # chain 2
+    pin.computeCollision(robot.collision_model, robot.collision_data, 1) # chain 1
 
     if(robot.collision_data.collisionResults[0].isCollision()):
-        print("\n\nCollision between:")
-        print(robot.collision_model.collisionPairs[0])
-        print("at ", t)
+        print(f"Collision detected: {robot.collision_model.collisionPairs[0]}")
         break
     elif(robot.collision_data.collisionResults[1].isCollision()):
-        print("\n\nCollision between:")
-        print(robot.collision_model.collisionPairs[1])
-        print("at ", t)
+        print(f"Collision detected: {robot.collision_model.collisionPairs[1]}")
         break
+
+
 
     viz.display(q)
     time.sleep(path.time_delay)
