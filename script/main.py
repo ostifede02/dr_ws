@@ -75,18 +75,16 @@ time.sleep(1)
 t_instance = np.linspace(0, path.T, path.t_intervals)
 
 for t in t_instance:
-    # calculate the position of ee in time
+    # calculate the position of end-effector in time
     x_des = path.Path_B_spline(t)
 
     # solving the inverse geometry
     q_1 = solver_1.solve_GN(q_1, x_des)
     q_2 = solver_2.solve_GN(q_2, x_des)
 
-    # configuring the joints for visualization
-    # keeps the ee parallel to ground
-    q_1[2] = q_1[1]
-    # keeps rod_3 parallel to rod_2
-    q_2[5] = q_2[4]
+    # applying joint constraints
+    q_1[2] = q_1[1]         # keeps the ee parallel to ground
+    q_2[5] = q_2[4]         # keeps rod_3 parallel to rod_2
     q = np.concatenate((q_1[0:3], q_2[3:6]))
 
 
@@ -102,8 +100,6 @@ for t in t_instance:
     elif(robot.collision_data.collisionResults[1].isCollision()):
         print(f"Collision detected: {robot.collision_model.collisionPairs[1]}")
         break
-
-
 
     viz.display(q)
     time.sleep(path.time_delay)
