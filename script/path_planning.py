@@ -11,7 +11,7 @@ P1 = np.array([P0[0], 0, P0[2]+z_offset])
 P2 = np.array([P3[0], 0, P3[2]+z_offset])
 
 # time taken
-T = 2
+T = 1
 
 # time scaling function parameters
 a3 = 10 / pow(T, 3)
