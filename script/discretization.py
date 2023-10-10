@@ -83,8 +83,10 @@ q_1_reminder = 0
 q_2_reminder = 0
 
 # stuff for plots
-x_des_plot = np.empty((2, path.t_intervals))
-x_discrete_plot = np.empty((2, path.t_intervals))
+x_des_plot_data = np.empty((2, path.t_intervals))
+x_discrete_plot_data = np.empty((2, path.t_intervals))
+error_plot_data = np.empty(path.t_intervals)
+n_steps_plot_data = np.empty((2, path.t_intervals))
 plot_index = 0
 
 t_instance = np.linspace(0, path.T, path.t_intervals)
@@ -121,17 +123,34 @@ for t in t_instance:
     # calculating the actual ee position
     x_discrete = fk_analytic_sol.EE_position_geometrically(q_1_discrete, q_2_discrete)
 
-    print(np.linalg.norm(x_des-x_discrete))
-
     # save data for plots
-    x_des_plot[:, plot_index] = np.array([x_des[0], x_des[2]])
-    x_discrete_plot[:, plot_index] = np.array([x_discrete[0], x_discrete[2]])
+    x_des_plot_data[:, plot_index] = np.array([x_des[0], x_des[2]])
+    x_discrete_plot_data[:, plot_index] = np.array([x_discrete[0], x_discrete[2]])
+    error_plot_data[plot_index] = np.linalg.norm(x_des-x_discrete)
+    n_steps_plot_data[:, plot_index] = np.array([stepper_1_steps, stepper_2_steps])
     plot_index += 1    
 
 
-plot = plt.figure(2)
-plt.plot(x_des_plot[0, :], x_des_plot[1, :], 'x')
-plt.plot(x_discrete_plot[0, :], x_des_plot[1, :], 'd')
+# plot stuff
+plot_path = plt.figure("path")
+plot_path = plt.axis("equal")
+plot_path = plt.plot(x_des_plot_data[0, :], x_des_plot_data[1, :], 'x')
+plot_path = plt.plot(x_discrete_plot_data[0, :], x_des_plot_data[1, :], 'd')
+
+plot_error = plt.figure("error")
+plot_error = plt.xlabel("iteration")
+plot_error = plt.ylabel("error [mm]")
+plot_error = plt.plot(t_instance, error_plot_data[:])
+plot_error = plt.hlines(np.mean(error_plot_data), 0, path.T, 'r', '--')
+
+plot_steps = plt.figure("steps")
+plot_steps = plt.xlabel("iteration")
+plot_steps = plt.ylabel("n steps")
+plot_steps = plt.plot(t_instance, n_steps_plot_data[0,:], 'r')
+plot_steps = plt.plot(t_instance, n_steps_plot_data[1,:], 'g')
+plot_error = plt.hlines(0, 0, path.T, 'k', '--')
+
+
 plt.show()
 
 
