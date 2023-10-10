@@ -48,7 +48,7 @@ c_pulley = n_teeth * module
 d_pulley = c_pulley / np.pi
 
 # steps per revolution
-n_steps = 800           # possible halfsteps [200, 400, 800, 1600, 3200]
+n_steps = 1600           # possible halfsteps [200, 400, 800, 1600, 3200]
 
 # minimum carriage displacement
 min_displacement = c_pulley / n_steps
@@ -128,27 +128,34 @@ for t in t_instance:
     x_discrete_plot_data[:, plot_index] = np.array([x_discrete[0], x_discrete[2]])
     error_plot_data[plot_index] = np.linalg.norm(x_des-x_discrete)
     n_steps_plot_data[:, plot_index] = np.array([stepper_1_steps, stepper_2_steps])
-    plot_index += 1    
+    plot_index += 1
 
+
+iteration_step = np.linspace(0, path.t_intervals, path.t_intervals)
 
 # plot stuff
-plot_path = plt.figure("path")
+plot_path = plt.figure("path continuous and dicrete analysis")
 plot_path = plt.axis("equal")
-plot_path = plt.plot(x_des_plot_data[0, :], x_des_plot_data[1, :], 'x')
-plot_path = plt.plot(x_discrete_plot_data[0, :], x_des_plot_data[1, :], 'd')
+plot_path = plt.plot(x_des_plot_data[0, :], x_des_plot_data[1, :], 'x',label="continuous position")
+plot_path = plt.plot(x_discrete_plot_data[0, :], x_des_plot_data[1, :], 'd', label="discrete position")
+plot_path = plt.legend(title=f"steps/rev: {n_steps}")
 
-plot_error = plt.figure("error")
+# position error at each iteration
+plot_error = plt.figure("position error")
 plot_error = plt.xlabel("iteration")
 plot_error = plt.ylabel("error [mm]")
-plot_error = plt.plot(t_instance, error_plot_data[:])
-plot_error = plt.hlines(np.mean(error_plot_data), 0, path.T, 'r', '--')
+plot_error = plt.step(iteration_step, error_plot_data[:], where="mid", label="diplacement error")
+plot_error = plt.hlines(np.mean(error_plot_data), 0, path.t_intervals, 'r', '--', label="mean error")
+plot_error = plt.legend(title=f"steps/rev: {n_steps}")
 
+# steps per iteration
 plot_steps = plt.figure("steps")
 plot_steps = plt.xlabel("iteration")
-plot_steps = plt.ylabel("n steps")
-plot_steps = plt.plot(t_instance, n_steps_plot_data[0,:], 'r')
-plot_steps = plt.plot(t_instance, n_steps_plot_data[1,:], 'g')
-plot_error = plt.hlines(0, 0, path.T, 'k', '--')
+plot_steps = plt.ylabel(f"number of steps in {round(path.time_delay*1e3, 3)} milliseconds")
+plot_steps = plt.step(iteration_step, n_steps_plot_data[0,:], 'r', where="mid", label="stepper 1")
+plot_steps = plt.step(iteration_step, n_steps_plot_data[1,:], 'g', where="mid", label="stepper 2")
+plot_steps = plt.legend(title=f"steps/rev: {n_steps}")
+plot_error = plt.hlines(0, 0, path.t_intervals, colors='k', linestyles='dashed')
 
 
 plt.show()

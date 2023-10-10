@@ -19,7 +19,7 @@ a4 = -(15 / pow(T, 4))
 a5 = 6 / pow(T, 5)
 
 # resolution of parameterization
-t_intervals = 20
+t_intervals = 30
 
 # time of execution (only for simulations)
 time_delay = T/t_intervals
