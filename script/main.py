@@ -10,7 +10,7 @@ import time
 
 from IK_solver import IK_solver
 import path_planning as path
-
+from collision_check import is_Collision
 
 
 # Load the mesh files
@@ -87,18 +87,7 @@ for t in t_instance:
     q_2[5] = q_2[4]         # keeps rod_3 parallel to rod_2
     q = np.concatenate((q_1[0:3], q_2[3:6]))
 
-
-    ## checking for collisions
-    # Compute for each pair of collision
-    pin.updateGeometryPlacements(robot.model, robot.data, robot.collision_model, robot.collision_data, q)
-    pin.computeCollision(robot.collision_model, robot.collision_data, 0) # chain 2
-    pin.computeCollision(robot.collision_model, robot.collision_data, 1) # chain 1
-
-    if(robot.collision_data.collisionResults[0].isCollision()):
-        print(f"Collision detected: {robot.collision_model.collisionPairs[0]}")
-        break
-    elif(robot.collision_data.collisionResults[1].isCollision()):
-        print(f"Collision detected: {robot.collision_model.collisionPairs[1]}")
+    if is_Collision(robot, q, (0, 1)):
         break
 
     viz.display(q)

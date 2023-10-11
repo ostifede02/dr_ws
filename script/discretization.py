@@ -1,6 +1,5 @@
 import pinocchio as pin
 from pinocchio import RobotWrapper
-from pinocchio.visualize import GepettoVisualizer
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -80,6 +79,7 @@ q_2_discrete = stepper_2_steps * min_displacement
 x_des_plot_data = np.empty((2, path.t_intervals))
 x_discrete_plot_data = np.empty((2, path.t_intervals))
 error_plot_data = np.empty(path.t_intervals)
+t_delay_per_step_plot_data = np.empty((2, path.t_intervals))
 n_steps_plot_data = np.empty((2, path.t_intervals))
 plot_index = 0
 
@@ -118,10 +118,11 @@ for t in t_instance:
     x_discrete = fk_analytic_sol.EE_position_geometrically(q_1_discrete, q_2_discrete)
 
     # save data for plots
-    x_des_plot_data[:, plot_index] = np.array([x_des[0], x_des[2]])
-    x_discrete_plot_data[:, plot_index] = np.array([x_discrete[0], x_discrete[2]])
-    error_plot_data[plot_index] = np.linalg.norm(x_des-x_discrete)
-    n_steps_plot_data[:, plot_index] = np.array([stepper_1_steps, stepper_2_steps])
+    x_des_plot_data[:, plot_index]              = np.array([x_des[0], x_des[2]])
+    x_discrete_plot_data[:, plot_index]         = np.array([x_discrete[0], x_discrete[2]])
+    error_plot_data[plot_index]                 = np.linalg.norm(x_des-x_discrete)
+    n_steps_plot_data[:, plot_index]            = np.array([stepper_1_steps, stepper_2_steps])
+    t_delay_per_step_plot_data[:, plot_index]   = np.array([path.time_delay / stepper_1_steps, path.time_delay / stepper_2_steps])*1e6
     plot_index += 1
 
 
@@ -146,11 +147,21 @@ plot_error = plt.legend(title=f"steps/rev: {n_steps}")
 # steps per iteration
 plot_steps = plt.figure("steps")
 plot_steps = plt.xlabel("iteration")
-plot_steps = plt.ylabel(f"number of steps in {round(path.time_delay*1e3, 1)} [ms]")
+plot_steps = plt.ylabel(f"number of steps in {round(path.time_delay*1e3, 1)} [milliseconds]")
 plot_steps = plt.step(iteration_step, n_steps_plot_data[0,:], 'r', where="mid", label="stepper 1")
 plot_steps = plt.step(iteration_step, n_steps_plot_data[1,:], 'g', where="mid", label="stepper 2")
 plot_steps = plt.legend(title=f"steps/rev: {n_steps}")
 plot_error = plt.hlines(0, 0, path.t_intervals, colors='k', linestyles='dashed')
 
+# time delay between each step
+plot_error = plt.figure("time delay per step")
+plot_error = plt.xlabel("iteration")
+plot_error = plt.ylabel("delay [microseconds]")
+plot_error = plt.ylim(top=300, bottom=-300)
+plot_error = plt.step(iteration_step, t_delay_per_step_plot_data[0,:], 'r', where="mid", label="delay stepper 1")
+plot_error = plt.step(iteration_step, t_delay_per_step_plot_data[1,:], 'g', where="mid", label="delay stepper 2")
+plot_error = plt.hlines(60, 0, path.t_intervals, colors='r', linestyles='dashed')
+plot_error = plt.hlines(-60, 0, path.t_intervals, colors='r', linestyles='dashed')
+plot_error = plt.legend(title=f"steps/rev: {n_steps}")
 
 plt.show()

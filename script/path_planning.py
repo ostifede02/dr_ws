@@ -6,12 +6,12 @@ P0 = np.array([-200, 0, -220])
 P3 = np.array([200, 0, -220])
 
 # via points
-z_offset = 200
+z_offset = 120
 P1 = np.array([P0[0], 0, P0[2]+z_offset])
 P2 = np.array([P3[0], 0, P3[2]+z_offset])
 
 # time taken
-T = 1
+T = 1.5
 
 # time scaling function parameters
 a3 = 10 / pow(T, 3)
