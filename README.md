@@ -52,6 +52,7 @@ Bezier curves are used for the path planning. They are very straight forward to 
 #### time scaling function of a bezier curve
 ###### velocity time scaling function
 As we can see the velocity profile of a bezier curve differs from the expected one.
+
 ![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_bezier.png)
 
 **why is that?**
@@ -72,6 +73,7 @@ On the other hand if we take a straight line as path to follow, we can see from 
 ![plot](/script/trajectory%20planning/graphs/position_time_scaling_profile_segment.png)
 
 ###### velocity time scaling function
+
 ![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_segment.png)
 
 
