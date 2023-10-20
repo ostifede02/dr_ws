@@ -50,8 +50,7 @@ After computing the inverse geometry, the collision between the rods and the rai
 Bezier curves are used for the path planning. They are very straight forward to implement and compute, however they have a main issue. Even though the input is isometric, the euclidean distance between each point of the output curve is not fixed. This affects the time scaling consistency.
 
 #### time scaling function of a bezier curve
-###### velocity time scaling function
-As we can see the velocity profile of a bezier curve differs from the expected one.
+As we can see the velocity profile of a bezier curve has a different shape, than the one of a bang-bang control.
 
 ![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_bezier.png)
 
