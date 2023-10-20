@@ -68,6 +68,7 @@ As we can see the velocity profile of a bezier curve differs from the expected o
 ![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_bezier.png)
 
 **why is that?**
+
 The reason for this result is because, although having an isometric input [0, 1], the euclidean distance between each point of the output curve is not fixed. This affects the irregularity in the time scaling velocity profile. As we can see from the plot below, the points at the beginning and at the end of the curve are more close to each other than in the middle of the curve.
 
 ![plot](/script/trajectory%20planning/graphs/end_effector_trajectorty_linear_ts.png)
