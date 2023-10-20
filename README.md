@@ -62,7 +62,7 @@ The reason for this result is because, although having an isometric input [0, 1]
 
 
 #### time scaling function of a straight line path
-On the other hand if we take a straight line as path to follow, we can see from the plots below, that the position and velocity time scaling profiles are as expected of a bang-bang control.
+On the other hand if we take a straight line as a path to follow, we can see from the plots below, that the position and velocity time scaling profiles are as expected of a bang-bang control.
 
 ##### position time scaling function
 + Ist segment: constant acceleration
