@@ -45,14 +45,22 @@ In addition all the configuration parameters are already built-in in the class.
 After computing the inverse geometry, the collision between the rods and the rails only is computed. If a collision is detect, the program stops.
 
 
-### What to do next
-#### 1. path and trajectory planning
-Determine the time taken T to go from start to end position. The calculation has to comply maximal acceleration and velocity contraints. (Implement also torque constraints?)
+#### trajectory planning
+##### Bezier curves
+For the path planning Bezier curves are used. They are very straight forward to implement and compute, however they have a main issue. Even though the input is isometric, the euclidean distance between each point of the output curve is not fixed. This affects the time scaling consistency.
 
-#### 2. create a data package for the microcontroller
-Extract the results from the inverse geometry algorithm, that will be sent to the microcontroller. The microcontroller act as a motor controller.
-##### Possible idea 
-The PC sends via UART (easy implementation) or canbus (better and more stable) a data package containing the number of steps that each stepper has to accomplish and a time interval, that gives the pace for velocity and acceleration control.
+##### time scaling function of a straight line path
+As we can see from the plots below, the position and velocity time scaling profile is as expected of a bang-bang control.
+
+![plot](/script/trajectory%20planning/graphs/position_time_scaling_profile_linear_ts.png)
+![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_linear_ts.png)
+
+
+##### time scaling functiono of a bezier curve
+Since given an isometric input [0, 1], the euclidean distance between each point of the output curve is not fixed. This affects the irregularity in the time scaling velocity profile.
+
+![plot](/script/trajectory%20planning/graphs/end_effector_trajectorty_bezier.png)
+![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_bezier.png)
 
 ### gepetto viewer
 
