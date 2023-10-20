@@ -52,14 +52,20 @@ For the path planning Bezier curves are used. They are very straight forward to 
 ##### time scaling function of a straight line path
 As we can see from the plots below, the position and velocity time scaling profile is as expected of a bang-bang control.
 
+###### position time scaling function
 ![plot](/script/trajectory%20planning/graphs/position_time_scaling_profile_segment.png)
+
+###### velocity time scaling function
 ![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_segment.png)
 
 
 ##### time scaling functiono of a bezier curve
 Since given an isometric input [0, 1], the euclidean distance between each point of the output curve is not fixed. This affects the irregularity in the time scaling velocity profile.
 
+###### end effector path
 ![plot](/script/trajectory%20planning/graphs/end_effector_trajectorty_bezier.png)
+
+###### velocity time scaling function
 ![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_bezier.png)
 
 ### gepetto viewer
