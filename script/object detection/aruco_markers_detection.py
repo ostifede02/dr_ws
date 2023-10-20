@@ -1,22 +1,24 @@
-# import the opencv library 
 import cv2 
+import cv2.aruco as aruco
 
 
-# define a video capture object 
 vid = cv2.VideoCapture(0) 
 
 while(True): 
 	
-	# Capture the video frame 
-	# by frame 
 	ret, frame = vid.read() 
+	aruco_dict = aruco.Dictionary(aruco.DICT_6X6_250)
+	corners, ids, rejected = aruco.detectMarkers(frame, aruco_dict)
+	image_with_markers = aruco.drawDetectedMarkers(frame.copy(), corners, ids)
 
-	# Display the resulting frame 
+	for i in range(len(ids)):
+		marker_id = ids[i][0]
+		marker_corners = corners[i][0]
+		print(f"marker_corners: {marker_corners}\tid: {marker_id}")
+
 	cv2.imshow('frame', frame) 
 	
-	# the 'q' button is set as the 
-	# quitting button you may use any 
-	# desired button of your choice 
+
 	if cv2.waitKey(1) & 0xFF == ord('q'): 
 		break
 
