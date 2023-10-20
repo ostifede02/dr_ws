@@ -52,8 +52,8 @@ For the path planning Bezier curves are used. They are very straight forward to 
 ##### time scaling function of a straight line path
 As we can see from the plots below, the position and velocity time scaling profile is as expected of a bang-bang control.
 
-![plot](/script/trajectory%20planning/graphs/position_time_scaling_profile_linear_ts.png)
-![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_linear_ts.png)
+![plot](/script/trajectory%20planning/graphs/position_time_scaling_profile_segment.png)
+![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_segment.png)
 
 
 ##### time scaling functiono of a bezier curve
