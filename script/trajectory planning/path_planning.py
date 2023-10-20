@@ -1,10 +1,10 @@
 import numpy as np
 
 
-z_offset = 10
+z_offset = 100
 # start and end point
-P0 = np.array([-100, 0, -280])
-P3 = np.array([100, 0, -280])
+P0 = np.array([-200, 0, -280])
+P3 = np.array([200, 0, -280])
 # via points
 P1 = np.array([P0[0], 0, P0[2]+z_offset])
 P2 = np.array([P3[0], 0, P3[2]+z_offset])
@@ -12,7 +12,7 @@ P2 = np.array([P3[0], 0, P3[2]+z_offset])
 
 # max acceleration and velocity
 max_acc = 0.1
-max_vel = 50
+max_vel = 40
 s_vel = 0
 
 # time increment in seconds
@@ -38,13 +38,10 @@ t_2 = 0
 
 
 
-
-
-
 # in: s -> [0, 1]   out: X
 def bezier_curve(s):
-    # x_next = pow(1-s, 3)*P0 + 3*pow(1-s, 2)*s*P1 + 3*(1-s)*pow(s, 2)*P2 + pow(s, 3)*P3
-    x_next = P0 + s*(P3-P0)
+    x_next = pow(1-s, 3)*P0 + 3*pow(1-s, 2)*s*P1 + 3*(1-s)*pow(s, 2)*P2 + pow(s, 3)*P3
+    # x_next = P0 + s*(P3-P0)
     return x_next
 
 # calculate the distance between two consecutive points divided by the time step
@@ -82,7 +79,7 @@ def time_scaling(t):
     if state == STATE_VEL:
         s = s_vel * (t - t_1) + s_1
 
-        if s > (1 - s_1):
+        if s >= (1 - s_1):
             state = STATE_DEC
             T = t_1 + t
             t_2 = t
@@ -95,5 +92,6 @@ def time_scaling(t):
         if s >= 1:
             state = None
             s = 1
+            print("s= ", s)
 
     return s
