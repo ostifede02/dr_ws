@@ -47,20 +47,7 @@ After computing the inverse geometry, the collision between the rods and the rai
 
 ### trajectory planning
 #### Bezier curves
-For the path planning Bezier curves are used. They are very straight forward to implement and compute, however they have a main issue. Even though the input is isometric, the euclidean distance between each point of the output curve is not fixed. This affects the time scaling consistency.
-
-#### time scaling function of a straight line path
-As we can see from the plots below, the position and velocity time scaling profile is as expected of a bang-bang control.
-
-##### position time scaling function
-+ Ist segment: constant acceleration
-+ IInd segment: constant velocity
-+ IIIrd segment: constant deceleration
-![plot](/script/trajectory%20planning/graphs/position_time_scaling_profile_segment.png)
-
-###### velocity time scaling function
-![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_segment.png)
-
+Bezier curves are used for the path planning. They are very straight forward to implement and compute, however they have a main issue. Even though the input is isometric, the euclidean distance between each point of the output curve is not fixed. This affects the time scaling consistency.
 
 #### time scaling function of a bezier curve
 ###### velocity time scaling function
@@ -72,6 +59,20 @@ As we can see the velocity profile of a bezier curve differs from the expected o
 The reason for this result is because, although having an isometric input [0, 1], the euclidean distance between each point of the output curve is not fixed. This affects the irregularity in the time scaling velocity profile. As we can see from the plot below, the points at the beginning and at the end of the curve are more close to each rather than in the middle of the curve. This phenomenon is more evident as the turning radius gets smaller.
 
 ![plot](/script/trajectory%20planning/graphs/end_effector_trajectorty_linear_ts.png)
+
+
+#### time scaling function of a straight line path
+On the other hand if we take a straight line as path to follow, we can see from the plots below, that the position and velocity time scaling profiles are as expected of a bang-bang control.
+
+##### position time scaling function
++ Ist segment: constant acceleration
++ IInd segment: constant velocity
++ IIIrd segment: constant deceleration
+
+![plot](/script/trajectory%20planning/graphs/position_time_scaling_profile_segment.png)
+
+###### velocity time scaling function
+![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_segment.png)
 
 
 ### gepetto viewer
