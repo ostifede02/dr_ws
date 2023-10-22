@@ -25,24 +25,20 @@ vel_plot_data[plot_index] = 0
 delta_t_plot_data[plot_index] = 0
 
 x_des = pp.bezier_curve(0)
-x_prev = np.empty(3)
 
 while True:
     # **********  START of code  ************
-    x_prev = x_des
-
-    # print(f"vel={vel}\tdelta_t={delta_t}")
     delta_t, vel = pp.time_taken_interval(s, delta_s)
-    # print("hi")
 
     if delta_t is None:
+        s = 1
+        plot_index -= 1
         break
     
     x_des = pp.bezier_curve(s)
-    print(x_des)
-    print(s)
+
     T += delta_t
-    s = s + delta_s
+    s = round(s + delta_s, 3)
     
     # **********  END of code  ************
 
@@ -80,13 +76,16 @@ plot_path = plt.plot(x_des_plot_data[0, 1:plot_index], x_des_plot_data[1, 1:plot
 
 # velocity profile
 plot_vel = plt.figure("veloity time scaling profile")
-plot_vel = plt.plot(np.linspace(0, s, plot_index-1), vel_plot_data[0:plot_index-1])
-plot_vel = plt.vlines(1, 0, pp.max_vel, 'r', '--')
-plot_vel = plt.vlines(pp.s_1, 0, pp.max_vel, 'r', '--')
+plot_vel = plt.plot(np.linspace(0, s, plot_index), vel_plot_data[0:plot_index])
+plot_vel = plt.hlines(pp.max_vel, 0, 1, 'r')
+plot_vel = plt.vlines(pp.s_1, 0, pp.max_vel+20, 'g', '--')
+plot_vel = plt.vlines(1-pp.s_1, 0, pp.max_vel+20, 'g', '--')
 
 # time taken
 plot_delta_t = plt.figure("delta t")
-plot_delta_t = plt.plot(np.linspace(0, s, plot_index), delta_t_plot_data[0:plot_index])
+plot_delta_t = plt.plot(np.linspace(0, s, plot_index-1), delta_t_plot_data[1:plot_index])
+plot_delta_t = plt.vlines(1, 0, 0.07, 'g', '--')
+plot_delta_t = plt.vlines(0, 0, 0.07, 'g', '--')
 
 
 plt.show()
