@@ -24,10 +24,7 @@ x_prev = np.empty(3)
 while True:
     x_prev = x_des
 
-    # s = time_scaling(t)
-    s = t
-    if s > 1:
-        break
+    s, delta_time_correction = time_scaling(t)
 
     if s is None:
         break
@@ -43,14 +40,15 @@ while True:
     x_des = bezier_curve(s)
 
     # save data for plotime_scaling_plot_data
-    time_scaling_plot_data[:, plot_index]                  = np.array([t, s])
-    x_des_plot_data[:, plot_index]     = np.array([x_des[0], x_des[2]])
+    time_scaling_plot_data[:, plot_index]   = np.array([t, s])
+    x_des_plot_data[:, plot_index]          = np.array([x_des[0], x_des[2]])
 
-    vel = np.linalg.norm(x_des-x_prev) / (pp.delta_t*s_iteration_filter)
+    vel = np.linalg.norm(x_des-x_prev) / (pp.delta_t + delta_time_correction)
     vel_plot_data[plot_index] = vel
     plot_index += 1
 
-print(f"s={s}\tt1={pp.t_1}\tt2={pp.T-pp.t_2}\tT={pp.T}")
+print(f"t1={pp.t_1}\tt2={pp.T-pp.t_2}\tT={pp.T}")
+print(f"e={np.linalg.norm(x_des-bezier_curve(1))}")
 
 
 

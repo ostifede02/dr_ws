@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 
 from os.path import dirname, join, abspath
 
-from IK_solver import IK_solver
-import path_planning as path
-import fk_analytic_sol
+from kinematics.IK_solver import IK_solver
+import trajectory_planning.path_planning as path
+import kinematics.fk_analytic_sol
 
 
 

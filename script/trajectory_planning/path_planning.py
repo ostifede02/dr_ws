@@ -1,30 +1,30 @@
 import numpy as np
 
 
-z_offset = 100
+z_offset = 40
 # start and end point
-P0 = np.array([-200, 0, -280])
-P3 = np.array([200, 0, -280])
+P0 = np.array([-150, 0, -280])
+P3 = np.array([0, 0, -280])
 # via points
 P1 = np.array([P0[0], 0, P0[2]+z_offset])
 P2 = np.array([P3[0], 0, P3[2]+z_offset])
 
 
 # max acceleration and velocity
-max_acc = 0.1
-max_vel = 40
+max_acc = 1
+max_vel = 150
 s_vel = 0
 
 # time increment in seconds
-delta_t = 0.02
+delta_t = 0.01
 
 # overall time taken
 T = 0
 
 # states time scaling
-STATE_ACC = 1
-STATE_VEL = 2
-STATE_DEC = 3
+STATE_ACC = "state const acc"
+STATE_VEL = "state const vel"
+STATE_DEC = "state const dec"
 state = STATE_ACC   # initial state
 
 
@@ -51,14 +51,19 @@ def current_velocity(t):
     vel = np.linalg.norm((bezier_curve(s_current) - bezier_curve(s_next)) / delta_t)
     return vel
 
+def euclidean_distance(s, s_next):
+    delta_x = np.linalg.norm(bezier_curve(s_next) - bezier_curve(s))
+    return delta_x
+
 # in: t -> [0, T]   out: s -> [0, 1]
 def time_scaling(t):
+    delta_time_correction = 0
     global state, t_1, s_1, t_2, s_2, T, s_vel
 
     if state is None:
         state = STATE_ACC
         # t_1, s_1, t_2, s_2, T = 0
-        return None
+        return None, 0
 
     # acceleration
     if state == STATE_ACC:
@@ -78,6 +83,10 @@ def time_scaling(t):
     # constant velocity
     if state == STATE_VEL:
         s = s_vel * (t - t_1) + s_1
+        s_prev = s_vel * (t - delta_t - t_1) + s_1
+
+        delta_time_correction = (euclidean_distance(s, s_prev) / max_vel) - delta_t
+        # delta_time_correction = 0
 
         if s >= (1 - s_1):
             state = STATE_DEC
@@ -92,6 +101,6 @@ def time_scaling(t):
         if s >= 1:
             state = None
             s = 1
-            print("s= ", s)
+            print("s=",s)
 
-    return s
+    return s, delta_time_correction
