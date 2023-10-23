@@ -55,19 +55,11 @@ def bezier_curve(s):
     x_next = pow(1-s, 3)*P0 + 3*pow(1-s, 2)*s*P1 + 3*(1-s)*pow(s, 2)*P2 + pow(s, 3)*P3
     return x_next
 
-
-def get_velocity_bezier_curve(s, delta_s, delta_t):  
-    delta_x = np.linalg.norm(bezier_curve(s+delta_s) - bezier_curve(s))
-    vel = delta_x / delta_t
-    return vel
-
 def get_roots(a, b, c, sol):
     if sol == 1:
-        t1 = (-b + np.sqrt(abs(pow(b,2)-4*a*c)))/(2*a)
-        return t1
+        return (-b + np.sqrt(abs(pow(b,2)-4*a*c)))/(2*a)
     elif sol == 2:
-        t2 = (-b - np.sqrt(abs(pow(b,2)-4*a*c)))/(2*a)
-        return t2
+        return (-b - np.sqrt(abs(pow(b,2)-4*a*c)))/(2*a)
     return -1
 
 # in: t -> [0, T]   out: time_taken
@@ -78,55 +70,46 @@ def time_taken_interval(s, delta_s):
         state = STATE_ACC
         return None, None
      
+    x_current = bezier_curve(s)
+    x_next = bezier_curve(s+delta_s)
+    delta_x = np.linalg.norm(x_next - x_current)
+    prev_vel = next_vel
+
     # acceleration
     if state == STATE_ACC:   
-        x_current = bezier_curve(s)
-        x_next = bezier_curve(s+delta_s)
-        delta_x = np.linalg.norm(x_next - x_current)
+        if s >= 0.5:
+            state = STATE_DEC
+        
         # x0 + v0*t + 0.5*a0*t^2 = x
         # 0.5*a0*delta_t^2 + v0*delta_t - delta_x = 0
         # a = 0.5*a0;   b = v0;  c = -delta_x
         delta_t = get_roots(0.5*max_acc, 0, -delta_x, sol=1)
         # v1 = v0 + a0*t
-        prev_vel = next_vel
-        next_vel = next_vel + max_acc * delta_t
+        next_vel = prev_vel + max_acc * delta_t
 
-        if s >= 0.5:
-            state = STATE_DEC
-            next_vel = prev_vel
 
-        elif next_vel >= max_vel:            #get_velocity_bezier_curve(s, delta_s, delta_t)
+        if next_vel >= max_vel:            #get_velocity_bezier_curve(s, delta_s, delta_t)
             state = STATE_VEL
             next_vel = prev_vel
-            s_1 = s
+            s_1 = s 
             
-
+            
     # constant velocity
     if state == STATE_VEL:
-        x_current = bezier_curve(s)
-        x_next = bezier_curve(s+delta_s)
-
-        delta_x = np.linalg.norm(x_next - x_current)
-        delta_t = delta_x / next_vel
-
         if s >= (1 - s_1):
-            print(f"s1={1-s_1}\ts={s}")
             state = STATE_DEC
+        
+        # v = dx/dt -> dt = dx/v
+        delta_t = delta_x / prev_vel
+
 
     # deceleration
-
     if state == STATE_DEC:
-        x_current = bezier_curve(s)
-        x_next = bezier_curve(s+delta_s)
-        delta_x = np.linalg.norm(x_next - x_current)     
-
         # x0 + v0*t + 0.5*a0*t^2 = x
         # -0.5*a0*delta_t^2 + v0*delta_t - delta_x = 0
         # a = -0.5*a0;   b = v0;  c = -delta_x
         delta_t = get_roots(-0.5*max_acc, 0, -delta_x, sol=2)
         # v1 = v0 + a0*t
-        next_vel = next_vel - max_acc * delta_t
-        print(f"next_vel={next_vel}")
-
+        next_vel = prev_vel - max_acc * delta_t
 
     return delta_t, next_vel
