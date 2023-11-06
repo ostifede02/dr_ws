@@ -52,13 +52,13 @@ Bezier curves are used for the path planning. They are very straight forward to 
 #### time scaling function of a bezier curve
 As we can see the velocity profile of a bezier curve has a different shape, than the one of a bang-bang control.
 
-![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_bezier.png)
+![plot](/script/trajectory_planning/graphs/veloity_time_scaling_profile_bezier.png)
 
 **why is that?**
 
 The reason for this result is because, although having an isometric input [0, 1], the euclidean distance between each point of the output curve is not fixed. This affects the irregularity in the time scaling velocity profile. As we can see from the plot below, the points at the beginning and at the end of the curve are more close to each rather than in the middle of the curve. This phenomenon is more evident as the turning radius gets smaller.
 
-![plot](/script/trajectory%20planning/graphs/end_effector_trajectorty_linear_ts.png)
+![plot](/script/trajectory_planning/graphs/end_effector_trajectorty_linear_ts.png)
 
 
 #### time scaling function of a straight line path
@@ -69,11 +69,11 @@ On the other hand if we take a straight line as a path to follow, the position a
 + IInd segment: constant velocity
 + IIIrd segment: constant deceleration
 
-![plot](/script/trajectory%20planning/graphs/position_time_scaling_profile_segment.png)
+![plot](/script/trajectory_planning/graphs/position_time_scaling_profile_segment.png)
 
 ###### velocity time scaling function
 
-![plot](/script/trajectory%20planning/graphs/veloity_time_scaling_profile_segment.png)
+![plot](/script/trajectory_planning/graphs/veloity_time_scaling_profile_segment.png)
 
 
 ### gepetto viewer
