@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 '''
  __     __         _       _     _           
@@ -9,20 +10,19 @@ import numpy as np
                                              
 '''
 
-z_offset = 60
+z_offset = 100
 # start and end point
 P0 = np.array([-200, 0, -280])
-P3 = np.array([200, 0, -280])
+P3 = np.array([10, 0, -100])
 # via points
 P1 = np.array([P0[0], 0, P0[2]+z_offset])
 P2 = np.array([P3[0], 0, P3[2]+z_offset])
 
 
 # max acceleration and velocity
-max_acc = 120        # [ mm / s2 ]
-max_vel = 150      # [ mm / s ]
-next_vel = 0
-delta_t = 0
+max_acc = 50           # [ mm / s2 ]
+max_vel = 100          # [ mm / s ]
+
 
 # states time scaling
 STATE_ACC = "state const acc"
@@ -31,9 +31,7 @@ STATE_DEC = "state const dec"
 state = STATE_ACC   # initial state
 
 
-# state change flags
-# from acceleration to constant velocity OR deceleration
-s_1 = 0
+
 
 
 
@@ -47,7 +45,6 @@ s_1 = 0
                                               
 '''
 
-
 # in: s -> [0, 1]   out: X
 def bezier_curve(s):
     s = max(s, 0)
@@ -56,60 +53,51 @@ def bezier_curve(s):
     # x_next = (1-s)*P0 + s*P3
     return x_next
 
-def get_roots(a, b, c, sol):
-    if sol == 1:
-        return (-b + np.sqrt(abs(pow(b,2)-4*a*c)))/(2*a)
-    elif sol == 2:
-        return (-b - np.sqrt(abs(pow(b,2)-4*a*c)))/(2*a)
-    return -1
 
-# in: t -> [0, T]   out: time_taken
-def time_taken_interval(s, delta_s):
-    global state, s_1, next_vel
-
-    if s >= 1:
-        state = STATE_ACC
-        return None
-     
-    x_current = bezier_curve(s)
-    x_next = bezier_curve(s+delta_s)
-    delta_x = np.linalg.norm(x_next - x_current)
-    prev_vel = next_vel
+def vel_profile_subsections():
+    delta_s = 0.001
 
     # acceleration
-    if state == STATE_ACC:   
-        if s >= 0.5:
-            state = STATE_DEC
-        
-        # x0 + v0*t + 0.5*a0*t^2 = x
-        # 0.5*a0*delta_t^2 + v0*delta_t - delta_x = 0
-        # a = 0.5*a0;   b = v0;  c = -delta_x
-        delta_t = get_roots(0.5*max_acc, prev_vel, -delta_x, sol=1)
-        # v1 = v0 + a0*t
-        next_vel = prev_vel + max_acc * delta_t
-
-        if next_vel >= max_vel:
-            state = STATE_VEL
-            next_vel = prev_vel
-            s_1 = s 
-            
-
-    # constant velocity
-    if state == STATE_VEL:        
-        # v = dx/dt -> dt = dx/v
-        delta_t = delta_x / prev_vel
-
-        if s >= (1 - s_1):
-            state = STATE_DEC
-
+    x_max_acc = (max_vel*max_vel) / (2*max_acc)
+    x_acc_travelled = 0
+    s_acc = 0
 
     # deceleration
-    if state == STATE_DEC:
-        # x0 + v0*t + 0.5*a0*t^2 = x
-        # -0.5*a0*delta_t^2 + v0*delta_t - delta_x = 0
-        # a = -0.5*a0;   b = v0;  c = -delta_x
-        delta_t = get_roots(-0.5*max_acc, prev_vel, -delta_x, sol=1)
-        # v1 = v0 + a0*t
-        next_vel = prev_vel - max_acc * delta_t
+    x_max_dec = x_max_acc
+    x_dec_travelled = 0
+    s_dec = 1
 
-    return delta_t
+    while True:
+        x_acc_travelled += np.linalg.norm(bezier_curve(s_acc+delta_s)-bezier_curve(s_acc))
+        x_dec_travelled += np.linalg.norm(bezier_curve(s_dec)-bezier_curve(s_dec-delta_s))
+
+        # end without constant velocity
+        if s_acc >= s_dec:
+            break
+
+        # end with constant velocity
+        if x_acc_travelled > x_max_acc and x_dec_travelled > x_max_dec:
+            print(f"x_acc {x_acc_travelled} > x_max {x_max_acc}")
+            print(f"x_dec {x_dec_travelled} > x_max {x_max_dec}")
+            break
+
+        # acceleration via points
+        if x_acc_travelled <= x_max_acc:
+            s_acc += delta_s
+
+        # deceleration via points
+        if x_dec_travelled <= x_max_dec:
+            s_dec -= delta_s
+    
+    s_acc = round(s_acc, 3)
+    s_dec = round(s_dec, 3)
+
+    return s_acc, s_dec
+
+
+
+s1, s2 = vel_profile_subsections()
+
+
+print(s1)
+print(s2)
