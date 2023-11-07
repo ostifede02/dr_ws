@@ -13,7 +13,7 @@ z_offset = np.linalg.norm(pos_end-pos_start) / 10
 P = bezier_curve_via_points(pos_start, pos_end, z_offset)
 
 # path profile subsection
-x_acc_flag, x_dec_flag, x_total = time_scaling_profile_subsections(P)
+x_acc_flag, x_dec_flag, x_total, t_acc_flag, t_dec_flag = time_scaling_profile_subsections(P)
 delta_s = define_delta_s(x_total)
 
 # initialization of variables
@@ -33,7 +33,7 @@ s_instance = np.linspace(delta_s, 1, int(1/delta_s))
 
 for s_next in s_instance:
     #############   START   #############
-    print(s_next)
+
     ## next via point
     pos_next = bezier_curve(s_next, P)
 
@@ -45,7 +45,7 @@ for s_next in s_instance:
     x_travelled += delta_x
 
     ## time
-    t_travelled = time_scaling_profile(x_travelled, x_acc_flag, x_dec_flag, x_total)
+    t_travelled = time_scaling_profile(x_travelled, x_acc_flag, x_dec_flag, x_total, t_acc_flag, t_dec_flag)
     delta_t = t_travelled - t_current
 
     ##
@@ -67,6 +67,7 @@ print(f"x acc flag: {x_acc_flag}")
 print(f"x dec flag: {x_dec_flag}")
 print(f"x total: {x_total}")
 print(f"x travelled: {x_travelled}")
+print(f"T: {t_travelled}")
 print(f"pos end: {pos_next}\n")
 print(f"s end: {s_next}")
 print("s instance len", int(1/delta_s))
