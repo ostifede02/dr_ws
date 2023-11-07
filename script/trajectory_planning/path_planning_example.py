@@ -76,11 +76,13 @@ print("s instance len", int(1/delta_s))
 ## PLOT stuff
 
 plot_pos_profile = plt.figure("position profile")
-plot_pos_profile = plt.plot(pos_profile_data[0, :], pos_profile_data[1, :], ".")
+plot_pos_profile = plt.plot(pos_profile_data[0, :], pos_profile_data[1, :])
 
-plot_pos_profile = plt.vlines(x_acc_flag, 0, t_travelled, "r", "--")
-plot_pos_profile = plt.vlines(x_dec_flag, 0, t_travelled, "r", "--")
+plot_pos_profile = plt.vlines(x_acc_flag, 0, t_travelled, "r", "--", label="start of const velocity")
+plot_pos_profile = plt.vlines(x_dec_flag, 0, t_travelled, "g", "--", label="end of const velocity")
 
+plot_pos_profile = plt.title("time scaling position profile")
+plot_pos_profile = plt.legend()
 plot_pos_profile = plt.xlabel("position [ mm ]")
 plot_pos_profile = plt.ylabel("time [ s ]")
 
