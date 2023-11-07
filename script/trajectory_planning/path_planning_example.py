@@ -29,13 +29,11 @@ pos_profile_data = np.empty((2, int(1/delta_s)+1))
 pos_profile_data[:,0] = np.array([0,0])
 plot_data_index = 1
 
-s_instance = np.linspace(0,1-delta_s, int(1/delta_s))
+s_instance = np.linspace(delta_s, 1, int(1/delta_s))
 
-for s_current in s_instance:
+for s_next in s_instance:
     #############   START   #############
-
-    s_next = s_current + delta_s
-
+    print(s_next)
     ## next via point
     pos_next = bezier_curve(s_next, P)
 

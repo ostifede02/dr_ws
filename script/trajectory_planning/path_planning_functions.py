@@ -118,12 +118,12 @@ def define_delta_s(x_total):
         delta_s = 1
     elif x_total > 5 and x_total <= 15:
         max_delta_x = 1
-        delta_s = round(max_delta_x / x_total, 4)
+        delta_s = round(max_delta_x / x_total, 3)
     elif x_total > 15 and x_total <= 50:
         max_delta_x = 2
-        delta_s = round(max_delta_x / x_total, 4)
+        delta_s = round(max_delta_x / x_total, 3)
     else:
         max_delta_x = 5
-        delta_s = round(max_delta_x / x_total, 4)
+        delta_s = round(max_delta_x / x_total, 3)
 
     return delta_s
