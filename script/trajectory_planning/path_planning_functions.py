@@ -4,13 +4,13 @@ import path_planning_conf
 from path_planning_conf import max_acc, max_vel
 
 
-def bezier_curve_via_points(pos_start, pos_end, z_offset):
+def bezier_curve_via_points(pos_start, pos_end, offsets):
     # start and end point
     P0 = pos_start
     P3 = pos_end
     # via points
-    P1 = np.array([P0[0], 0, P0[2]+z_offset])
-    P2 = np.array([P3[0], 0, P3[2]+z_offset])
+    P1 = np.array([P0[0]+offsets[0], 0, P0[2]+offsets[1]])
+    P2 = np.array([P3[0]+offsets[2], 0, P3[2]+offsets[3]])
 
     return np.array([P0, P1, P2, P3])
 
@@ -31,7 +31,7 @@ def straight_line(s, P):
     return x_next
 
 
-def time_scaling_profile_subsections(P):
+def time_optimal_bang_bang_profile_subsections(P):
     delta_s = 0.02
     x_total = 0
 
@@ -48,18 +48,25 @@ def time_scaling_profile_subsections(P):
     
     # if there isn't a constant velocity profile
     if 2*x_acc_flag >= x_total:
+        # position flags
         x_acc_flag = x_total * 0.5
+        x_dec_flag = x_acc_flag
+        # time flags
+        t_acc_flag = np.sqrt((2*x_acc_flag)/max_acc)
+        t_total = np.sqrt((2*x_acc_flag)/max_acc) + ((x_dec_flag-x_acc_flag)/max_vel) + np.sqrt((2*abs(x_total-x_dec_flag)/max_acc))
+    
+    # if there is a constant velocity profile
+    else:
+        # position flags
+        x_dec_flag = x_total-x_acc_flag
+        # time flags
+        t_acc_flag = np.sqrt((2*x_acc_flag)/max_acc)
+        t_total = np.sqrt((2*x_acc_flag)/max_acc) + ((x_dec_flag-x_acc_flag)/max_vel) + np.sqrt((2*abs(x_total-x_dec_flag)/max_acc))
 
-    x_dec_flag = x_total-x_acc_flag
-
-    # time constants flags -> for graph scaling
-    t_acc_flag = np.sqrt((2*x_acc_flag)/max_acc)
-    t_dec_flag = np.sqrt((2*x_acc_flag)/max_acc) + ((x_dec_flag-x_acc_flag)/max_vel) + np.sqrt((2*abs(x_total-x_dec_flag)/max_acc))
-
-    return x_acc_flag, x_dec_flag, x_total, t_acc_flag, t_dec_flag
+    return x_acc_flag, x_dec_flag, x_total, t_acc_flag, t_total
 
 
-def time_scaling_profile(x_next, x_acc_flag, x_dec_flag, x_total, t_acc_flag, t_dec_flag):
+def time_optimal_bang_bang_profile(x_next, x_acc_flag, x_dec_flag, x_total, t_acc_flag, t_total):
     t_next = 0
 
     # acceleration profile
@@ -72,7 +79,7 @@ def time_scaling_profile(x_next, x_acc_flag, x_dec_flag, x_total, t_acc_flag, t_
 
     # deceleration profile
     if x_next >= x_dec_flag:
-        t_next = t_dec_flag - np.sqrt((2*abs(x_total-x_next)/max_acc))
+        t_next = t_total - np.sqrt((2*abs(x_total-x_next)/max_acc))
     
     return t_next
 
