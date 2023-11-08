@@ -52,7 +52,6 @@ for s in s_instance:
 
 
 ## PLOT stuff
-
 pos_plot = plt.figure("path routine")
 pos_plot = plt.axis("equal")
 pos_plot = plt.plot(pos_data[0, :], pos_data[2, :],".")
