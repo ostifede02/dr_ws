@@ -115,7 +115,7 @@ for t in t_instance:
     q_2_discrete += q_2_discrete_displacement
 
     # calculating the actual ee position
-    x_discrete = fk_analytic_sol.EE_position_geometrically(q_1_discrete, q_2_discrete)
+    x_discrete = kinematics.fk_analytic_sol.EE_position_geometrically(q_1_discrete, q_2_discrete)
 
     # save data for plots
     x_des_plot_data[:, plot_index]              = np.array([x_des[0], x_des[2]])

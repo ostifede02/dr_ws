@@ -1,28 +1,30 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from path_planning_conf import *
-from path_planning_functions import *
+from configuration_functions import trajectory_configuration_block
+from trajectory_functions import bezier_curve, time_optimal_bang_bang_profile
 
 
 pos_start = np.array([-20, 0, -280])       # at the end of cycle pos_start_new = pos_end_prev
 pos_end = np.array([200, 0, -280])          # should be input to function goto()
 
-z_offset = np.linalg.norm(pos_end-pos_start) / 10
-# z_offset = 0 
 
-P = bezier_curve_via_points(pos_start, pos_end, z_offset)
+trj_data = trajectory_configuration_block("quick", pos_start, pos_end)
 
-# path profile subsection
-x_acc_flag, x_dec_flag, x_total, t_acc_flag, t_total = time_optimal_bang_bang_profile_subsections(P)
-delta_s = define_delta_s(x_total)
 
 # initialization of variables
 pos_current = pos_start
 
+delta_s = trj_data["delta_s"]
+x_acc_flag = trj_data["x_acc_flag"]
+x_total = trj_data["x_total"]
+t_acc_flag = trj_data["t_acc_flag"]
+t_total = trj_data["t_total"]
+velocity = trj_data["vel"]
+acceleration = trj_data["acc"]
+
 x_travelled = 0
 t_current = 0
-
 
 
 # PLOT data
@@ -36,7 +38,7 @@ for s_next in s_instance:
     #############   START   #############
 
     ## next via point
-    pos_next = bezier_curve(s_next, P)
+    pos_next = bezier_curve(s_next, trj_data["via_points"])
 
     ##
     ##  inverse geometry -> collisions? -> n,m steps
@@ -46,7 +48,7 @@ for s_next in s_instance:
     x_travelled += delta_x
 
     ## time
-    t_travelled = time_optimal_bang_bang_profile(x_travelled, x_acc_flag, x_dec_flag, x_total, t_acc_flag, t_total)
+    t_travelled = time_optimal_bang_bang_profile(x_travelled, x_acc_flag, x_total, t_acc_flag, t_total, velocity, acceleration)
     delta_t = t_travelled - t_current
 
     ##
@@ -66,11 +68,11 @@ for s_next in s_instance:
 if t_total-t_acc_flag == 0:
     print("NO constant velocity profile")
 else:
-    mean_vel = (x_dec_flag-x_acc_flag)/(t_total-2*t_acc_flag)
+    mean_vel = (x_total-x_acc_flag)/(t_total-t_acc_flag)
     print(f"mean vel: {mean_vel}")
 
 print(f"x acc flag: {x_acc_flag}")
-print(f"x dec flag: {x_dec_flag}")
+print(f"x dec flag: {x_total-x_acc_flag}")
 print(f"x total: {x_total}")
 print(f"x travelled: {x_travelled}")
 print(f"T: {t_travelled}")
@@ -86,7 +88,7 @@ plot_pos_profile = plt.figure("position profile")
 plot_pos_profile = plt.plot(pos_profile_data[0, :], pos_profile_data[1, :])
 
 plot_pos_profile = plt.vlines(x_acc_flag, 0, t_travelled, "r", "--", label="pos start of const velocity")
-plot_pos_profile = plt.vlines(x_dec_flag, 0, t_travelled, "r", "--", label="pos end of const velocity")
+plot_pos_profile = plt.vlines(x_total-x_acc_flag, 0, t_travelled, "r", "--", label="pos end of const velocity")
 
 
 plot_pos_profile = plt.hlines(t_acc_flag, 0, x_travelled, "g", "--", label="time start of const velocity")

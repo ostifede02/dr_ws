@@ -8,9 +8,9 @@ from os.path import dirname, join, abspath
 import sys
 import time
 
-from IK_solver import IK_solver
+from kinematics.IK_solver import IK_solver
 import path_planning as path
-from collision_check import is_Collision
+from collision.collision_check import is_Collision
 
 
 # Load the mesh files
