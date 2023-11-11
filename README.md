@@ -46,9 +46,14 @@ After computing the inverse geometry, the collision between the rods and the rai
 
 
 ### trajectory planning
-#### Bezier curves
-Bezier curves are used for the path planning. They are very straight forward to implement and compute, however they have a main issue. Even though the input is isometric, the euclidean distance between each point of the output curve is not fixed. This affects the time scaling consistency.
-For this reason the time scaling using a bang bang velocity profile was very challenging. Below the time position time scaling profile.
+#### Cubic Bezier curves
+Cubic Bezier curves are used for the path planning. During a pick and place routine, we can classify different paths as follows:
++ pick path (red): start straight and get to the object from the top
++ place path (green): start and place the object moving along a vertical path
++ return to neutral (blue): is a fast straight line from point to point (using a bezier curve too)
+
+![plot](/script/trajectory_planning/graph/path_routine_subplots.png)
+
 
 #### position time scaling function
 + Ist segment: constant acceleration
