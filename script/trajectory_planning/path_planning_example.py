@@ -1,11 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from configuration_functions import trajectory_configuration_block
 from trajectory_functions import bezier_curve, time_optimal_bang_bang_profile
+from configuration_functions import trajectory_configuration_block
 
 
-pos_start = np.array([-20, 0, -280])       # at the end of cycle pos_start_new = pos_end_prev
+pos_start = np.array([-200, 0, -280])       # at the end of cycle pos_start_new = pos_end_prev
 pos_end = np.array([200, 0, -280])          # should be input to function goto()
 
 

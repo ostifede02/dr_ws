@@ -79,9 +79,9 @@ def configure_routine_path_via_points(path_routine, start_pos, end_pos):
 
     elif path_routine == "place":
         x1_offset = 0
-        z1_offset = (end_pos[0] - start_pos[0])*0.25
+        z1_offset = min(abs(start_pos[0] - end_pos[0])*0.25, 70)
         x2_offset = 0
-        z2_offset = (end_pos[0] - start_pos[0])*0.25
+        z2_offset = min(abs(start_pos[0] - end_pos[0])*0.25, 70)
     else:
         return -1
     

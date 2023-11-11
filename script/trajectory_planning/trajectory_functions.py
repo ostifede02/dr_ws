@@ -1,4 +1,3 @@
-import configuration_data as conf
 import numpy as np
 
 # in: s -> [0, 1]   out: X
