@@ -52,7 +52,7 @@ Cubic Bezier curves are used for the path planning. During a pick and place rout
 + place path (green): start and place the object moving along a vertical path
 + return to neutral (blue): is a fast straight line from point to point (using a bezier curve too)
 
-![plot](/script/trajectory_planning/graph/path_routine_subplots.png)
+![plot](/script/trajectory_planning/graphs/path_routine_subplots.png)
 
 
 #### position time scaling function
