@@ -6,16 +6,16 @@ from configuration_functions import trajectory_configuration_block
 
 
 pos_start = np.array([-200, 0, -280])       # at the end of cycle pos_start_new = pos_end_prev
-pos_end = np.array([200, 0, -280])          # should be input to function goto()
+pos_end = np.array([20, 0, -280])          # should be input to function goto()
 
 
-trj_data = trajectory_configuration_block("quick", pos_start, pos_end)
+trj_data = trajectory_configuration_block("quick", pos_start, pos_end, 3)
 
 
 # initialization of variables
 pos_current = pos_start
+delta_s = 0.001
 
-delta_s = trj_data["delta_s"]
 x_acc_flag = trj_data["x_acc_flag"]
 x_total = trj_data["x_total"]
 t_acc_flag = trj_data["t_acc_flag"]
@@ -40,20 +40,12 @@ for s_next in s_instance:
     ## next via point
     pos_next = bezier_curve(s_next, trj_data["via_points"])
 
-    ##
-    ##  inverse geometry -> collisions? -> n,m steps
-    ##
-
     delta_x = np.linalg.norm(pos_next-pos_current)
     x_travelled += delta_x
 
     ## time
     t_travelled = time_optimal_bang_bang_profile(x_travelled, x_acc_flag, x_total, t_acc_flag, t_total, velocity, acceleration)
     delta_t = t_travelled - t_current
-
-    ##
-    ##  send n,m steps and delta_t to microcontroller
-    ##
 
     # update current values
     t_current = t_travelled
@@ -64,6 +56,8 @@ for s_next in s_instance:
     # plot data
     pos_profile_data[:, plot_data_index] = np.array([x_travelled, t_travelled])
     plot_data_index += 1
+
+
 
 if t_total-t_acc_flag == 0:
     print("NO constant velocity profile")
@@ -87,12 +81,12 @@ print("s instance len", int(1/delta_s))
 plot_pos_profile = plt.figure("position profile")
 plot_pos_profile = plt.plot(pos_profile_data[0, :], pos_profile_data[1, :])
 
-plot_pos_profile = plt.vlines(x_acc_flag, 0, t_travelled, "r", "--", label="pos start of const velocity")
-plot_pos_profile = plt.vlines(x_total-x_acc_flag, 0, t_travelled, "r", "--", label="pos end of const velocity")
+plot_pos_profile = plt.vlines(x_acc_flag, 0, t_travelled, "r", "--", label="position flag")
+plot_pos_profile = plt.vlines(x_total-x_acc_flag, 0, t_travelled, "r", "--")
 
 
-plot_pos_profile = plt.hlines(t_acc_flag, 0, x_travelled, "g", "--", label="time start of const velocity")
-plot_pos_profile = plt.hlines(t_total-t_acc_flag, 0, x_travelled, "g", "--", label="time end of const velocity")
+plot_pos_profile = plt.hlines(t_acc_flag, 0, x_travelled, "g", "--", label="time flag")
+plot_pos_profile = plt.hlines(t_total-t_acc_flag, 0, x_travelled, "g", "--")
 
 
 plot_pos_profile = plt.title("time scaling position profile")
