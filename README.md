@@ -48,8 +48,8 @@ After computing the inverse geometry, the collision between the rods and the rai
 ### path and trajectory planning
 #### path routines
 Cubic Bezier curves are used for the path planning. During a pick and place routine, we can classify different paths as follows:
-+ pick path (red): start straight and get to the object from the top
-+ place path (green): start and place the object moving along a vertical path
++ pick routine (red): start straight and get to the object from the top
++ place routine (green): start and place the object moving along a vertical path
 + return to neutral (blue): is a fast straight line from point to point (using a bezier curve too)
 
 ![plot](/script/trajectory_planning/graphs/path_routine_subplots.png)
