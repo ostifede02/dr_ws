@@ -76,15 +76,39 @@ for s in s_instance:
 
 ## PLOT stuff
 pos_plot = plt.figure("path routine")
+
+pos_plot = plt.subplot(1,2,1)
 pos_plot = plt.axis("equal")
+pos_plot = plt.title("path routines")
+pos_plot = plt.xlabel("x-axis")
+pos_plot = plt.ylabel("z-axis")
+
+pos_plot = plt.plot(pos_data_1[0, :], pos_data_1[2, :], "r", label="pick")
+pos_plot = plt.plot(pos_data_2[0, :], pos_data_2[2, :], "g", label="place")
+pos_plot = plt.plot(pos_data_3[0, :], pos_data_3[2, :], "b", label="return")
+
+pos_plot = plt.text(pos_start_1[0]+5, pos_start_1[2], "neutral position")
+pos_plot = plt.text(pos_start_2[0]-30, pos_start_2[2], "pick object")
+pos_plot = plt.text(pos_start_3[0]+5, pos_start_3[2], "place object")
+pos_plot = plt.legend()
+
+
+
+pos_plot = plt.subplot(1,2,2)
+pos_plot = plt.axis("equal")
+pos_plot = plt.title("via points of path routines")
+pos_plot = plt.xlabel("x-axis")
+pos_plot = plt.ylabel("z-axis")
+
+
 pos_plot = plt.plot(pos_data_1[0, :], pos_data_1[2, :], ".r", label="pick")
 pos_plot = plt.plot(pos_data_2[0, :], pos_data_2[2, :], ".g", label="place")
 pos_plot = plt.plot(pos_data_3[0, :], pos_data_3[2, :], ".b", label="return")
-pos_plot = plt.legend()
 
 pos_plot = plt.text(pos_start_1[0]+5, pos_start_1[2], "neutral position")
-pos_plot = plt.text(pos_start_2[0]+5, pos_start_2[2], "pick object")
+pos_plot = plt.text(pos_start_2[0]-30, pos_start_2[2], "pick object")
 pos_plot = plt.text(pos_start_3[0]+5, pos_start_3[2], "place object")
+pos_plot = plt.legend()
 
 
 plt.show()

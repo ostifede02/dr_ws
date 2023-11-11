@@ -2,8 +2,8 @@ import numpy as np
 
 # in: s -> [0, 1]   out: X
 def bezier_curve(s, P):
-    x_next = pow(1-s, 3)*P[0] + 3*pow(1-s, 2)*s*P[1] + 3*(1-s)*pow(s, 2)*P[2] + pow(s, 3)*P[3]
-    return x_next
+    pos = pow(1-s, 3)*P[0] + 3*pow(1-s, 2)*s*P[1] + 3*(1-s)*pow(s, 2)*P[2] + pow(s, 3)*P[3]
+    return pos
 
 
 
