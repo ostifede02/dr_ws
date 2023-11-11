@@ -95,7 +95,7 @@ def configure_routine_path_via_points(path_routine, start_pos, end_pos):
 
 
 def trajectory_configuration_block(path_routine, start_pos, end_pos, t_taken=-1):
-    # calculate bezier curve via points
+    # calculate bezier curve via points based on routine
     bezier_via_points = configure_routine_path_via_points(path_routine, start_pos, end_pos)
     
     # get curve length
