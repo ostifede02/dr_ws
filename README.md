@@ -45,8 +45,8 @@ In addition all the configuration parameters are already built-in in the class.
 After computing the inverse geometry, the collision between the rods and the rails only is computed. If a collision is detect, the program stops.
 
 
-### trajectory planning
-#### Cubic Bezier curves
+### path and trajectory planning
+#### path: Bezier curves
 Cubic Bezier curves are used for the path planning. During a pick and place routine, we can classify different paths as follows:
 + pick path (red): start straight and get to the object from the top
 + place path (green): start and place the object moving along a vertical path
@@ -55,7 +55,9 @@ Cubic Bezier curves are used for the path planning. During a pick and place rout
 ![plot](/script/trajectory_planning/graphs/path_routine_subplots.png)
 
 
-#### position time scaling function
+#### bang bang velocity profile
+We can differentiate between optimal-time and time-constrained trajectories. For example, the pick routine is constrained by time as we need to synchronize the end effector with the moving object on the conveyor belt. Conversely, the place and return routines operate at maximum speed and acceleration. The time scaling position profile below illustrates the function representing position over time, reflecting the non-isometrical behavior of the Bezier curve.
+
 + Ist segment: constant acceleration
 + IInd segment: constant velocity
 + IIIrd segment: constant deceleration
