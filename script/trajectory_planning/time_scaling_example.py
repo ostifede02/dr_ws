@@ -91,7 +91,7 @@ plot_pos_profile = plt.hlines(t_total-t_acc_flag, 0, x_travelled, "g", "--")
 
 plot_pos_profile = plt.title("time scaling position profile")
 plot_pos_profile = plt.legend()
-plot_pos_profile = plt.xlabel("position [ mm ]")
+plot_pos_profile = plt.xlabel("distance traveled [ mm ]")
 plot_pos_profile = plt.ylabel("time [ s ]")
 
 plt.show()
