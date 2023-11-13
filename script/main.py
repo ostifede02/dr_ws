@@ -9,7 +9,6 @@ import sys
 import time
 
 from kinematics.IK_solver import IK_solver
-import path_planning as path
 from collision.collision_check import is_Collision
 
 
@@ -92,4 +91,3 @@ for t in t_instance:
 
     viz.display(q)
     time.sleep(path.time_delay)
-    

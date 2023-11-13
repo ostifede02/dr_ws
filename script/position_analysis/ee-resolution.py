@@ -5,7 +5,7 @@ from numpy.linalg import norm
 
 from os.path import dirname, join, abspath
 
-from IK_solver import IK_solver
+from kinematics.IK_solver import IK_solver
 
 
 # Load the mesh files
