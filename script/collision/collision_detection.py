@@ -1,6 +1,6 @@
 import pinocchio as pin
 
-def is_Collision(robot, q, collision_pair):
+def is_collision(robot, q, collision_pair):
     ## checking for collisions
     # Compute for each pair of collision
     pin.updateGeometryPlacements(robot.model, robot.data, robot.collision_model, robot.collision_data, q)

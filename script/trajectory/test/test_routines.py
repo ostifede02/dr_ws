@@ -1,9 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# import ..configuration_data as conf
-from configuration_functions import trajectory_configuration_block
-from trajectory_functions import bezier_curve
+from script.trajectory.trajectory import Trajectory
+from script import configuration as conf
 
 
 # pick
@@ -18,22 +17,20 @@ pos_end_2 = np.array([-120, 0, -300])
 pos_start_3 = pos_end_2
 pos_end_3 = pos_start_1
 
+trj = Trajectory()
 
-trajectory_data_1 = trajectory_configuration_block("pick", pos_start_1, pos_end_1)
-trajectory_data_2 = trajectory_configuration_block("place", pos_start_2, pos_end_2)
-trajectory_data_3 = trajectory_configuration_block("quick", pos_start_3, pos_end_3)
-delta_s = 0.05
 
 
 ################    PICK    ####################
+trj.set_trajectory_routine("pick", pos_start_1, pos_end_1)
 
-pos_data_1 = np.empty((3, int(1/delta_s)))
+pos_data_1 = np.empty((3, int(1/trj.delta_s)))
 plot_data_index = 0
-s_instance = np.linspace(0, 1, int(1/delta_s))
+s_instance = np.linspace(0, 1, int(1/trj.delta_s))
 
 for s in s_instance:
     ## next via point
-    pos = bezier_curve(s, trajectory_data_1["via_points"])
+    pos = trj.get_position_bezier_poly(s)
 
     # plot data
     pos_data_1[:, plot_data_index] = pos
@@ -43,14 +40,15 @@ for s in s_instance:
 
 
 ################    PLACE    ####################
+trj.set_trajectory_routine("place", pos_start_2, pos_end_2)
 
-pos_data_2 = np.empty((3, int(1/delta_s)))
+pos_data_2 = np.empty((3, int(1/trj.delta_s)))
 plot_data_index = 0
-s_instance = np.linspace(0, 1, int(1/delta_s))
+s_instance = np.linspace(0, 1, int(1/trj.delta_s))
 
 for s in s_instance:
     ## next via point
-    pos = bezier_curve(s, trajectory_data_2["via_points"])
+    pos = trj.get_position_bezier_poly(s)
 
     # plot data
     pos_data_2[:, plot_data_index] = pos
@@ -59,14 +57,15 @@ for s in s_instance:
 
 
 ################    RETURN    ####################
+trj.set_trajectory_routine("quick", pos_start_3, pos_end_3)
 
-pos_data_3 = np.empty((3, int(1/delta_s)))
+pos_data_3 = np.empty((3, int(1/trj.delta_s)))
 plot_data_index = 0
-s_instance = np.linspace(0, 1, int(1/delta_s))
+s_instance = np.linspace(0, 1, int(1/trj.delta_s))
 
 for s in s_instance:
     ## next via point
-    pos = bezier_curve(s, trajectory_data_3["via_points"])
+    pos = trj.get_position_bezier_poly(s)
 
     # plot data
     pos_data_3[:, plot_data_index] = pos

@@ -9,7 +9,7 @@ import sys
 import time
 
 from kinematics.IK_solver import IK_solver
-from collision.collision_check import is_Collision
+from collision.collision_detection import is_collision
 
 
 # Load the mesh files
@@ -86,7 +86,7 @@ for t in t_instance:
     q_2[5] = q_2[4]         # keeps rod_3 parallel to rod_2
     q = np.concatenate((q_1[0:3], q_2[3:6]))
 
-    if is_Collision(robot, q, (0, 1)):
+    if is_collision(robot, q, (0, 1)):
         break
 
     viz.display(q)
