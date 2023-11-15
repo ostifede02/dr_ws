@@ -18,7 +18,7 @@ pos_current = pos_start
 delta_s = 0.001
 
 
-trj.set_trajectory_routine("quick", pos_start, pos_end)
+trj.set_trajectory_routine("quick", pos_start, pos_end, 5)
 
 x_next = 0
 t_current = 0
@@ -67,7 +67,7 @@ print(f"x acc flag: {trj.x_acc_flag}")
 print(f"x dec flag: {trj.x_total-trj.x_acc_flag}")
 print(f"x total: {trj.x_total}")
 print(f"x travelled: {x_next}")
-print(f"T: {t_travelled}")
+print(f"t total: {t_travelled}")
 print(f"pos end: {pos_next}\n")
 print(f"s end: {s_next}")
 print("s instance len", int(1/delta_s))

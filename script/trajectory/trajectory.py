@@ -1,3 +1,19 @@
+'''
+This class is intended to calculate the path and trajectory planning.
+
+The key-methods for using this class are:
+    + set_trajectory_routine()
+        INPUT: 
+            path_routine_type:
+                                "pick"  -> for a pick routine path  (Note: this path is time constrained)
+                                "place" -> for a place routine path
+                                "quick" -> for a straight line quick return
+            pos_start:      start position (current position of the end-effector)
+            pos_end:        goal position
+            t_total_input:  if trajectory is time constrained  
+'''
+
+
 import numpy as np
 
 from script import configuration as conf
@@ -124,6 +140,9 @@ class Trajectory:
         if t_total_input > 0:
             self.const_acceleration = self.max_acceleration_default
             self.const_velocity = self.__get_const_velocity(t_total_input, self.x_total, self.const_acceleration)
+            if self.const_velocity is None:
+                print(f"ERROR! with an acceleration of {self.const_acceleration}, the path of length {self.x_total} millimeters cannot be reached in {t_total_input} seconds.")
+                return None
         else:
             self.const_velocity = self.max_velocity_default
             self.const_acceleration = self.max_acceleration_default
