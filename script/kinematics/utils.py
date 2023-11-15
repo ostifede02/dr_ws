@@ -1,6 +1,6 @@
 import numpy as np
 
-def EE_position_geometrically(q1, q2):
+def fk_analyitic(q1, q2):
     l = 450     # length of link
 
     P1 = np.array([-q1*np.cos(np.pi/4), 0, q1*np.sin(np.pi/4)])     # position of carriage 1

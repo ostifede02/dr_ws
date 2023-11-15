@@ -13,7 +13,18 @@ configuration = {
         "max_acceleration": 80,
         "max_velocity": 120,
         "delta_s_high_resolution": 0.02
-    }
+    },
 
+    "inverse_geometry": {
+        "parameters": {
+            "max_iterations": 300,
+            "max_back_tracking_iterations": 30,
+            "absolute_pos_threshold": 1e-3,         # absolute tolerance on position error
+            "gradient_threshold": 1e-3,             # absolute tolerance on gradient's norm
+            "beta": 0.1,                            # backtracking line search parameter
+            "gamma": 1e-2,                          # line search convergence parameters
+            "hessian_regu": 1e-2                    # Hessian regularization
+        }
+    }
     
 }

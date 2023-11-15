@@ -16,7 +16,7 @@ class Trajectory:
         pos += 3*(1-s)*pow(s, 2)*self.path_poly_points[2] 
         pos += pow(s, 3)*self.path_poly_points[3]
         return pos
-    
+
 
     def __get_path_poly_points(self, path_routine_type, pos_start, pos_end):
 

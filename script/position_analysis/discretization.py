@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 from os.path import dirname, join, abspath
 
-import kinematics.fk_analytic_sol
+import kinematics.utils
 from kinematics.IK_solver import IK_solver
 
 from trajectory_planning.trajectory_functions import bezier_curve

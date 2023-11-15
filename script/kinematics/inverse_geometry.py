@@ -1,26 +1,26 @@
 from numpy.linalg import norm, inv
 import numpy as np
 
+from script import configuration as conf
 
-class IK_solver:
+
+class InverseGeometry:
     
-    # configuration parameters
-    max_iterations                  = 300           # max iteration
-    max_back_tracking_iterations    = 30            # max back tracking iterations
-
-    absolute_threshold              = 1e-3          # absolute tolerance on position error
-    gradient_threshold              = 1e-3          # absolute tolerance on gradient's norm
-
-    beta                            = 0.1           # backtracking line search parameter
-    gamma                           = 1e-2          # line search convergence parameter
-    hessian_regu                    = 1e-2          # Hessian regularization
-
     def __init__(self, robot, frame_id):
         self.robot = robot
         self.frame_id = frame_id
+
+        # import parameters
+        self.max_iterations = conf.configuration["inverse_geometry"]["parameters"]["max_iterations"]
+        self.max_back_tracking_iterations = conf.configuration["inverse_geometry"]["parameters"]["max_back_tracking_iterations"]
+        self.absolute_pos_threshold = conf.configuration["inverse_geometry"]["parameters"]["absolute_pos_threshold"]
+        self.gradient_threshold = conf.configuration["inverse_geometry"]["parameters"]["gradient_threshold"]
+        self.beta = conf.configuration["inverse_geometry"]["parameters"]["beta"]
+        self.gamma = conf.configuration["inverse_geometry"]["parameters"]["gamma"]
+        self.hessian_regu = conf.configuration["inverse_geometry"]["parameters"]["hessian_regu"]
   
     # Gauss-Newton algorithm
-    def GN_ik_step(self, q, x, x_des, J, i):
+    def GN_step(self, q, x, x_des, J, i):
         e = x_des - x
         cost = norm(e)
         
@@ -70,7 +70,7 @@ class IK_solver:
         return q_next
     
     # method computes inverse geomtery
-    def solve_GN(self, q, x_des):
+    def compute_inverse_geometry(self, q, x_des):
 
         for i in range(self.max_iterations):
             H1 = self.robot.framePlacement(q, self.frame_id)
@@ -79,7 +79,7 @@ class IK_solver:
             J6 = self.robot.computeFrameJacobian(q, self.frame_id)
             J = J6[0:3,:]
 
-            q_next = IK_solver.GN_ik_step(self, q, x, x_des, J, i)
+            q_next = self.GN_step(self, q, x, x_des, J, i)
 
             if(q_next is None):
                 break
