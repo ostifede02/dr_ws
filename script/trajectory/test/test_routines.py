@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from script.trajectory.trajectory import Trajectory
-from script import configuration as conf
 
 
 # pick

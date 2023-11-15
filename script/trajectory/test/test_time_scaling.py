@@ -1,29 +1,26 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from trajectory_functions import bezier_curve, time_optimal_bang_bang_profile
-from configuration_functions import trajectory_configuration_block
+from script.trajectory.trajectory import Trajectory
+from script import configuration as conf
 
 
 pos_start = np.array([-200, 0, -280])       # at the end of cycle pos_start_new = pos_end_prev
-pos_end = np.array([20, 0, -280])          # should be input to function goto()
+pos_end = np.array([200, 0, -280])          # should be input to function goto()
 
 
-trj_data = trajectory_configuration_block("quick", pos_start, pos_end, 3)
+trj = Trajectory()
 
 
 # initialization of variables
 pos_current = pos_start
+# delta_s = conf.configuration["trajectory"]["delta_s_high_resolution"]
 delta_s = 0.001
 
-x_acc_flag = trj_data["x_acc_flag"]
-x_total = trj_data["x_total"]
-t_acc_flag = trj_data["t_acc_flag"]
-t_total = trj_data["t_total"]
-velocity = trj_data["vel"]
-acceleration = trj_data["acc"]
 
-x_travelled = 0
+trj.set_trajectory_routine("quick", pos_start, pos_end)
+
+x_next = 0
 t_current = 0
 
 
@@ -38,13 +35,13 @@ for s_next in s_instance:
     #############   START   #############
 
     ## next via point
-    pos_next = bezier_curve(s_next, trj_data["via_points"])
+    pos_next = trj.get_position_bezier_poly(s_next)
 
     delta_x = np.linalg.norm(pos_next-pos_current)
-    x_travelled += delta_x
+    x_next += delta_x
 
     ## time
-    t_travelled = time_optimal_bang_bang_profile(x_travelled, x_acc_flag, x_total, t_acc_flag, t_total, velocity, acceleration)
+    t_travelled = trj.get_t_next(x_next)
     delta_t = t_travelled - t_current
 
     # update current values
@@ -54,21 +51,22 @@ for s_next in s_instance:
     #############   END   #############
 
     # plot data
-    pos_profile_data[:, plot_data_index] = np.array([x_travelled, t_travelled])
+    pos_profile_data[:, plot_data_index] = np.array([x_next, t_travelled])
     plot_data_index += 1
 
 
 
-if t_total-t_acc_flag == 0:
+## print some data
+if trj.t_total-trj.t_acc_flag == 0:
     print("NO constant velocity profile")
 else:
-    mean_vel = (x_total-x_acc_flag)/(t_total-t_acc_flag)
+    mean_vel = (trj.x_total-trj.x_acc_flag)/(trj.t_total-trj.t_acc_flag)
     print(f"mean vel: {mean_vel}")
 
-print(f"x acc flag: {x_acc_flag}")
-print(f"x dec flag: {x_total-x_acc_flag}")
-print(f"x total: {x_total}")
-print(f"x travelled: {x_travelled}")
+print(f"x acc flag: {trj.x_acc_flag}")
+print(f"x dec flag: {trj.x_total-trj.x_acc_flag}")
+print(f"x total: {trj.x_total}")
+print(f"x travelled: {x_next}")
 print(f"T: {t_travelled}")
 print(f"pos end: {pos_next}\n")
 print(f"s end: {s_next}")
@@ -77,16 +75,15 @@ print("s instance len", int(1/delta_s))
 
 
 ## PLOT stuff
-
 plot_pos_profile = plt.figure("position profile")
 plot_pos_profile = plt.plot(pos_profile_data[0, :], pos_profile_data[1, :])
 
-plot_pos_profile = plt.vlines(x_acc_flag, 0, t_travelled, "r", "--", label="position flag")
-plot_pos_profile = plt.vlines(x_total-x_acc_flag, 0, t_travelled, "r", "--")
+plot_pos_profile = plt.vlines(trj.x_acc_flag, 0, t_travelled, "r", "--", label="position flag")
+plot_pos_profile = plt.vlines(trj.x_total-trj.x_acc_flag, 0, t_travelled, "r", "--")
 
 
-plot_pos_profile = plt.hlines(t_acc_flag, 0, x_travelled, "g", "--", label="time flag")
-plot_pos_profile = plt.hlines(t_total-t_acc_flag, 0, x_travelled, "g", "--")
+plot_pos_profile = plt.hlines(trj.t_acc_flag, 0, x_next, "g", "--", label="time flag")
+plot_pos_profile = plt.hlines(trj.t_total-trj.t_acc_flag, 0, x_next, "g", "--")
 
 
 plot_pos_profile = plt.title("time scaling position profile")

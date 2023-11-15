@@ -65,16 +65,16 @@ class Trajectory:
 
     def __get_delta_s(self, x_total):
         # if the travel distance is to short -> go directly there
-        if x_total <= 5:
+        if x_total <= 10:
             delta_s = 1
-        elif x_total > 5 and x_total <= 15:
-            max_delta_x = 1
-            delta_s = round(max_delta_x / x_total, 3)
-        elif x_total > 15 and x_total <= 50:
+        elif x_total > 10 and x_total <= 20:
             max_delta_x = 2
             delta_s = round(max_delta_x / x_total, 3)
-        else:
+        elif x_total > 20 and x_total <= 100:
             max_delta_x = 5
+            delta_s = round(max_delta_x / x_total, 3)
+        else:
+            max_delta_x = 10
             delta_s = round(max_delta_x / x_total, 3)
 
         return delta_s

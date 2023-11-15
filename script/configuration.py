@@ -10,8 +10,8 @@ configuration = {
     },
     
     "trajectory": {
-        "max_acceleration": 50,
-        "max_velocity": 400,
+        "max_acceleration": 80,
+        "max_velocity": 120,
         "delta_s_high_resolution": 0.02
     }
 
