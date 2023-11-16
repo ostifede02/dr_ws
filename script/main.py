@@ -12,12 +12,12 @@ import time
 
 
 # Load the mesh files
-pinocchio_model_dir = join(dirname(str(abspath(__file__))),"delta_robot_description")
-mesh_dir = join(pinocchio_model_dir,"meshes")
+model_dir = join(dirname(str(abspath(__file__))),"delta_robot_description")
+mesh_dir = join(model_dir,"meshes")
 
 # Load the URDF model
 urdf_filename = "delta_robot.urdf"
-urdf_dir = join(pinocchio_model_dir,"urdf")
+urdf_dir = join(model_dir,"urdf")
 urdf_file_path = join(urdf_dir, urdf_filename)
 
 # Initialize the model
