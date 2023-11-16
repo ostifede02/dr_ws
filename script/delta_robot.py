@@ -16,6 +16,8 @@ These are the main characteristics:
     + get t current
     + get delta x
     + get x current
+
+    + collisions
     
     + get pos next
     + get q
