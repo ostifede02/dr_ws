@@ -52,7 +52,7 @@ Cubic Bezier curves are used for the path planning. During a pick and place rout
 + place routine (green): start and place the object moving along a vertical path
 + return to neutral (blue): is a fast straight line from point to point (using a bezier curve too)
 
-![plot](/script/trajectory_planning/graphs/path_routine_subplots.png)
+![plot](/script/trajectory/graphs/path_routine_subplots.png)
 
 
 #### bang bang velocity profile
@@ -62,7 +62,7 @@ We can differentiate between optimal-time and time-constrained trajectories. For
 + IInd segment: constant velocity
 + IIIrd segment: constant deceleration
 
-![plot](/script/trajectory_planning/graphs/position_time_scaling_profile_bezier.png)
+![plot](/script/trajectory/graphs/position_time_scaling_profile_bezier.png)
 
 ### gepetto viewer
 
