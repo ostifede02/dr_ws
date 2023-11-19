@@ -1,109 +1,6 @@
-'''
-This class manage all add-ons of the delta robot.
-These are the main characteristics:
-    +++ init
-        + import robot model    ok
-        + init viewer           ok
-        + init ig solvers       ok
-        + init trajectory       ok
-        + init micro com
-        + init gui
-        + init camera
-    
-    +++ trajectory
-        + configure path: based on routine_type, start and goal position
-            --> reset x and t traveled
-        + get_pos_next: --> keep track of x traveled
-        + get_t_next:   --> keep track of t traveled
-
-    +++ inverse geometry
-        + compute inverse geometry: pos_next -> q_next  --> keep track of q current
-        + check collisions
-    
-    +++ stepper motors interface
-        + convert delta_q to steps
-        + manage discretization error
-        
-
-    + manage errors
-    + manage exceptions
-
-
-    +++ finite state machine flow
-    states:             events:
-        routine             pick
-                            place
-                            quick
-
-        cmd_camera          camera
-        
-        cmd_user            new_pos
-                            break
-
-
-        if get_camera_cmd:
-            save pos_end
-            state = set_path
-
-        if external_cmd:
-            if stop_cmd
-                state = idle
-    
-        if set_path:
-            + set_path -> input: pos_end, path_routine_type
-            state = run
-        
-        if run:
-            + get_pos_next     -> update: x_current, s
-                if s_next > 1:              # arrived to goal position
-                    state = routine_handler
-                    continue    jump back to top
-            + get_q_continuos
-                if collision:
-                    state = idle
-                    continue    jump back to top
-            + get_delta_q_discrete   -> q_remainder
-            + get_delta_t      -> t_current
-            state = send_cmd
-
-        if send_cmd:
-            send to micro:
-                delta_t
-                delta_q_discrete
-
-        if idle:
-            do nothing
-        
-        if quick_neutral return
-            pos_end = pos_neutral
-            routine_type = quick
-            state = set_path
-
-        if routine_handler:
-            if routine == pick
-                routine = place
-                pos_end = pos_place_X
-                state = set_path
-            
-            if routine == place
-                routine = quick
-                pos_end = pos_neutral
-            
-            if routine == quick
-                routine = pick
-                state = get_cmd
-        
-        if cmd_handler:
-            if cmd == camera_cmd
-                pass
-            if cmd == user_input_cmd
-                pass
-
-
-'''
-
 from pinocchio import RobotWrapper
 import pinocchio as pin
+import numpy as np
 
 from os.path import dirname, join, abspath
 
@@ -120,13 +17,17 @@ class DeltaRobot:
         if viewer:
             self.initViewer()
 
-        frame_id_1 = conf.configuration["inverse_geometry"]["frame_ids"]["chain_1"]
-        self.ig_solver_1 = InverseGeometry(self.robot, frame_id_1)
+        self.trj = Trajectory()
+        self.pos_start = conf.configuration["trajectory"]["pos_home"]
 
-        frame_id_2 = conf.configuration["inverse_geometry"]["frame_ids"]["chain_2"]
-        self.ig_solver_2 = InverseGeometry(self.robot, frame_id_2)
+        self.frame_id_1 = conf.configuration["inverse_geometry"]["frame_ids"]["chain_1"]
+        self.frame_id_2 = conf.configuration["inverse_geometry"]["frame_ids"]["chain_2"]
+        self.ig = InverseGeometry(self.robot)
         
-        self.trajectory = Trajectory()
+        q0 = pin.neutral(self.robot.model)
+        self.q1 = self.ig.compute_inverse_geometry(q0, self.pos_start, self.frame_id_1)
+        self.q2 = self.ig.compute_inverse_geometry(q0, self.pos_start, self.frame_id_2)
+
         return
    
     # ******   MODEL   ******
@@ -137,10 +38,10 @@ class DeltaRobot:
         # Load the URDF model
         urdf_filename = "delta_robot.urdf"
         urdf_dir = join(model_dir,"urdf")
-        urdf_file_path = join(urdf_dir, urdf_filename)
+        urdf_file_trajectory = join(urdf_dir, urdf_filename)
 
         # Initialize the model
-        model, collision_model, visual_model = pin.buildModelsFromUrdf(urdf_file_path, mesh_dir, geometry_types=[pin.GeometryType.COLLISION,pin.GeometryType.VISUAL])
+        model, collision_model, visual_model = pin.buildModelsFromUrdf(urdf_file_trajectory, mesh_dir, geometry_types=[pin.GeometryType.COLLISION,pin.GeometryType.VISUAL])
         self.robot = RobotWrapper(model, collision_model, visual_model)
         self.robot.collision_model.addAllCollisionPairs()
         self.robot.collision_data = pin.GeometryData(self.robot.collision_model)
@@ -158,8 +59,37 @@ class DeltaRobot:
     
 
     # ******   TRAJECTORY   ******
-    def set_trajectory_routine(self, path_routine_type, pos_start, pos_end, t_total_input=-1):
-        self.trajectory.set_trajectory_routine(path_routine_type, pos_start, pos_end, t_total_input)
+    def set_trajectory_routine(self, trajectory_routine_type, pos_end, t_total_input=-1):
+        self.trj.set_trajectory_routine(trajectory_routine_type, self.pos_start, pos_end, t_total_input)
+        
+        self.s = 0
+        self.x_current = 0
+        self.t_current = 0
+        self.pos_current = self.pos_start
 
+        return
     
+
+    def get_pos_next(self):
+        if self.s == 1:
+            self.pos_start = self.pos_next
+            return None
+        
+        # set s -> parameter [0, 1], that controls the bezier curve
+        self.s += self.trj.delta_s
+        if self.s > 1-self.trj.delta_s:  # to not have in the next cycle too close points
+            self.s = 1
+        
+        self.pos_next = self.trj.get_pos_bezier_poly(self.s)
+        self.x_current += np.linalg.norm(self.pos_next - self.pos_current)
+
+        return self.pos_next
+    
+    def get_q_continuos(self, pos_des):
+        self.q1 = self.ig.compute_inverse_geometry(self.q1, pos_des, self.frame_id_1)
+        self.q2 = self.ig.compute_inverse_geometry(self.q2, pos_des, self.frame_id_2)
+        q = np.array([self.q1[0], self.q1[1], self.q1[1], self.q2[3], self.q2[4], self.q2[4]])
+        
+        return q
+
 

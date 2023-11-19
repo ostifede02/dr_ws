@@ -1,3 +1,5 @@
+import numpy as np
+
 configuration = {}
 
 configuration["physical"] = {
@@ -13,7 +15,10 @@ configuration["physical"] = {
 configuration["trajectory"] = {
     "max_acceleration": 1,
     "max_velocity": 100,
-    "delta_s_high_resolution": 0.02
+    "delta_s_high_resolution": 0.02,
+    
+    "pos_home": np.array([0, 0, 0]),
+    "pos_neutral": np.array([0, 0, -100])
 }
 
 configuration["inverse_geometry"] = {

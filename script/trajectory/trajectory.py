@@ -27,7 +27,7 @@ class Trajectory:
         self.max_acceleration_default = conf.configuration["trajectory"]["max_acceleration"]
 
 
-    def get_position_bezier_poly(self, s):
+    def get_pos_bezier_poly(self, s):
         pos = pow(1-s, 3)*self.path_poly_points[0]
         pos += 3*pow(1-s, 2)*s*self.path_poly_points[1] 
         pos += 3*(1-s)*pow(s, 2)*self.path_poly_points[2] 
@@ -68,12 +68,12 @@ class Trajectory:
     def __get_path_length(self):
         x_total = 0
         delta_s = conf.configuration["trajectory"]["delta_s_high_resolution"]
-        pos_current = self.get_position_bezier_poly(0)
+        pos_current = self.get_pos_bezier_poly(0)
 
         # compute curve's length
         s_instance = np.linspace(0, 1-delta_s, int(1/delta_s))
         for s in s_instance:
-            pos_next = self.get_position_bezier_poly(s+delta_s)
+            pos_next = self.get_pos_bezier_poly(s+delta_s)
             x_total += np.linalg.norm(pos_next-pos_current)
             pos_current = pos_next
 

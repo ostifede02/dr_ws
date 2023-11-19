@@ -16,9 +16,8 @@ from script import configuration as conf
 
 class InverseGeometry:
     
-    def __init__(self, robot, frame_id):
+    def __init__(self, robot):
         self.robot = robot
-        self.frame_id = frame_id
 
         # import parameters
         self.max_iterations = conf.configuration["inverse_geometry"]["parameters"]["max_iterations"]
@@ -30,7 +29,7 @@ class InverseGeometry:
         self.hessian_regu = conf.configuration["inverse_geometry"]["parameters"]["hessian_regu"]
   
     # Gauss-Newton algorithm
-    def GN_step(self, q, pos, pos_des, J, i):
+    def gauss_newton_step(self, q, pos, pos_des, frame_id, J, i):
         e = pos_des - pos
         cost = norm(e)
         
@@ -62,7 +61,7 @@ class InverseGeometry:
             q_next = q + alpha*delta_q
             # robot.computeJointJacobians(q_next)
             # robot.framesForwardKinematics(q_next)
-            pos_new = self.robot.framePlacement(q_next, self.frame_id).translation
+            pos_new = self.robot.framePlacement(q_next, frame_id).translation
             cost_new = norm(pos_des - pos_new)
 
             if cost_new < (1.0-alpha*self.gamma)*cost:
@@ -80,16 +79,16 @@ class InverseGeometry:
         return q_next
     
     # method computes inverse geomtery
-    def compute_inverse_geometry(self, q, pos_des):
+    def compute_inverse_geometry(self, q, pos_des, frame_id):
 
         for i in range(self.max_iterations):
-            H1 = self.robot.framePlacement(q, self.frame_id)
-            pos= H1.translation
+            H1 = self.robot.framePlacement(q, frame_id)
+            pos = H1.translation
 
-            J6 = self.robot.computeFrameJacobian(q, self.frame_id)
+            J6 = self.robot.computeFrameJacobian(q, frame_id)
             J = J6[0:3,:]
 
-            q_next = self.GN_step(self, q, pos, pos_des, J, i)
+            q_next = self.gauss_newton_step(self, q, pos, pos_des, frame_id, J, i)
 
             if(q_next is None):
                 break
