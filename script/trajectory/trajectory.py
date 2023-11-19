@@ -11,6 +11,7 @@ The key-methods for using this class are:
             pos_start:      start position (current position of the end-effector)
             pos_end:        goal position
             t_total_input:  if trajectory is time constrained  
+    + get_t_next()
 '''
 
 
@@ -128,13 +129,12 @@ class Trajectory:
     #        "place":    place object path
     #        "quick":    straight line path
     def set_trajectory_routine(self, path_routine_type, pos_start, pos_end, t_total_input=-1):
+        # the cubic bezier curve is a plynomial described by 4 points
         self.path_poly_points = self.__get_path_poly_points(path_routine_type, pos_start, pos_end)
         
-        # get curve length
         self.x_total = self.__get_path_length()
 
-        # define delta_s
-        self.delta_s = self.__get_delta_s(self.x_total)
+        self.delta_s = self.__get_delta_s(self.x_total)     # avoid via points too close to each other
         
         # if the trajectory is time constrained -> set new max velocity, else default max velocity
         if t_total_input > 0:

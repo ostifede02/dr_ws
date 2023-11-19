@@ -4,15 +4,15 @@ configuration["physical"] = {
     "pulley": {
         "n_teeth": 20,
         "module": 3
-        },
+    },
     "stepper": {
         "n_steps": 800
-        }
+    }
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 80,
-    "max_velocity": 120,
+    "max_acceleration": 1,
+    "max_velocity": 100,
     "delta_s_high_resolution": 0.02
 }
 

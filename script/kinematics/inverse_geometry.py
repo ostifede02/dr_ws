@@ -1,3 +1,13 @@
+'''
+This class is intended to calculate the inverse geometry of a given robot with the Gauss Newton method.
+
+The key-methods for using this class are:
+    + __init__ -> robot, frame_id
+    + compute_inverse_geometry: q, pos_des -> q_des
+        
+'''
+
+
 from numpy.linalg import norm, inv
 import numpy as np
 
@@ -20,8 +30,8 @@ class InverseGeometry:
         self.hessian_regu = conf.configuration["inverse_geometry"]["parameters"]["hessian_regu"]
   
     # Gauss-Newton algorithm
-    def GN_step(self, q, x, x_des, J, i):
-        e = x_des - x
+    def GN_step(self, q, pos, pos_des, J, i):
+        e = pos_des - pos
         cost = norm(e)
         
         # Newton method
@@ -52,8 +62,8 @@ class InverseGeometry:
             q_next = q + alpha*delta_q
             # robot.computeJointJacobians(q_next)
             # robot.framesForwardKinematics(q_next)
-            x_new = self.robot.framePlacement(q_next, self.frame_id).translation
-            cost_new = norm(x_des - x_new)
+            pos_new = self.robot.framePlacement(q_next, self.frame_id).translation
+            cost_new = norm(pos_des - pos_new)
 
             if cost_new < (1.0-alpha*self.gamma)*cost:
                 # print("Backtracking line search converged with log(alpha)=%.1f"%np.log10(alpha))
@@ -65,21 +75,21 @@ class InverseGeometry:
                     # print("Backtracking line search could not converge. log(alpha)=%.1f"%np.log10(alpha))
                     break
         
-        # print("Iteration %d, ||x_des-x||=%f, norm(gradient)=%f"%(i, norm(e), grad_norm))
+        # print("Iteration %d, ||pos_des-x||=%f, norm(gradient)=%f"%(i, norm(e), grad_norm))
 
         return q_next
     
     # method computes inverse geomtery
-    def compute_inverse_geometry(self, q, x_des):
+    def compute_inverse_geometry(self, q, pos_des):
 
         for i in range(self.max_iterations):
             H1 = self.robot.framePlacement(q, self.frame_id)
-            x = H1.translation
+            pos= H1.translation
 
             J6 = self.robot.computeFrameJacobian(q, self.frame_id)
             J = J6[0:3,:]
 
-            q_next = self.GN_step(self, q, x, x_des, J, i)
+            q_next = self.GN_step(self, q, pos, pos_des, J, i)
 
             if(q_next is None):
                 break
