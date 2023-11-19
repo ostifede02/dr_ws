@@ -3,17 +3,16 @@ import random as rnd
 import time
 
 from delta_robot import DeltaRobot
-import finite_state_machine as fsm
 import configuration as conf
 
 
 dr = DeltaRobot(viewer=False)
 
-state = fsm.READ_CAM_STATE
+state = conf.READ_CAM_STATE
 
 while True:
     # *****   READ CAMERA   *****
-    if state == fsm.READ_CAM_STATE:
+    if state == conf.READ_CAM_STATE:
         #
         # ...read camera position prediction and detect object type
         #
@@ -27,49 +26,49 @@ while True:
         else:
             pos_place = np.array([120, 0, -250])
 
-        trajectory_routine = fsm.PICK_TRAJECTORY_ROUTINE
-        state = fsm.SET_TRAJECTORY_STATE
+        trajectory_routine = conf.PICK_TRAJECTORY_ROUTINE
+        state = conf.SET_TRAJECTORY_STATE
 
 
     # *****   SET TRAJECTORY   *****
-    if state == fsm.SET_TRAJECTORY_STATE:
-        if trajectory_routine == fsm.PICK_TRAJECTORY_ROUTINE:
+    if state == conf.SET_TRAJECTORY_STATE:
+        if trajectory_routine == conf.PICK_TRAJECTORY_ROUTINE:
             dr.set_trajectory_routine(trajectory_routine, pos_end, t_total)
         
-        elif trajectory_routine == fsm.PLACE_TRAJECTORY_ROUTINE:
+        elif trajectory_routine == conf.PLACE_TRAJECTORY_ROUTINE:
             dr.set_trajectory_routine(trajectory_routine, pos_end)
         
-        elif trajectory_routine == fsm.PLACE_TRAJECTORY_ROUTINE:
+        elif trajectory_routine == conf.PLACE_TRAJECTORY_ROUTINE:
             dr.set_trajectory_routine(trajectory_routine, pos_end)
         
-        state = fsm.COMPUTE_NEXT_POS_STATE            
+        state = conf.COMPUTE_NEXT_POS_STATE            
 
     
     # *****   COMPUTE NEXT POSITION   *****
-    if state == fsm.COMPUTE_NEXT_POS_STATE:
+    if state == conf.COMPUTE_NEXT_POS_STATE:
         pos_next = dr.get_pos_next()
         if pos_next is None:
-            state = fsm.ROUTINE_HANDLER_STATE
+            state = conf.ROUTINE_HANDLER_STATE
         
         q_next_continuos = dr.get_q_next_continuos(pos_next)
         q_next_discrete = dr.get_q_discrete(q_next_continuos)
 
 
     # *****   SELECT TRAJECTORY ROUTINE   *****
-    if state == fsm.ROUTINE_HANDLER_STATE:
-        if trajectory_routine == fsm.PICK_TRAJECTORY_ROUTINE:
-            trajectory_routine = fsm.PLACE_TRAJECTORY_ROUTINE
+    if state == conf.ROUTINE_HANDLER_STATE:
+        if trajectory_routine == conf.PICK_TRAJECTORY_ROUTINE:
+            trajectory_routine = conf.PLACE_TRAJECTORY_ROUTINE
             pos_end = pos_place
-            state = fsm.SET_TRAJECTORY_STATE
+            state = conf.SET_TRAJECTORY_STATE
         
-        elif trajectory_routine == fsm.PLACE_TRAJECTORY_ROUTINE:
-            trajectory_routine = fsm.DIRECT_TRAJECTORY_ROUTINE
+        elif trajectory_routine == conf.PLACE_TRAJECTORY_ROUTINE:
+            trajectory_routine = conf.DIRECT_TRAJECTORY_ROUTINE
             pos_end = conf.configuration["trajectory"]["pos_neutral"]
-            state = fsm.SET_TRAJECTORY_STATE
+            state = conf.SET_TRAJECTORY_STATE
         
-        elif trajectory_routine == fsm.DIRECT_TRAJECTORY_ROUTINE:
-            trajectory_routine = fsm.PICK_TRAJECTORY_ROUTINE
-            state = fsm.READ_CAM_STATE
+        elif trajectory_routine == conf.DIRECT_TRAJECTORY_ROUTINE:
+            trajectory_routine = conf.PICK_TRAJECTORY_ROUTINE
+            state = conf.READ_CAM_STATE
         
 
 
