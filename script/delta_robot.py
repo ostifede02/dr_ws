@@ -25,8 +25,11 @@ class DeltaRobot:
         self.ig = InverseGeometry(self.robot)
         
         q0 = pin.neutral(self.robot.model)
-        self.q1 = self.ig.compute_inverse_geometry(q0, self.pos_start, self.frame_id_1)
-        self.q2 = self.ig.compute_inverse_geometry(q0, self.pos_start, self.frame_id_2)
+        self.q1_current = self.ig.compute_inverse_geometry(q0, self.pos_start, self.frame_id_1)
+        self.q2_current = self.ig.compute_inverse_geometry(q0, self.pos_start, self.frame_id_2)
+
+        circumference_pulley = conf.configuration["physical"]["pulley"]["n_teeth"] * conf.configuration["physical"]["pulley"]["module"]
+        self.min_belt_displacement = circumference_pulley / conf.configuration["physical"]["stepper"]["n_steps"]       # minimum carriage displacement
 
         return
    
@@ -85,11 +88,35 @@ class DeltaRobot:
 
         return self.pos_next
     
-    def get_q_continuos(self, pos_des):
-        self.q1 = self.ig.compute_inverse_geometry(self.q1, pos_des, self.frame_id_1)
-        self.q2 = self.ig.compute_inverse_geometry(self.q2, pos_des, self.frame_id_2)
-        q = np.array([self.q1[0], self.q1[1], self.q1[1], self.q2[3], self.q2[4], self.q2[4]])
+
+    def get_q_next_continuos(self, pos_des):
+        self.q1_next = self.ig.compute_inverse_geometry(self.q1_current, pos_des, self.frame_id_1)
+        self.q2_next = self.ig.compute_inverse_geometry(self.q2_current, pos_des, self.frame_id_2)
+        q_next = np.array([self.q1_next[0], self.q1_next[1], self.q1_next[1], 
+                      self.q2_next[3], self.q2_next[4], self.q2_next[4]])
+
+        self.q1_current = self.q1_next
+        self.q2_current = self.q2_next
+
+        return q_next
+    
+
+    # def get_delta_q_continuous(self, pos_des):
+    #     q_next = self.get_q_next_continuos(pos_des)
+
+
+    # # NOTE! should be delta q
+    # def get_q_discrete(self, q):
         
-        return q
+    #     # stepper 1
+    #     delta_q_1 = q1_next[0] - q1
+    #     stepper_1_steps = (delta_q_1 + q1_reminder) // self.min_belt_displacement     # number of steps to do
+    #     q1_reminder = (delta_q_1 + q1_reminder) % self.min_belt_displacement          # the decimal part of steps
+
+    #     # stepper 2
+    #     delta_q_2 = q2_next[3] - q2
+    #     stepper_2_steps = (delta_q_2 + q2_reminder) // self.min_belt_displacement     # number of steps to do
+    #     q2_reminder = (delta_q_2 + q2_reminder) % self.min_belt_displacement          # the decimal part of steps
+
 
 

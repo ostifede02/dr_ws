@@ -51,7 +51,8 @@ while True:
         if pos_next is None:
             state = fsm.ROUTINE_HANDLER_STATE
         
-        q_next_continuos = dr.get_q_continuos(pos_next)
+        q_next_continuos = dr.get_q_next_continuos(pos_next)
+        q_next_discrete = dr.get_q_discrete(q_next_continuos)
 
 
     # *****   SELECT TRAJECTORY ROUTINE   *****
