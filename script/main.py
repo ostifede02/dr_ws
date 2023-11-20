@@ -1,112 +1,131 @@
-from pinocchio import RobotWrapper
-import pinocchio as pin
-import matplotlib.pyplot as plt
 import numpy as np
-
-from os.path import dirname, join, abspath
-import sys
+import random as rnd
 import time
 
-# from kinematics.IK_solver import IK_solver
-# from collision.collision_detection import is_collision
+from delta_robot import DeltaRobot
+import configuration as conf
 
 
-# Load the mesh files
-model_dir = join(dirname(str(abspath(__file__))),"delta_robot_description")
-mesh_dir = join(model_dir,"meshes")
+dr = DeltaRobot(viewer=True)
 
-# Load the URDF model
-urdf_filename = "delta_robot.urdf"
-urdf_dir = join(model_dir,"urdf")
-urdf_file_path = join(urdf_dir, urdf_filename)
-
-# Initialize the model
-model, collision_model, visual_model = pin.buildModelsFromUrdf(urdf_file_path, mesh_dir, geometry_types=[pin.GeometryType.COLLISION,pin.GeometryType.VISUAL])
-robot = RobotWrapper(model, collision_model, visual_model)
-robot.collision_model.addAllCollisionPairs()
-robot.collision_data = pin.GeometryData(robot.collision_model)
-robot.initViewer()
+# initialize neutral position
+pos_end = conf.configuration["trajectory"]["pos_neutral"]
+trajectory_routine = conf.DIRECT_TRAJECTORY_ROUTINE
+state = conf.SET_TRAJECTORY_STATE
 
 
-q = np.array([200, 0.2, 0.2, 100, -1, -1])
+max_cycle_counter = 200
+elapsed_time = np.empty(max_cycle_counter+1)
+stepper_steps = np.empty(max_cycle_counter+1)
+cycle_counter = 0
 
-robot.display(q)
+while True:
+    # start_time = time.time()
 
+    # *****   READ CAMERA   *****
+    if state == conf.READ_CAM_STATE:
+        #
+        # ...read camera position prediction and detect object type
+        #
 
+        pos_end = np.array([rnd.randint(-100, 100), 0, -260])
+        t_total = 1 + 0.2*rnd.random()
+        
+        # based on object type select place position, either left or right
+        if rnd.random() < 0.5:
+            pos_place = np.array([-190, 0, -280])
+        else:
+            pos_place = np.array([190, 0, -280])
 
-
-
-
-
-
-
-
-
-
-# NOTE: the coordinate system used in the URDF file is as follows
-#       since the robot has only 2 DOF, the y-axis is not to be taken into account   
-#
-#           ^ z
-#           |
-#           |   ^ y
-#           |  /
-#           | /
-#           |/___________> x
-#           O
-# 
-
+        trajectory_routine = conf.PICK_TRAJECTORY_ROUTINE
+        state = conf.SET_TRAJECTORY_STATE
 
 
-# instance of inverse kinematic solver
-# solver_1 = IK_solver(robot, frame_id=8)     # solver_1 solves the ik for the red left chain aka chain 1
-# solver_2 = IK_solver(robot, frame_id=14)    # solver_2 solves the ik for the green right chain aka chain 2
+    # *****   SET TRAJECTORY   *****
+    if state == conf.SET_TRAJECTORY_STATE:
+        if trajectory_routine == conf.PICK_TRAJECTORY_ROUTINE:
+            # dr.set_trajectory_routine(trajectory_routine, pos_end, t_total)
+            dr.set_trajectory_routine(trajectory_routine, pos_end)
+        
+        elif trajectory_routine == conf.PLACE_TRAJECTORY_ROUTINE:
+            dr.set_trajectory_routine(trajectory_routine, pos_end)
+        
+        elif trajectory_routine == conf.DIRECT_TRAJECTORY_ROUTINE:
+            dr.set_trajectory_routine(trajectory_routine, pos_end)
+        
+        state = conf.COMPUTE_NEXT_POS_STATE            
 
-# defining intial neutral joint position
-# q_1 = pin.neutral(model)
-# q_2 = pin.neutral(model)
+    
+    # *****   COMPUTE NEXT POSITION   *****
+    if state == conf.COMPUTE_NEXT_POS_STATE:
+        pos_next = dr.get_pos_next(simulation=True)
+        
+        if pos_next is None:                               # end of path
+            state = conf.ROUTINE_HANDLER_STATE
+            continue
+        
+        q_next_continuos = dr.get_q_next_continuos(pos_next)
+        
+        if dr.check_collisions(q_next_continuos):
+            break
+
+        stepper_1_steps, stepper_2_steps = dr.get_number_of_steps()
+        delta_t = dr.get_delta_t()
+
+        state = conf.DISPLAY_STATE
 
 
+    # *****   SELECT TRAJECTORY ROUTINE   *****
+    if state == conf.ROUTINE_HANDLER_STATE:
+        if trajectory_routine == conf.PICK_TRAJECTORY_ROUTINE:
+            trajectory_routine = conf.PLACE_TRAJECTORY_ROUTINE
+            pos_end = pos_place
+            time.sleep(0.2)
+            state = conf.SET_TRAJECTORY_STATE
+        
+        elif trajectory_routine == conf.PLACE_TRAJECTORY_ROUTINE:
+            trajectory_routine = conf.DIRECT_TRAJECTORY_ROUTINE
+            pos_end = conf.configuration["trajectory"]["pos_neutral"]
+            time.sleep(0.4)
+            state = conf.SET_TRAJECTORY_STATE
+        
+        elif trajectory_routine == conf.DIRECT_TRAJECTORY_ROUTINE:
+            trajectory_routine = conf.PICK_TRAJECTORY_ROUTINE
+            time.sleep(0.2)
+            state = conf.READ_CAM_STATE
+
+    
+    # *****   DISPLAY GEPETTO VIEWER   *****
+    if state ==  conf.DISPLAY_STATE:
+        dr.display(q_next_continuos)
+        time.sleep(delta_t)
+
+        state = conf.COMPUTE_NEXT_POS_STATE
 
 
+    # end_time = time.time()
+    # delta_t_program = end_time-start_time
+    # elapsed_time[cycle_counter] = delta_t_program
+
+    # if stepper_1_steps == 0:
+    #     print(f"stepper_1 will not move!")
+    # else:
+    #     # print(f"stepper_1_steps: \t{np.mean(stepper_1_steps)}\n")
+    #     # print(f"millisec_per_step: \t{np.mean(millisec_per_step)*1000} milliseconds")
+    #     t_per_step = delta_t / (2*stepper_1_steps)
+    #     stepper_steps[cycle_counter] = abs(t_per_step)
+    #     cycle_counter += 1
 
 
+    # if cycle_counter > max_cycle_counter:
+    #     break
+
+# print(f"mean time per cycle: \t{np.mean(elapsed_time)*1000} milliseconds")
+# print(f"max time per cycle: \t{max(elapsed_time)*1000} milliseconds")
+# print(f"min time per cycle: \t{min(elapsed_time)*1000} milliseconds")
+
+print(f"mean time per step: \t{round(np.mean(stepper_steps)*1e3, 3)} milli-seconds")
+print(f"max time per step: \t{round(max(stepper_steps)*1e3, 3)} milli-seconds")
+print(f"min time per step: \t{round(min(stepper_steps)*1e3, 3)} milli-seconds")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# desired ee position
-# x_des = np.empty(3)
-
-# time.sleep(1)
-# t_instance = np.linspace(0, path.T, path.t_intervals)
-
-# for t in t_instance:
-#     # calculate the position of end-effector in time
-#     x_des = path.Path_B_spline(t)
-
-#     # solving the inverse geometry
-#     q_1 = solver_1.solve_GN(q_1, x_des)
-#     q_2 = solver_2.solve_GN(q_2, x_des)
-
-#     # applying joint constraints
-#     q_1[2] = q_1[1]         # keeps the ee parallel to ground
-#     q_2[5] = q_2[4]         # keeps rod_3 parallel to rod_2
-#     q = np.concatenate((q_1[0:3], q_2[3:6]))
-
-#     if is_collision(robot, q, (0, 1)):
-#         break
-
-#     viz.display(q)
-#     time.sleep(path.time_delay)

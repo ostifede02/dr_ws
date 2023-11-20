@@ -13,8 +13,8 @@ configuration["physical"] = {
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 1200,
-    "max_velocity": 1600,
+    "max_acceleration": 30000,
+    "max_velocity": 1500,
     "delta_s_high_resolution": 0.02,
     
     "pos_home": np.array([0, 0, -50]),

@@ -1,3 +1,17 @@
+'''
+NOTE: the coordinate system used in the URDF file is as follows
+      since the robot has only 2 DOF, the y-axis is not to be taken into account   
+
+          ^ z
+          |
+          |   ^ y
+          |  /
+          | /
+          |/___________> x
+          O
+'''
+
+
 from pinocchio import RobotWrapper
 import pinocchio as pin
 import numpy as np
@@ -12,34 +26,20 @@ import configuration as conf
 class DeltaRobot:
 
     def __init__(self, viewer = False):
-        self.initRobot()
+        self.init_robot()
         
         if viewer:
-            self.initViewer()
+            self.init_viewer()
 
         self.trj = Trajectory()
-        self.pos_start = conf.configuration["trajectory"]["pos_home"]
-        self.end_effector_x_offset = conf.configuration["trajectory"]["end_effector_x_offset"]
-
-        self.frame_id_1 = conf.configuration["inverse_geometry"]["frame_ids"]["chain_1"]
-        self.frame_id_2 = conf.configuration["inverse_geometry"]["frame_ids"]["chain_2"]
         self.ig = InverseGeometry(self.robot)
+        self.init_configuration_variables()
         
-        q0 = pin.neutral(self.robot.model)
-        self.q1_current = self.ig.compute_inverse_geometry(q0, self.pos_start, self.frame_id_1)
-        self.q2_current = self.ig.compute_inverse_geometry(q0, self.pos_start, self.frame_id_2)
-        self.q1_reminder = 0
-        self.q2_reminder = 0
-
-        self.collision_pair = conf.configuration["inverse_geometry"]["collision_pair"]
-
-        circumference_pulley = conf.configuration["physical"]["pulley"]["n_teeth"] * conf.configuration["physical"]["pulley"]["module"]
-        self.min_belt_displacement = circumference_pulley / conf.configuration["physical"]["stepper"]["n_steps"]       # minimum carriage displacement
-
         return
-   
+
+
     # ******   MODEL   ******
-    def initRobot(self):
+    def init_robot(self):
         model_dir = join(dirname(str(abspath(__file__))),"../delta_robot_description")
         mesh_dir = join(model_dir,"meshes")
 
@@ -55,9 +55,33 @@ class DeltaRobot:
         self.robot.collision_data = pin.GeometryData(self.robot.collision_model)
         return
     
+
+    def init_configuration_variables(self):
+        # trajectory
+        self.pos_start = conf.configuration["trajectory"]["pos_home"]
+        self.end_effector_x_offset = conf.configuration["trajectory"]["end_effector_x_offset"]
+        
+        # kinematics
+        self.frame_id_1 = conf.configuration["inverse_geometry"]["frame_ids"]["chain_1"]
+        self.frame_id_2 = conf.configuration["inverse_geometry"]["frame_ids"]["chain_2"]
+        
+        q0 = pin.neutral(self.robot.model)
+        self.q1_current = self.ig.compute_inverse_geometry(q0, self.pos_start, self.frame_id_1)
+        self.q2_current = self.ig.compute_inverse_geometry(q0, self.pos_start, self.frame_id_2)
+        self.q1_reminder = 0
+        self.q2_reminder = 0
+
+        # collison
+        self.collision_pair = conf.configuration["inverse_geometry"]["collision_pair"]
+
+        # physical properties
+        circumference_pulley = conf.configuration["physical"]["pulley"]["n_teeth"] * conf.configuration["physical"]["pulley"]["module"]
+        self.min_belt_displacement = circumference_pulley / conf.configuration["physical"]["stepper"]["n_steps"]       # minimum carriage displacement
+
+        return
     
     # ******   VIEWER   ******
-    def initViewer(self):
+    def init_viewer(self):
         self.robot.initViewer()
         return
     
