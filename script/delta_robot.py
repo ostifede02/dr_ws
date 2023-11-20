@@ -19,6 +19,7 @@ class DeltaRobot:
 
         self.trj = Trajectory()
         self.pos_start = conf.configuration["trajectory"]["pos_home"]
+        self.end_effector_x_offset = conf.configuration["trajectory"]["end_effector_x_offset"]
 
         self.frame_id_1 = conf.configuration["inverse_geometry"]["frame_ids"]["chain_1"]
         self.frame_id_2 = conf.configuration["inverse_geometry"]["frame_ids"]["chain_2"]
@@ -67,7 +68,9 @@ class DeltaRobot:
 
     # ******   TRAJECTORY   ******
     def set_trajectory_routine(self, trajectory_routine_type, pos_end, t_total_input=-1):
-        self.trj.set_trajectory_routine(trajectory_routine_type, self.pos_start, pos_end, t_total_input)
+        error_check = self.trj.set_trajectory_routine(trajectory_routine_type, self.pos_start, pos_end, t_total_input)
+        if error_check is None:
+            return None
         
         self.s = 0
         self.x_next = 0
@@ -77,33 +80,42 @@ class DeltaRobot:
         return
     
 
-    def get_pos_next(self):
+    def get_pos_next(self, simulation=False):
         if self.s == 1:
             self.pos_start = self.pos_next
             return None
         
         # set s -> parameter [0, 1], that controls the bezier curve
-        self.s += self.trj.delta_s
-        if self.s > 1-self.trj.delta_s:  # to not have in the next cycle too close points
+        if simulation:
+            delta_s = 0.01                  # more fluid simultion display
+        else:       
+            delta_s = self.trj.delta_s
+
+        self.s += delta_s      # more efficient
+
+        if self.s > 1-delta_s:  # to not have in the next cycle too close points
             self.s = 1
         
         self.pos_next = self.trj.get_pos_bezier_poly(self.s)
         self.x_next += np.linalg.norm(self.pos_next - self.pos_current)
         self.pos_current = self.pos_next
 
-
+        # self.pos_next[0] -= self.end_effector_x_offset                   # since the frame_id is the joint
         return self.pos_next
     
 
     def get_q_next_continuos(self, pos_des):
-        self.q1_next = self.ig.compute_inverse_geometry(self.q1_current, pos_des, self.frame_id_1)
-        self.q2_next = self.ig.compute_inverse_geometry(self.q2_current, pos_des, self.frame_id_2)
-        
-        q_next = np.array([self.q1_next[0], self.q1_next[1], self.q1_next[1], 
-                      self.q2_next[3], self.q2_next[4], self.q2_next[4]])
+        q1_current = self.q1_current        # PROBLEM!: after function also self.q1_current was changed
+        q2_current = self.q2_current
 
-        self.delta_q1 = self.q1_next[0] - self.q1_current[0]
-        self.delta_q2 = self.q2_next[3] - self.q2_current[3]
+        self.q1_next = self.ig.compute_inverse_geometry(q1_current, pos_des, self.frame_id_1)
+        self.q2_next = self.ig.compute_inverse_geometry(q2_current, pos_des, self.frame_id_2)
+
+        q_next = np.array([self.q1_next[0], self.q1_next[1], self.q1_next[1], 
+                           self.q2_next[3], self.q2_next[4], self.q2_next[4]])
+
+        self.delta_q1 = self.q1_next[0] - q1_current[0]
+        self.delta_q2 = self.q2_next[3] - q2_current[3]
 
         self.q1_current = self.q1_next
         self.q2_current = self.q2_next
@@ -115,11 +127,11 @@ class DeltaRobot:
         
         # stepper 1 
         stepper_1_steps = (self.delta_q1 + self.q1_reminder) // self.min_belt_displacement     # number of steps to do
-        self.q1_reminder = (self.delta_q1 + self.q1_reminder) % self.min_belt_displacement     # the decimal part of steps
+        self.q1_reminder = round((self.delta_q1 + self.q1_reminder) % self.min_belt_displacement, 4)     # the decimal part of steps
 
         # stepper 2
         stepper_2_steps = (self.delta_q2 + self.q2_reminder) // self.min_belt_displacement     # number of steps to do
-        self.q2_reminder = (self.delta_q2 + self.q2_reminder) % self.min_belt_displacement     # the decimal part of steps
+        self.q2_reminder = round((self.delta_q2 + self.q2_reminder) % self.min_belt_displacement, 4)     # the decimal part of steps
 
         return stepper_1_steps, stepper_2_steps
 

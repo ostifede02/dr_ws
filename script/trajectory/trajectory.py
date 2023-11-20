@@ -94,7 +94,6 @@ class Trajectory:
             max_delta_x = 10
             delta_s = round(max_delta_x / x_total, 3)
 
-        delta_s = 0.01
         return delta_s
     
 
@@ -151,7 +150,8 @@ class Trajectory:
         
         # time scaling profile flags
         self.x_acc_flag, self.t_acc_flag, self.t_total = self.__get_time_scaling_flags(self.x_total, self.const_velocity, self.const_acceleration)
-
+        
+        return True
 
     def get_t_next(self, x_next):
         # acceleration profile

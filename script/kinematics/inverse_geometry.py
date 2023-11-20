@@ -93,6 +93,6 @@ class InverseGeometry:
             if(q_next is None):
                 break
             else:
-                q[:] = q_next[:]
+                q = q_next
 
         return q

@@ -13,12 +13,14 @@ configuration["physical"] = {
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 00,
-    "max_velocity": 50000,
+    "max_acceleration": 500,
+    "max_velocity": 600,
     "delta_s_high_resolution": 0.02,
     
-    "pos_home": np.array([0, 0, 0]),
-    "pos_neutral": np.array([0, 0, -100])
+    "pos_home": np.array([0, 0, -50]),
+    "pos_neutral": np.array([0, 0, -150]),
+
+    "end_effector_x_offset": 45/2
 }
 
 configuration["inverse_geometry"] = {
