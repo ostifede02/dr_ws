@@ -48,7 +48,7 @@ class InverseGeometry:
             return None
         
         # if error is null you are done
-        if(cost < self.absolute_threshold):
+        if(cost < self.absolute_pos_threshold):
             # print("Problem solved after %d iterations with error %f"%(i, norm(e)))
             return None
         
@@ -88,7 +88,7 @@ class InverseGeometry:
             J6 = self.robot.computeFrameJacobian(q, frame_id)
             J = J6[0:3,:]
 
-            q_next = self.gauss_newton_step(self, q, pos, pos_des, frame_id, J, i)
+            q_next = self.gauss_newton_step(q, pos, pos_des, frame_id, J, i)
 
             if(q_next is None):
                 break

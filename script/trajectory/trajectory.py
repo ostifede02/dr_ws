@@ -37,23 +37,23 @@ class Trajectory:
 
     def __get_path_poly_points(self, path_routine_type, pos_start, pos_end):
 
-        if path_routine_type == "quick":
+        if path_routine_type == conf.DIRECT_TRAJECTORY_ROUTINE:
             x1_offset = (pos_end[0] - pos_start[0])*0.333
             z1_offset = (pos_end[2] - pos_start[2])*0.333
             x2_offset = (pos_start[0] - pos_end[0])*0.333
             z2_offset = (pos_start[2] - pos_end[2])*0.333
 
-        elif path_routine_type == "pick":
+        elif path_routine_type == conf.PICK_TRAJECTORY_ROUTINE:
             x2_offset = 0
             z2_offset = (pos_start[2] - pos_end[2])*0.35
             x1_offset = ((pos_end[0]+x2_offset)-pos_start[0])*0.5
             z1_offset = ((pos_end[2]+z2_offset)-pos_start[2])*0.5
 
-        elif path_routine_type == "place":
+        elif path_routine_type == conf.PLACE_TRAJECTORY_ROUTINE:
             x1_offset = 0
-            z1_offset = min(abs(pos_start[0] - pos_end[0])*0.25, 70)
+            z1_offset = min(abs(pos_start[0] - pos_end[0])*0.30, 80)
             x2_offset = 0
-            z2_offset = min(abs(pos_start[0] - pos_end[0])*0.25, 70)
+            z2_offset = min(abs(pos_start[0] - pos_end[0])*0.30, 80)
         else:
             return None
         
@@ -94,6 +94,7 @@ class Trajectory:
             max_delta_x = 10
             delta_s = round(max_delta_x / x_total, 3)
 
+        delta_s = 0.01
         return delta_s
     
 
