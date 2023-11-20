@@ -67,4 +67,7 @@ We can differentiate between optimal-time and time-constrained trajectories. For
 ### gepetto viewer
 
 https://github.com/ostifede02/2dr/assets/113505533/8275950d-85f3-4202-8fd4-2156c668f8a0
-https://github.com/ostifede02/2dr/blob/main/script/img/2dr_picknplace_routine.mp4
+
+https://github.com/ostifede02/2dr/assets/113505533/1fb80901-1fbf-484c-801d-02264372b437
+
+
