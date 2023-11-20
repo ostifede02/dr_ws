@@ -51,9 +51,11 @@ class Trajectory:
 
         elif path_routine_type == conf.PLACE_TRAJECTORY_ROUTINE:
             x1_offset = 0
-            z1_offset = min(abs(pos_start[0] - pos_end[0])*0.30, 80)
+            z1_offset = min(abs(pos_start[0] - pos_end[0])*0.4, 80)
+            z1_offset = max(abs(pos_start[0] - pos_end[0])*0.4, 30)
             x2_offset = 0
-            z2_offset = min(abs(pos_start[0] - pos_end[0])*0.30, 80)
+            z2_offset = min(abs(pos_start[0] - pos_end[0])*0.4, 80)
+            z2_offset = max(abs(pos_start[0] - pos_end[0])*0.4, 30)
         else:
             return None
         

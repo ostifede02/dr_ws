@@ -20,7 +20,7 @@ stepper_steps = np.empty(max_cycle_counter+1)
 cycle_counter = 0
 
 while True:
-    start_time = time.time()
+    # start_time = time.time()
 
     # *****   READ CAMERA   *****
     if state == conf.READ_CAM_STATE:
@@ -28,14 +28,14 @@ while True:
         # ...read camera position prediction and detect object type
         #
 
-        pos_end = np.array([rnd.randint(-100, 100), 0, -280])
-        t_total = 1.2 + 0.5*rnd.random()
+        pos_end = np.array([rnd.randint(-100, 100), 0, -260])
+        t_total = 1 + 0.2*rnd.random()
         
         # based on object type select place position, either left or right
         if rnd.random() < 0.5:
-            pos_place = np.array([-180, 0, -250])
+            pos_place = np.array([-190, 0, -280])
         else:
-            pos_place = np.array([180, 0, -250])
+            pos_place = np.array([190, 0, -280])
 
         trajectory_routine = conf.PICK_TRAJECTORY_ROUTINE
         state = conf.SET_TRAJECTORY_STATE
@@ -44,7 +44,8 @@ while True:
     # *****   SET TRAJECTORY   *****
     if state == conf.SET_TRAJECTORY_STATE:
         if trajectory_routine == conf.PICK_TRAJECTORY_ROUTINE:
-            dr.set_trajectory_routine(trajectory_routine, pos_end, t_total)
+            # dr.set_trajectory_routine(trajectory_routine, pos_end, t_total)
+            dr.set_trajectory_routine(trajectory_routine, pos_end)
         
         elif trajectory_routine == conf.PLACE_TRAJECTORY_ROUTINE:
             dr.set_trajectory_routine(trajectory_routine, pos_end)
@@ -57,7 +58,7 @@ while True:
     
     # *****   COMPUTE NEXT POSITION   *****
     if state == conf.COMPUTE_NEXT_POS_STATE:
-        pos_next = dr.get_pos_next(simulation=False)
+        pos_next = dr.get_pos_next(simulation=True)
         
         if pos_next is None:                               # end of path
             state = conf.ROUTINE_HANDLER_STATE
@@ -96,8 +97,8 @@ while True:
     
     # *****   DISPLAY GEPETTO VIEWER   *****
     if state ==  conf.DISPLAY_STATE:
-        # dr.display(q_next_continuos)
-        # time.sleep(delta_t)
+        dr.display(q_next_continuos)
+        time.sleep(delta_t)
 
         state = conf.COMPUTE_NEXT_POS_STATE
 
@@ -106,18 +107,18 @@ while True:
     # delta_t_program = end_time-start_time
     # elapsed_time[cycle_counter] = delta_t_program
 
-    if stepper_1_steps == 0:
-        print(f"stepper_1 will not move!")
-    else:
-        # print(f"stepper_1_steps: \t{np.mean(stepper_1_steps)}\n")
-        # print(f"millisec_per_step: \t{np.mean(millisec_per_step)*1000} milliseconds")
-        t_per_step = delta_t / (2*stepper_1_steps)
-        stepper_steps[cycle_counter] = abs(t_per_step)
-        cycle_counter += 1
+    # if stepper_1_steps == 0:
+    #     print(f"stepper_1 will not move!")
+    # else:
+    #     # print(f"stepper_1_steps: \t{np.mean(stepper_1_steps)}\n")
+    #     # print(f"millisec_per_step: \t{np.mean(millisec_per_step)*1000} milliseconds")
+    #     t_per_step = delta_t / (2*stepper_1_steps)
+    #     stepper_steps[cycle_counter] = abs(t_per_step)
+    #     cycle_counter += 1
 
 
-    if cycle_counter > max_cycle_counter:
-        break
+    # if cycle_counter > max_cycle_counter:
+    #     break
 
 # print(f"mean time per cycle: \t{np.mean(elapsed_time)*1000} milliseconds")
 # print(f"max time per cycle: \t{max(elapsed_time)*1000} milliseconds")
