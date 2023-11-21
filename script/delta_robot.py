@@ -100,17 +100,17 @@ class DeltaRobot:
         self.x_next = 0
         self.t_current = 0
         self.pos_current = self.pos_start
-
-        return
+        
+        return False
     
 
-    def get_pos_next(self, simulation=False):
+    def get_pos_next(self, reduced_steps=False):
         if self.s == 1:
             self.pos_start = self.pos_next
             return None
         
         # set s -> parameter [0, 1], that controls the bezier curve
-        if simulation:
+        if reduced_steps:
             delta_s = 0.01                  # more fluid simultion display
         else:       
             delta_s = self.trj.delta_s
@@ -168,10 +168,8 @@ class DeltaRobot:
         pin.computeCollision(self.robot.collision_model, self.robot.collision_data, self.collision_pair[1]) # chain 1
 
         if(self.robot.collision_data.collisionResults[0].isCollision()):
-            print(f"Collision detected: {self.robot.collision_model.collisionPairs[0]}")
             return True
         elif(self.robot.collision_data.collisionResults[1].isCollision()):
-            print(f"Collision detected: {self.robot.collision_model.collisionPairs[1]}")
             return True
         
         return False

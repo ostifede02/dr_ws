@@ -8,9 +8,10 @@ from delta_robot import DeltaRobot
 import configuration as conf
 
 
-simulation = True       # if simulation == True, the set points are closer to each other for a smoother visualization
-                        # if simulation == False, print data on terminal
-viewer = True           # if viewr == True, can view the robot in gepetto viewer
+troubleshooting = True     # if troubleshooting == True, print data on terminal
+reduced_steps = False        # if reduced_steps == True ,the set-points are closer to each other for a smoother visualization                   
+viewer = True               # if viewr == True, can view the robot in gepetto viewer
+
 
 dr = DeltaRobot(viewer)
 
@@ -19,9 +20,11 @@ pos_end = conf.configuration["trajectory"]["pos_neutral"]
 trajectory_routine = conf.DIRECT_TRAJECTORY_ROUTINE
 state = conf.TRAJECTORY_PLANNER_STATE
 
+
 # some variables for performance tracking
-if not simulation:
+if troubleshooting:
     max_computation_elapsed_time = 0
+    max_relative_computation_elapsed_time = 0
     max_delta_t = 0
 
     max_delay_per_step_1 = 0
@@ -56,7 +59,9 @@ while True:
     # *****   SET TRAJECTORY   *****
     if state == conf.TRAJECTORY_PLANNER_STATE:
         if trajectory_routine == conf.PICK_TRAJECTORY_ROUTINE:
-            dr.trajectory_planner(trajectory_routine, pos_end, t_total)
+            error = dr.trajectory_planner(trajectory_routine, pos_end, t_total)
+            if error is None:
+                break
         
         elif trajectory_routine == conf.PLACE_TRAJECTORY_ROUTINE:
             dr.trajectory_planner(trajectory_routine, pos_end)
@@ -69,7 +74,8 @@ while True:
     
     # *****   COMPUTE NEXT POSITION   *****
     if state == conf.COMPUTE_NEXT_POS_STATE:
-        pos_next = dr.get_pos_next(simulation)
+        # goto next set (via) point
+        pos_next = dr.get_pos_next(reduced_steps)
         
         if pos_next is None:                               # end of path
             state = conf.TASK_PLANNER_STATE
@@ -78,15 +84,17 @@ while True:
         q_next_continuos = dr.get_q_next_continuos(pos_next)
         
         if dr.check_collisions(q_next_continuos):
+            print(f"ERROR! Collision detected")
             break
 
         stepper_1_steps, stepper_2_steps = dr.get_number_of_steps()
         delta_t = dr.get_delta_t()
 
+        # state = conf.SEND_TO_MICRO_STATE
         state = conf.DISPLAY_STATE
 
 
-    # *****   SELECT TRAJECTORY ROUTINE   *****
+    # *****   TASK PLANNER   *****
     if state == conf.TASK_PLANNER_STATE:
         if trajectory_routine == conf.PICK_TRAJECTORY_ROUTINE:
             trajectory_routine = conf.PLACE_TRAJECTORY_ROUTINE
@@ -106,7 +114,7 @@ while True:
             state = conf.READ_CAM_STATE
 
     
-    time_end = time.time()
+    time_end = time.time()  # end of computation
     
 
     # *****   DISPLAY GEPETTO VIEWER   *****
@@ -124,16 +132,21 @@ while True:
     # *********************************************************************************
 
   
-    if not simulation:
-        time.sleep(0.2)             # be able to read form terminal
+    if troubleshooting:
+        time.sleep(0.1)             # be able to read form terminal
         os.system('cls||clear')
         print("The system is running...\n")
 
         print("\t****  computation  *****")
         computation_elapsed_time = time_end-time_start
         max_computation_elapsed_time = max(max_computation_elapsed_time, computation_elapsed_time)
+        relative_computation_elapsed_time = computation_elapsed_time/delta_t
+        max_relative_computation_elapsed_time = max(max_relative_computation_elapsed_time, relative_computation_elapsed_time)
+        
         print(f"max computation elapsed time: {round(max_computation_elapsed_time*1e3, 3)} in milliseconds")
-        print(f"computation elapsed time: {round(computation_elapsed_time*1e3, 3)} in milliseconds\n")
+        print(f"computation elapsed time: {round(computation_elapsed_time*1e3, 3)} in milliseconds")
+        print(f"max relative computation elapsed time: {round((max_relative_computation_elapsed_time)*1e2, 3)}")
+        print(f"relative computation elapsed time: {round((relative_computation_elapsed_time)*1e2, 3)}\n")
 
         print("\t****  delta t  *****")
         max_delta_t = max(max_delta_t, delta_t)
@@ -163,7 +176,7 @@ while True:
             min_delay_per_step_2 = min(min_delay_per_step_2, delay_per_step_2)
 
             print(f"delay per step: {round(delay_per_step_2*1e6, 1)} in microseconds")
-            print(f"min delay per step: {round(min_delay_per_step_2*1e6, 1)} in microseconds")
+            print(f"min  delay per step: {round(min_delay_per_step_2*1e6, 1)} in microseconds")
             print(f"max delay per step: {round(max_delay_per_step_2*1e6, 1)} in microseconds\n")
         else:
             print(f"stepper 1 does not move!\n")

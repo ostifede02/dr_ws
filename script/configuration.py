@@ -8,13 +8,13 @@ configuration["physical"] = {
         "module": 3
     },
     "stepper": {
-        "n_steps": 800
+        "n_steps": 1600
     }
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 300,
-    "max_velocity": 600,
+    "max_acceleration": 500,
+    "max_velocity": 800,
     "delta_s_high_resolution": 0.02,
     
     "pos_home": np.array([0, 0, -50]),
