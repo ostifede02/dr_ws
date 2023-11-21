@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 
 class PlotHandler():
    
-    def __init__(self, title, x_label, y_label, max_samples, size_sample):
+    def __init__(self, title, x_label, y_label, max_samples, size_sample=2):
         self.title = title
         self.x_label = x_label
         self.y_label = y_label
@@ -44,6 +44,6 @@ class PlotHandler():
         plot = plt.figure()
         plot = plt.title(f"{self.title}: {self.y_label} over {self.x_label}")
         plot = plt.plot(self.data[0, :], self.data[1, :])
-
+        plt.show()
         return
         
