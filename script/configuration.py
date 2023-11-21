@@ -13,8 +13,8 @@ configuration["physical"] = {
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 30000,
-    "max_velocity": 1500,
+    "max_acceleration": 300,
+    "max_velocity": 600,
     "delta_s_high_resolution": 0.02,
     
     "pos_home": np.array([0, 0, -50]),
@@ -46,9 +46,9 @@ configuration["inverse_geometry"] = {
 
 ##########   STATES   ##########
 READ_CAM_STATE = "read_cam_state"
-SET_TRAJECTORY_STATE = "set_trajectory_state"
+TRAJECTORY_PLANNER_STATE = "trajectory_planner_state"
 COMPUTE_NEXT_POS_STATE = "compute_next_pos_state"
-ROUTINE_HANDLER_STATE = "routine_handler_state"
+TASK_PLANNER_STATE = "task_planner_state"
 
 DISPLAY_STATE = "display_state"
 

@@ -130,7 +130,7 @@ class Trajectory:
     #        "pick":     pick object path
     #        "place":    place object path
     #        "quick":    straight line path
-    def set_trajectory_routine(self, path_routine_type, pos_start, pos_end, t_total_input=-1):
+    def trajectory_generator(self, path_routine_type, pos_start, pos_end, t_total_input=-1):
         # the cubic bezier curve is a plynomial described by 4 points
         self.path_poly_points = self.__get_path_poly_points(path_routine_type, pos_start, pos_end)
         

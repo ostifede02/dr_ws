@@ -91,8 +91,8 @@ class DeltaRobot:
     
 
     # ******   TRAJECTORY   ******
-    def set_trajectory_routine(self, trajectory_routine_type, pos_end, t_total_input=-1):
-        error_check = self.trj.set_trajectory_routine(trajectory_routine_type, self.pos_start, pos_end, t_total_input)
+    def trajectory_planner(self, trajectory_routine_type, pos_end, t_total_input=-1):
+        error_check = self.trj.trajectory_generator(trajectory_routine_type, self.pos_start, pos_end, t_total_input)
         if error_check is None:
             return None
         
