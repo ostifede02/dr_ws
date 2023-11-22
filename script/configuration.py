@@ -8,7 +8,7 @@ configuration["physical"] = {
         "module": 3
     },
     "stepper": {
-        "n_steps": 1600
+        "n_steps": 800
     }
 }
 
@@ -20,7 +20,7 @@ configuration["trajectory"] = {
     "pos_home": np.array([0, 0, -50]),
     "pos_neutral": np.array([0, 0, -150]),
 
-    "end_effector_x_offset": 45/2
+    "end_effector_x_offset": 22.5
 }
 
 configuration["inverse_geometry"] = {

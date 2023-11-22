@@ -44,6 +44,7 @@ while True:
         #
 
         pos_end = np.array([rnd.randint(-100, 100), 0, -260])
+        pos_end[0] -= dr.end_effector_x_offset
         t_total = 1.5 + 0.2*rnd.random()
         
         # based on object type select place position, either left or right
@@ -119,8 +120,9 @@ while True:
 
     # *****   DISPLAY GEPETTO VIEWER   *****
     if state ==  conf.DISPLAY_STATE:
-        dr.display(q_next_continuos)
-        time.sleep(delta_t)
+        if viewer:
+            dr.display(q_next_continuos)
+            time.sleep(delta_t)
 
         state = conf.COMPUTE_NEXT_POS_STATE
 
@@ -133,7 +135,12 @@ while True:
 
   
     if troubleshooting:
-        time.sleep(0.1)             # be able to read form terminal
+        step_input = input("\npress 'n' to continue, any other to quit")
+        if step_input != '':
+            break
+
+
+        # time.sleep(0.1)             # be able to read form terminal
         os.system('cls||clear')
         print("The system is running...\n")
 
@@ -147,6 +154,9 @@ while True:
         print(f"computation elapsed time: {round(computation_elapsed_time*1e3, 3)} in milliseconds")
         print(f"max relative computation elapsed time: {round((max_relative_computation_elapsed_time)*1e2, 3)}")
         print(f"relative computation elapsed time: {round((relative_computation_elapsed_time)*1e2, 3)}\n")
+
+        print("\t****  end-effector position  *****")
+        print(f"pos: {pos_next}\n")
 
         print("\t****  delta t  *****")
         max_delta_t = max(max_delta_t, delta_t)

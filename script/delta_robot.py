@@ -113,9 +113,9 @@ class DeltaRobot:
         if reduced_steps:
             delta_s = 0.01                  # more fluid simultion display
         else:       
-            delta_s = self.trj.delta_s
+            delta_s = self.trj.delta_s      # more efficient
 
-        self.s += delta_s      # more efficient
+        self.s += delta_s      
 
         if self.s > 1-delta_s:  # to not have in the next cycle too close points
             self.s = 1
@@ -124,11 +124,11 @@ class DeltaRobot:
         self.x_next += np.linalg.norm(self.pos_next - self.pos_current)
         self.pos_current = self.pos_next
 
-        # self.pos_next[0] -= self.end_effector_x_offset                   # since the frame_id is the joint
         return self.pos_next
     
 
     def get_q_next_continuos(self, pos_des):
+
         q1_current = self.q1_current        # PROBLEM!: after function also self.q1_current was changed
         q2_current = self.q2_current
 

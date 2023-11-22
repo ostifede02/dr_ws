@@ -75,7 +75,6 @@ class InverseGeometry:
                     break
         
         # print("Iteration %d, ||pos_des-x||=%f, norm(gradient)=%f"%(i, norm(e), grad_norm))
-
         return q_next
     
     # method computes inverse geomtery
@@ -94,5 +93,7 @@ class InverseGeometry:
                 break
             else:
                 q = q_next
+
+        print(f"Convergence achived after {i} iteration.")
 
         return q
