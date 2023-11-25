@@ -78,6 +78,10 @@ while True:
         is_first = False
 
     tp = pose_prediction(kalman_fil, mp)
+    
+    e = np.array([mp[0][0]-tp[0][0], mp[1][0]-tp[1][0]])
+    e = np.linalg.norm(e)
+    print(f"error: {e}")
 
     measured.append(mp)
     predicted.append(tp)
