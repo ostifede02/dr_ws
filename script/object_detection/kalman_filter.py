@@ -1,103 +1,92 @@
-import cv2
 import numpy as np
-from filterpy.kalman import KalmanFilter
+import matplotlib.pyplot as plt
 
 
-# DROID_CAM_IP_ADDRESS = "http://10.248.24.172:4747/video/"
-vid = cv2.VideoCapture("test_video/test_1.mp4")
-dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)       # create the dictionary for markers type
+class KalmanFilter(object):
+    def __init__(self, A, B, C, D, Q, R, x, u, dt):
+        self.dt = dt    # time acquisition period
+        
+        self.A = A      # state matrix
+        self.B = B      # imput matrix
+        self.C = C      # output matrix
+        self.D = D      # never used before
+        
+        self.Q = Q      # process noise
+        self.R = R      # measurent noise
+
+        self.P = np.eye(self.A.shape[1])    # error covariance
+        self.x = x
+        self.u = u
 
 
-# ************  Kalman filter  ************
-measured = []
-predicted = []
-mp = np.array((2, 1), np.float32)   # measured position
-tp = np.zeros((4, 1), np.float32)   # predicted position
-
-kalman_fil = cv2.KalmanFilter(4, 2)
-kalman_fil.measurementMatrix = np.array([[1, 0, 0, 0], [0, 1, 0, 0]], np.float32)
-kalman_fil.transitionMatrix = np.array(
-    [[1, 0, 1, 0], [0, 1, 0, 1], [0, 0, 1, 0], [0, 0, 0, 1]], np.float32
-)
-kalman_fil.processNoiseCov = (
-    np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]], np.float32)
-    * 0.03
-)
-
-
-# ************  utility functions  ************
-def pose_estimation(frame, dictionary):
-    corners, marker_ids, rejected = cv2.aruco.detectMarkers(frame, dictionary)
-
-    # Check if markers are detected
-    if marker_ids is not None:
-        # Calculate the center point of each marker
-        cx = int((corners[0][0][0][0] + corners[0][0][1][0] + corners[0][0][2][0] + corners[0][0][3][0]) / 4)
-        cy = int((corners[0][0][0][1] + corners[0][0][1][1] + corners[0][0][2][1] + corners[0][0][3][1]) / 4)
-        mp = np.array([[np.float32(cx)], [np.float32(cy)]])
-        return mp        
-    else:
-        return None
+    def predict(self):
+        # Update time state
+        self.x = np.dot(self.A, self.x) + np.dot(self.B, self.u)
+        # Calculate error covariance
+        # P= A*P*A' + Q
+        self.P = np.dot(np.dot(self.A, self.P), self.A.T) + self.Q
+        return self.x
     
 
-def pose_prediction(kf, mp):
-    kf.correct(mp)
-    tp = kf.predict()
-    return tp
+    def update(self, z):
+        # S = H*P*H'+R
+        S = np.dot(self.C, np.dot(self.P, self.C.T)) + self.R
+        
+        # Calculate the Kalman Gain
+        # K = P * H'* inv(H*P*H'+R)
+        K = np.dot(np.dot(self.P, self.C.T), np.linalg.inv(S))
+        self.x = np.round(self.x + np.dot(K, (z - np.dot(self.C, self.x))))
+        I = np.eye(self.C.shape[1])
+        self.P = (I - (K * self.C)) * self.P
 
 
-def draw_canvas(frame, measured, predicted):
-
-    for i in range(len(measured)):
-        # Draw a circle at the center point
-        cv2.circle(frame, (int(measured[i][0][0]), int(measured[i][1][0])), 6, (0, 0, 255), -1)
-        cv2.circle(frame, (int(predicted[i][0][0]), int(predicted[i][1][0])), 10, (255, 0, 0), 2)
-            
-    return frame
 
 
-is_first = True
 
-while True:
-    ret, frame = vid.read()
-    
-    frame = cv2.resize(frame, (int(frame.shape[1]*0.6), int(frame.shape[0]*0.6)))
-    frame = frame[0:760, 130:280]
-    
-    mp = pose_estimation(frame, dictionary)
+dt = 0.1
 
-    if mp is None:
-        print("object not identified")
-        continue
-
-    if is_first:
-        kalman_fil.statePre[0][0] = mp[0][0]
-        kalman_fil.statePre[1][0] = mp[1][0]
-        print("x_state ", kalman_fil.statePost[0][0])
-        print("x_measurement ", mp[0][0])
-        is_first = False
-
-    tp = pose_prediction(kalman_fil, mp)
-    
-    e = np.array([mp[0][0]-tp[0][0], mp[1][0]-tp[1][0]])
-    e = np.linalg.norm(e)
-    print(f"error: {e}")
-
-    measured.append(mp)
-    predicted.append(tp)
-
-    frame = draw_canvas(frame, measured, predicted)
-    
-    frame = cv2.transpose(frame)
-    cv2.imshow("frame", frame)
-
-    # Check for keypress
-    key = cv2.waitKey(0) & 0xFF
-    if key == ord('q'): 
-        break
-    elif key == ord(' '):
-        continue
+A = np.matrix([[1, dt], [0, 1]])
+B = np.zeros(A.shape[0]) 
+C = np.matrix([[1,0]])
+D = np.zeros(A.shape[0])
+Q = np.zeros(A.shape[0])
+R = 1
+P = np.eye(A.shape[0])
+x = np.matrix([[0],[0]])
+u = np.matrix([[0],[0]])
 
 
-vid.release()
-cv2.destroyAllWindows()
+
+
+
+
+t = np.arange(0, 100, dt)
+# Define a model track
+real_track = 0.1*((t**2) - t)
+u= 2
+std_acc = 0.25     # we assume that the standard deviation of the acceleration is 0.25 (m/s^2)
+std_meas = 1.2    # and standard deviation of the measurement is 1.2 (m)
+# create KalmanFilter object
+kf = KalmanFilter(A, B, C, D, Q, R, x, u, dt)
+predictions = []
+measurements = []
+for x in real_track:
+    # Mesurement
+    z = kf.C * x + np.random.normal(0, 50)
+    measurements.append(z.item(0))
+    predictions.append(kf.predict()[0])
+    kf.update(z.item(0))
+
+
+
+
+# **** PLOT ****
+fig = plt.figure()
+fig.suptitle('Example of Kalman filter for tracking a moving object in 1-D', fontsize=20)
+plt.plot(t, measurements, label='Measurements', color='b',linewidth=0.5)
+plt.plot(t, np.array(real_track), label='Real Track', color='y', linewidth=1.5)
+plt.plot(t, np.squeeze(predictions), label='Kalman Filter Prediction', color='r', linewidth=1.5)
+plt.xlabel('Time (s)', fontsize=20)
+plt.ylabel('Position (m)', fontsize=20)
+plt.legend()
+plt.show()

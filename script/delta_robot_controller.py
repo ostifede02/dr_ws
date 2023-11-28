@@ -8,8 +8,8 @@ from delta_robot import DeltaRobot
 import configuration as conf
 
 
-troubleshooting = True     # if troubleshooting == True, print data on terminal
-reduced_steps = False        # if reduced_steps == True ,the set-points are closer to each other for a smoother visualization                   
+telemetry = False           # if telemetry == True, print data on terminal
+reduced_steps = True        # if reduced_steps == True ,the set-points are closer to each other for a smoother visualization                   
 viewer = True               # if viewr == True, can view the robot in gepetto viewer
 
 
@@ -22,7 +22,7 @@ state = conf.TRAJECTORY_PLANNER_STATE
 
 
 # some variables for performance tracking
-if troubleshooting:
+if telemetry:
     max_computation_elapsed_time = 0
     max_relative_computation_elapsed_time = 0
     max_delta_t = 0
@@ -73,7 +73,7 @@ while True:
         state = conf.COMPUTE_NEXT_POS_STATE            
 
     
-    # *****   COMPUTE NEXT POSITION   *****
+    # *****   COMPUTE NEXT VIA-POINT POSITION   *****
     if state == conf.COMPUTE_NEXT_POS_STATE:
         # goto next set (via) point
         pos_next = dr.get_pos_next(reduced_steps)
@@ -82,9 +82,9 @@ while True:
             state = conf.TASK_PLANNER_STATE
             continue
         
-        q_next_continuos = dr.get_q_next_continuos(pos_next)
+        q_next = dr.get_q_next_continuos(pos_next)
         
-        if dr.check_collisions(q_next_continuos):
+        if dr.check_collisions(q_next):
             print(f"ERROR! Collision detected")
             break
 
@@ -121,8 +121,8 @@ while True:
     # *****   DISPLAY GEPETTO VIEWER   *****
     if state ==  conf.DISPLAY_STATE:
         if viewer:
-            dr.display(q_next_continuos)
-            time.sleep(delta_t)
+            dr.display(q_next)
+            # time.sleep(delta_t)
 
         state = conf.COMPUTE_NEXT_POS_STATE
 
@@ -134,12 +134,7 @@ while True:
     # *********************************************************************************
 
   
-    if troubleshooting:
-        step_input = input("\npress 'n' to continue, any other to quit")
-        if step_input != '':
-            break
-
-
+    if telemetry:
         # time.sleep(0.1)             # be able to read form terminal
         os.system('cls||clear')
         print("The system is running...\n")
