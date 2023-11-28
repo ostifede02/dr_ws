@@ -8,8 +8,8 @@ from delta_robot import DeltaRobot
 import configuration as conf
 
 
-telemetry = False           # if telemetry == True, print data on terminal
-reduced_steps = True        # if reduced_steps == True ,the set-points are closer to each other for a smoother visualization                   
+telemetry = True           # if telemetry == True, print data on terminal
+reduced_steps = False        # if reduced_steps == True ,the set-points are closer to each other for a smoother visualization                   
 viewer = True               # if viewr == True, can view the robot in gepetto viewer
 
 
@@ -122,7 +122,7 @@ while True:
     if state ==  conf.DISPLAY_STATE:
         if viewer:
             dr.display(q_next)
-            # time.sleep(delta_t)
+            time.sleep(delta_t)
 
         state = conf.COMPUTE_NEXT_POS_STATE
 

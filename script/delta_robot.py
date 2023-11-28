@@ -20,19 +20,17 @@ from os.path import dirname, join, abspath
 
 from kinematics.inverse_geometry import InverseGeometry
 from trajectory.trajectory import Trajectory
-from gcode.gcode import GcodeParser
 import configuration as conf
 
 
 class DeltaRobot:
 
-    def __init__(self, gcode_path, viewer = False):
+    def __init__(self, viewer = False):
         self.init_robot()
         
         if viewer:
             self.init_viewer()
 
-        self.gcode = GcodeParser(gcode_path)
         self.trj = Trajectory()
         self.ig = InverseGeometry(self.robot)
         self.init_configuration_variables()
@@ -80,8 +78,6 @@ class DeltaRobot:
         circumference_pulley = conf.configuration["physical"]["pulley"]["n_teeth"] * conf.configuration["physical"]["pulley"]["module"]
         self.min_belt_displacement = circumference_pulley / conf.configuration["physical"]["stepper"]["n_steps"]       # minimum carriage displacement
 
-        # gcode
-        self.gcode_line_index = 0
         return
     
 
@@ -186,6 +182,3 @@ class DeltaRobot:
         self.t_current = t_next
         return delta_t
     
-
-    def do_next_task():
-        
