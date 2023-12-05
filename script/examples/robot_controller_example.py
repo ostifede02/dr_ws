@@ -4,8 +4,8 @@ import time
 
 import os
 
-from delta_robot import DeltaRobot
-import configuration as conf
+from script.delta_robot import DeltaRobot
+import script.configuration as conf
 
 
 telemetry = True           # if telemetry == True, print data on terminal

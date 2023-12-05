@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 from os.path import dirname, join, abspath
 
 import kinematics.utils
-from kinematics.IK_solver import IK_solver
+from script.kinematics.inverse_geometry import InverseGeometry
 
-from trajectory_planning.trajectory_functions import bezier_curve
+from script.trajectory.trajectory import Trajectory
 
 
 

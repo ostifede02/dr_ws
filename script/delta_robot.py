@@ -18,9 +18,9 @@ import numpy as np
 
 from os.path import dirname, join, abspath
 
-from kinematics.inverse_geometry import InverseGeometry
-from trajectory.trajectory import Trajectory
-import configuration as conf
+from script.kinematics.inverse_geometry import InverseGeometry
+from script.trajectory.trajectory import Trajectory
+import script.configuration as conf
 
 
 class DeltaRobot:
@@ -83,7 +83,9 @@ class DeltaRobot:
 
     # ******   VIEWER   ******
     def init_viewer(self):
-        self.robot.initViewer()
+        self.robot.initViewer(loadModel=True)
+        self.robot.viz.displayCollisions(False)
+        self.robot.viz.displayVisuals(True)
         return
     
     def display(self, q):
