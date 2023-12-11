@@ -1,0 +1,151 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-24c024d66c778a72c903.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "deltarobot_interfaces",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "deltarobot_interfaces::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-deltarobot_interfaces-Debug-bfe1a15646a6c1d30d58.json",
+					"name" : "deltarobot_interfaces",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "deltarobot_interfaces__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-deltarobot_interfaces__cpp-Debug-b5bde69f0b54a22264a6.json",
+					"name" : "deltarobot_interfaces__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "deltarobot_interfaces__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-deltarobot_interfaces__rosidl_generator_c-Debug-993f6186988055cafa1f.json",
+					"name" : "deltarobot_interfaces__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "deltarobot_interfaces__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-deltarobot_interfaces__rosidl_typesupport_c-Debug-44cff8aedf6ec09d1282.json",
+					"name" : "deltarobot_interfaces__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "deltarobot_interfaces__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-deltarobot_interfaces__rosidl_typesupport_cpp-Debug-93a1bf03d1363581996a.json",
+					"name" : "deltarobot_interfaces__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "deltarobot_interfaces__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-deltarobot_interfaces__rosidl_typesupport_fastrtps_c-Debug-24f24014f6eab4128c5d.json",
+					"name" : "deltarobot_interfaces__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "deltarobot_interfaces__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-deltarobot_interfaces__rosidl_typesupport_fastrtps_cpp-Debug-5adc7f96b8b80595484c.json",
+					"name" : "deltarobot_interfaces__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "deltarobot_interfaces__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-deltarobot_interfaces__rosidl_typesupport_introspection_c-Debug-e9cf30aeafb9bb46cd17.json",
+					"name" : "deltarobot_interfaces__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "deltarobot_interfaces__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-deltarobot_interfaces__rosidl_typesupport_introspection_cpp-Debug-22cba4c1e601b0c75da6.json",
+					"name" : "deltarobot_interfaces__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "deltarobot_interfaces_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-deltarobot_interfaces_uninstall-Debug-f4ea197322414875939f.json",
+					"name" : "deltarobot_interfaces_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Debug-2e2481f7358f37cd8e52.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build",
+		"source" : "/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot_interfaces"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

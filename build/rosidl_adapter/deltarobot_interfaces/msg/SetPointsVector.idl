@@ -1,0 +1,13 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from deltarobot_interfaces/msg/SetPointsVector.msg
+// generated code does not contain a copyright notice
+
+#include "deltarobot_interfaces/msg/SetPoint.idl"
+
+module deltarobot_interfaces {
+  module msg {
+    struct SetPointsVector {
+      sequence<deltarobot_interfaces::msg::SetPoint> set_points;
+    };
+  };
+};

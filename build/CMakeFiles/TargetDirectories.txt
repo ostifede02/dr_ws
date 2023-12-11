@@ -1,5 +1,14 @@
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/uninstall.dir
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces_uninstall.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_generator_c.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_c.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__cpp.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_cpp.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_c.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_cpp.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_typesupport_cpp.dir
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/test.dir
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/edit_cache.dir
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/rebuild_cache.dir

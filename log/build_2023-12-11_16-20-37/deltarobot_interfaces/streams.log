@@ -1,0 +1,194 @@
+[0.082s] Invoking command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ostifede02/Documents/deltarobot_ws/install/deltarobot:/opt/ros/humble /usr/bin/cmake --build /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces -- -j8 -l8
+[0.107s] -- Found ament_cmake: 1.3.6 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.230s] -- Found geometry_msgs: 4.2.3 (/opt/ros/humble/share/geometry_msgs/cmake)
+[0.308s] -- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.320s] -- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.335s] -- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.354s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.382s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.749s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[1.125s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.273s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.275s] -- Found ament_lint_auto: 0.12.9 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.321s] -- Added test 'lint_cmake' to check CMake code style
+[1.336s] -- Added test 'xmllint' to check XML markup files
+[1.355s] -- Configuring done
+[1.463s] -- Generating done
+[1.473s] -- Build files have been written to: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces
+[1.502s] [  2%] [34m[1mGenerating C code for ROS interfaces[0m
+[1.515s] [  5%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[1.823s] [  5%] Built target deltarobot_interfaces__cpp
+[1.856s] [ 11%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[1.856s] [ 11%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[1.858s] [ 13%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[1.907s] [ 19%] [32mBuilding C object CMakeFiles/deltarobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/deltarobot_interfaces/msg/detail/set_point__functions.c.o[0m
+[1.908s] [ 19%] [32mBuilding C object CMakeFiles/deltarobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/deltarobot_interfaces/msg/detail/set_points_vector__functions.c.o[0m
+[1.908s] [ 22%] [32mBuilding C object CMakeFiles/deltarobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/deltarobot_interfaces/msg/detail/trajectory_task__functions.c.o[0m
+[1.990s] [ 25%] [32m[1mLinking C shared library libdeltarobot_interfaces__rosidl_generator_c.so[0m
+[2.044s] [ 25%] Built target deltarobot_interfaces__rosidl_generator_c
+[2.067s] [ 30%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[2.068s] [ 30%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[2.068s] [ 33%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[2.206s] [ 36%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/deltarobot_interfaces/msg/set_point__type_support.cpp.o[0m
+[2.208s] [ 38%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/deltarobot_interfaces/msg/trajectory_task__type_support.cpp.o[0m
+[2.209s] [ 41%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/deltarobot_interfaces/msg/set_points_vector__type_support.cpp.o[0m
+[2.230s] [ 44%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/deltarobot_interfaces/msg/detail/set_point__type_support.cpp.o[0m
+[2.350s] [ 47%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/deltarobot_interfaces/msg/detail/dds_fastrtps/set_point__type_support.cpp.o[0m
+[2.521s] [ 50%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/deltarobot_interfaces/msg/set_point__type_support.cpp.o[0m
+[2.539s] [ 52%] [32mBuilding C object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/deltarobot_interfaces/msg/detail/set_point__type_support.c.o[0m
+[2.563s] [ 55%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/deltarobot_interfaces/msg/set_points_vector__type_support.cpp.o[0m
+[2.583s] [ 58%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/deltarobot_interfaces/msg/detail/set_points_vector__type_support.cpp.o[0m
+[2.594s] [ 61%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/deltarobot_interfaces/msg/detail/trajectory_task__type_support.cpp.o[0m
+[2.604s] [ 63%] [32m[1mLinking CXX shared library libdeltarobot_interfaces__rosidl_typesupport_cpp.so[0m
+[2.620s] [ 66%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/deltarobot_interfaces/msg/detail/set_point__type_support_c.cpp.o[0m
+[2.637s] [ 69%] [32mBuilding C object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/deltarobot_interfaces/msg/detail/set_points_vector__type_support.c.o[0m
+[2.644s] [ 72%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/deltarobot_interfaces/msg/trajectory_task__type_support.cpp.o[0m
+[2.702s] [ 72%] Built target deltarobot_interfaces__rosidl_typesupport_cpp
+[2.722s] [ 77%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/deltarobot_interfaces/msg/detail/dds_fastrtps/set_points_vector__type_support.cpp.o[0m
+[2.722s] [ 77%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/deltarobot_interfaces/msg/detail/dds_fastrtps/trajectory_task__type_support.cpp.o[0m
+[2.722s] [ 80%] [32m[1mLinking CXX shared library libdeltarobot_interfaces__rosidl_typesupport_c.so[0m
+[2.740s] [ 83%] [32mBuilding C object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/deltarobot_interfaces/msg/detail/trajectory_task__type_support.c.o[0m
+[2.848s] [ 83%] Built target deltarobot_interfaces__rosidl_typesupport_c
+[2.857s] [ 86%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/deltarobot_interfaces/msg/detail/set_points_vector__type_support_c.cpp.o[0m
+[2.867s] [ 88%] [32mBuilding CXX object CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/deltarobot_interfaces/msg/detail/trajectory_task__type_support_c.cpp.o[0m
+[2.946s] [ 91%] [32m[1mLinking C shared library libdeltarobot_interfaces__rosidl_typesupport_introspection_c.so[0m
+[3.026s] [ 91%] Built target deltarobot_interfaces__rosidl_typesupport_introspection_c
+[3.143s] [ 94%] [32m[1mLinking CXX shared library libdeltarobot_interfaces__rosidl_typesupport_introspection_cpp.so[0m
+[3.229s] [ 94%] Built target deltarobot_interfaces__rosidl_typesupport_introspection_cpp
+[3.249s] [ 97%] [32m[1mLinking CXX shared library libdeltarobot_interfaces__rosidl_typesupport_fastrtps_cpp.so[0m
+[3.330s] [ 97%] Built target deltarobot_interfaces__rosidl_typesupport_fastrtps_cpp
+[3.364s] [100%] [32m[1mLinking CXX shared library libdeltarobot_interfaces__rosidl_typesupport_fastrtps_c.so[0m
+[3.435s] [100%] Built target deltarobot_interfaces__rosidl_typesupport_fastrtps_c
+[3.457s] [100%] Built target deltarobot_interfaces
+[3.469s] Invoked command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ostifede02/Documents/deltarobot_ws/install/deltarobot:/opt/ros/humble /usr/bin/cmake --build /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces -- -j8 -l8
+[3.696s] Invoking command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ostifede02/Documents/deltarobot_ws/install/deltarobot:/opt/ros/humble /usr/bin/cmake --install /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces
+[3.702s] -- Install configuration: ""
+[3.703s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/ament_index/resource_index/rosidl_interfaces/deltarobot_interfaces
+[3.705s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces
+[3.706s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg
+[3.707s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail
+[3.708s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_points_vector__functions.c
+[3.710s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_points_vector__functions.h
+[3.712s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_points_vector__struct.h
+[3.713s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_points_vector__type_support.h
+[3.715s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_point__functions.c
+[3.717s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_point__functions.h
+[3.719s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_point__struct.h
+[3.721s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_point__type_support.h
+[3.723s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/trajectory_task__functions.c
+[3.725s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/trajectory_task__functions.h
+[3.727s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/trajectory_task__struct.h
+[3.729s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/trajectory_task__type_support.h
+[3.730s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/rosidl_generator_c__visibility_control.h
+[3.733s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/set_point.h
+[3.734s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/set_points_vector.h
+[3.736s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/trajectory_task.h
+[3.738s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/environment/library_path.sh
+[3.740s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/environment/library_path.dsv
+[3.741s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_generator_c.so
+[3.744s] -- Set runtime path of "/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_generator_c.so" to ""
+[3.744s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces
+[3.745s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg
+[3.745s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail
+[3.746s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_points_vector__rosidl_typesupport_fastrtps_c.h
+[3.748s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_point__rosidl_typesupport_fastrtps_c.h
+[3.750s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/trajectory_task__rosidl_typesupport_fastrtps_c.h
+[3.752s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[3.753s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_typesupport_fastrtps_c.so
+[3.755s] -- Set runtime path of "/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_typesupport_fastrtps_c.so" to ""
+[3.756s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces
+[3.756s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg
+[3.757s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail
+[3.758s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_points_vector__builder.hpp
+[3.760s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_points_vector__struct.hpp
+[3.762s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_points_vector__traits.hpp
+[3.763s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_point__builder.hpp
+[3.765s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_point__struct.hpp
+[3.767s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_point__traits.hpp
+[3.769s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/trajectory_task__builder.hpp
+[3.771s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/trajectory_task__struct.hpp
+[3.773s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/trajectory_task__traits.hpp
+[3.775s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/set_point.hpp
+[3.777s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/set_points_vector.hpp
+[3.778s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/trajectory_task.hpp
+[3.780s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces
+[3.781s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg
+[3.781s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail
+[3.782s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/dds_fastrtps
+[3.783s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_points_vector__rosidl_typesupport_fastrtps_cpp.hpp
+[3.786s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_point__rosidl_typesupport_fastrtps_cpp.hpp
+[3.788s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/trajectory_task__rosidl_typesupport_fastrtps_cpp.hpp
+[3.790s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[3.792s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_typesupport_fastrtps_cpp.so
+[3.795s] -- Set runtime path of "/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_typesupport_fastrtps_cpp.so" to ""
+[3.796s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces
+[3.796s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg
+[3.797s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail
+[3.798s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_points_vector__rosidl_typesupport_introspection_c.h
+[3.800s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_points_vector__type_support.c
+[3.803s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_point__rosidl_typesupport_introspection_c.h
+[3.805s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_point__type_support.c
+[3.807s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/trajectory_task__rosidl_typesupport_introspection_c.h
+[3.809s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/trajectory_task__type_support.c
+[3.811s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[3.813s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_typesupport_introspection_c.so
+[3.816s] -- Set runtime path of "/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_typesupport_introspection_c.so" to ""
+[3.816s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_typesupport_c.so
+[3.819s] -- Set runtime path of "/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_typesupport_c.so" to ""
+[3.820s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces
+[3.820s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg
+[3.821s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail
+[3.822s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_points_vector__rosidl_typesupport_introspection_cpp.hpp
+[3.824s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_points_vector__type_support.cpp
+[3.826s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_point__rosidl_typesupport_introspection_cpp.hpp
+[3.829s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/set_point__type_support.cpp
+[3.831s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/trajectory_task__rosidl_typesupport_introspection_cpp.hpp
+[3.833s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/include/deltarobot_interfaces/deltarobot_interfaces/msg/detail/trajectory_task__type_support.cpp
+[3.836s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_typesupport_introspection_cpp.so
+[3.838s] -- Set runtime path of "/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_typesupport_introspection_cpp.so" to ""
+[3.839s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_typesupport_cpp.so
+[3.842s] -- Set runtime path of "/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/libdeltarobot_interfaces__rosidl_typesupport_cpp.so" to ""
+[3.843s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/msg/SetPoint.idl
+[3.845s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/msg/SetPointsVector.idl
+[3.847s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/msg/TrajectoryTask.idl
+[3.849s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/msg/SetPoint.msg
+[3.851s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/msg/SetPointsVector.msg
+[3.853s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/msg/TrajectoryTask.msg
+[3.856s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/ament_index/resource_index/package_run_dependencies/deltarobot_interfaces
+[3.858s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/ament_index/resource_index/parent_prefix_path/deltarobot_interfaces
+[3.859s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/environment/ament_prefix_path.sh
+[3.859s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/environment/ament_prefix_path.dsv
+[3.861s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/environment/path.sh
+[3.862s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/environment/path.dsv
+[3.864s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/local_setup.bash
+[3.865s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/local_setup.sh
+[3.867s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/local_setup.zsh
+[3.867s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/local_setup.dsv
+[3.869s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.dsv
+[3.871s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/ament_index/resource_index/packages/deltarobot_interfaces
+[3.872s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/export_deltarobot_interfaces__rosidl_generator_cExport.cmake
+[3.874s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/export_deltarobot_interfaces__rosidl_generator_cExport-noconfig.cmake
+[3.875s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/export_deltarobot_interfaces__rosidl_typesupport_fastrtps_cExport.cmake
+[3.877s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/export_deltarobot_interfaces__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[3.879s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/export_deltarobot_interfaces__rosidl_generator_cppExport.cmake
+[3.881s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/export_deltarobot_interfaces__rosidl_typesupport_fastrtps_cppExport.cmake
+[3.883s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/export_deltarobot_interfaces__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[3.885s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/deltarobot_interfaces__rosidl_typesupport_introspection_cExport.cmake
+[3.886s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/deltarobot_interfaces__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[3.888s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/deltarobot_interfaces__rosidl_typesupport_cExport.cmake
+[3.890s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/deltarobot_interfaces__rosidl_typesupport_cExport-noconfig.cmake
+[3.892s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/deltarobot_interfaces__rosidl_typesupport_introspection_cppExport.cmake
+[3.894s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/deltarobot_interfaces__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[3.897s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/deltarobot_interfaces__rosidl_typesupport_cppExport.cmake
+[3.899s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/deltarobot_interfaces__rosidl_typesupport_cppExport-noconfig.cmake
+[3.901s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/rosidl_cmake-extras.cmake
+[3.903s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/ament_cmake_export_dependencies-extras.cmake
+[3.905s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/ament_cmake_export_include_directories-extras.cmake
+[3.907s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/ament_cmake_export_libraries-extras.cmake
+[3.910s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/ament_cmake_export_targets-extras.cmake
+[3.912s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[3.914s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[3.916s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/deltarobot_interfacesConfig.cmake
+[3.918s] -- Up-to-date: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/deltarobot_interfacesConfig-version.cmake
+[3.919s] -- Installing: /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.xml
+[3.921s] Invoked command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ostifede02/Documents/deltarobot_ws/install/deltarobot:/opt/ros/humble /usr/bin/cmake --install /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces
