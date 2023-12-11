@@ -1,1 +1,0 @@
-from .inverse_geometry import InverseGeometry
