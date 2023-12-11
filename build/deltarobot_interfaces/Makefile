@@ -314,6 +314,97 @@ deltarobot_interfaces__rosidl_typesupport_cpp/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_typesupport_cpp.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_typesupport_cpp.dir/build
 .PHONY : deltarobot_interfaces__rosidl_typesupport_cpp/fast
 
+#=============================================================================
+# Target rules for targets named ament_cmake_python_copy_deltarobot_interfaces
+
+# Build rule for target.
+ament_cmake_python_copy_deltarobot_interfaces: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ament_cmake_python_copy_deltarobot_interfaces
+.PHONY : ament_cmake_python_copy_deltarobot_interfaces
+
+# fast build rule for target.
+ament_cmake_python_copy_deltarobot_interfaces/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ament_cmake_python_copy_deltarobot_interfaces.dir/build.make CMakeFiles/ament_cmake_python_copy_deltarobot_interfaces.dir/build
+.PHONY : ament_cmake_python_copy_deltarobot_interfaces/fast
+
+#=============================================================================
+# Target rules for targets named ament_cmake_python_build_deltarobot_interfaces_egg
+
+# Build rule for target.
+ament_cmake_python_build_deltarobot_interfaces_egg: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ament_cmake_python_build_deltarobot_interfaces_egg
+.PHONY : ament_cmake_python_build_deltarobot_interfaces_egg
+
+# fast build rule for target.
+ament_cmake_python_build_deltarobot_interfaces_egg/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ament_cmake_python_build_deltarobot_interfaces_egg.dir/build.make CMakeFiles/ament_cmake_python_build_deltarobot_interfaces_egg.dir/build
+.PHONY : ament_cmake_python_build_deltarobot_interfaces_egg/fast
+
+#=============================================================================
+# Target rules for targets named deltarobot_interfaces__rosidl_generator_py
+
+# Build rule for target.
+deltarobot_interfaces__rosidl_generator_py: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 deltarobot_interfaces__rosidl_generator_py
+.PHONY : deltarobot_interfaces__rosidl_generator_py
+
+# fast build rule for target.
+deltarobot_interfaces__rosidl_generator_py/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/build
+.PHONY : deltarobot_interfaces__rosidl_generator_py/fast
+
+#=============================================================================
+# Target rules for targets named deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext
+
+# Build rule for target.
+deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext
+.PHONY : deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext
+
+# fast build rule for target.
+deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir/build
+.PHONY : deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext/fast
+
+#=============================================================================
+# Target rules for targets named deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext
+
+# Build rule for target.
+deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext
+.PHONY : deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext
+
+# fast build rule for target.
+deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext.dir/build
+.PHONY : deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext/fast
+
+#=============================================================================
+# Target rules for targets named deltarobot_interfaces__rosidl_typesupport_c__pyext
+
+# Build rule for target.
+deltarobot_interfaces__rosidl_typesupport_c__pyext: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 deltarobot_interfaces__rosidl_typesupport_c__pyext
+.PHONY : deltarobot_interfaces__rosidl_typesupport_c__pyext
+
+# fast build rule for target.
+deltarobot_interfaces__rosidl_typesupport_c__pyext/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c__pyext.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c__pyext.dir/build
+.PHONY : deltarobot_interfaces__rosidl_typesupport_c__pyext/fast
+
+#=============================================================================
+# Target rules for targets named deltarobot_interfaces__py
+
+# Build rule for target.
+deltarobot_interfaces__py: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 deltarobot_interfaces__py
+.PHONY : deltarobot_interfaces__py
+
+# fast build rule for target.
+deltarobot_interfaces__py/fast:
+	$(MAKE) $(MAKESILENT) -f /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces/deltarobot_interfaces__py/CMakeFiles/deltarobot_interfaces__py.dir/build.make /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces/deltarobot_interfaces__py/CMakeFiles/deltarobot_interfaces__py.dir/build
+.PHONY : deltarobot_interfaces__py/fast
+
 rosidl_generator_c/deltarobot_interfaces/msg/detail/set_point__functions.o: rosidl_generator_c/deltarobot_interfaces/msg/detail/set_point__functions.c.o
 .PHONY : rosidl_generator_c/deltarobot_interfaces/msg/detail/set_point__functions.o
 
@@ -385,6 +476,150 @@ rosidl_generator_c/deltarobot_interfaces/msg/detail/trajectory_task__functions.s
 rosidl_generator_c/deltarobot_interfaces/msg/detail/trajectory_task__functions.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_generator_c.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/deltarobot_interfaces/msg/detail/trajectory_task__functions.c.s
 .PHONY : rosidl_generator_c/deltarobot_interfaces/msg/detail/trajectory_task__functions.c.s
+
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.o: rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.c.o
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.o
+
+# target to build an object file
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c__pyext.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.c.o
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.c.o
+
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.i: rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.c.i
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.i
+
+# target to preprocess a source file
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c__pyext.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.c.i
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.c.i
+
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.s: rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.c.s
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.s
+
+# target to generate assembly for a file
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c__pyext.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.c.s
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.c.s
+
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.o: rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.o
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.o
+
+# target to build an object file
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.o
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.o
+
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.i: rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.i
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.i
+
+# target to preprocess a source file
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.i
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.i
+
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.s: rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.s
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.s
+
+# target to generate assembly for a file
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.s
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.s
+
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.o: rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c.o
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.o
+
+# target to build an object file
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c.o
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c.o
+
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.i: rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c.i
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.i
+
+# target to preprocess a source file
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c.i
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c.i
+
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.s: rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c.s
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.s
+
+# target to generate assembly for a file
+rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c.s
+.PHONY : rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c.s
+
+rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.o: rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.c.o
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.o
+
+# target to build an object file
+rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.c.o
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.c.o
+
+rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.i: rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.c.i
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.i
+
+# target to preprocess a source file
+rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.c.i
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.c.i
+
+rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.s: rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.c.s
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.s
+
+# target to generate assembly for a file
+rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.c.s
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.c.s
+
+rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.o: rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.c.o
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.o
+
+# target to build an object file
+rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.c.o
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.c.o
+
+rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.i: rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.c.i
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.i
+
+# target to preprocess a source file
+rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.c.i
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.c.i
+
+rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.s: rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.c.s
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.s
+
+# target to generate assembly for a file
+rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.c.s
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.c.s
+
+rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.o: rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.c.o
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.o
+
+# target to build an object file
+rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.c.o
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.c.o
+
+rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.i: rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.c.i
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.i
+
+# target to preprocess a source file
+rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.c.i
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.c.i
+
+rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.s: rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.c.s
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.s
+
+# target to generate assembly for a file
+rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/build.make CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.c.s
+.PHONY : rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.c.s
 
 rosidl_typesupport_c/deltarobot_interfaces/msg/set_point__type_support.o: rosidl_typesupport_c/deltarobot_interfaces/msg/set_point__type_support.cpp.o
 .PHONY : rosidl_typesupport_c/deltarobot_interfaces/msg/set_point__type_support.o
@@ -831,16 +1066,23 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... test"
+	@echo "... ament_cmake_python_build_deltarobot_interfaces_egg"
+	@echo "... ament_cmake_python_copy_deltarobot_interfaces"
 	@echo "... deltarobot_interfaces"
 	@echo "... deltarobot_interfaces__cpp"
+	@echo "... deltarobot_interfaces__py"
 	@echo "... deltarobot_interfaces_uninstall"
 	@echo "... uninstall"
 	@echo "... deltarobot_interfaces__rosidl_generator_c"
+	@echo "... deltarobot_interfaces__rosidl_generator_py"
 	@echo "... deltarobot_interfaces__rosidl_typesupport_c"
+	@echo "... deltarobot_interfaces__rosidl_typesupport_c__pyext"
 	@echo "... deltarobot_interfaces__rosidl_typesupport_cpp"
 	@echo "... deltarobot_interfaces__rosidl_typesupport_fastrtps_c"
+	@echo "... deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext"
 	@echo "... deltarobot_interfaces__rosidl_typesupport_fastrtps_cpp"
 	@echo "... deltarobot_interfaces__rosidl_typesupport_introspection_c"
+	@echo "... deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext"
 	@echo "... deltarobot_interfaces__rosidl_typesupport_introspection_cpp"
 	@echo "... rosidl_generator_c/deltarobot_interfaces/msg/detail/set_point__functions.o"
 	@echo "... rosidl_generator_c/deltarobot_interfaces/msg/detail/set_point__functions.i"
@@ -851,6 +1093,24 @@ help:
 	@echo "... rosidl_generator_c/deltarobot_interfaces/msg/detail/trajectory_task__functions.o"
 	@echo "... rosidl_generator_c/deltarobot_interfaces/msg/detail/trajectory_task__functions.i"
 	@echo "... rosidl_generator_c/deltarobot_interfaces/msg/detail/trajectory_task__functions.s"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.o"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.i"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_c.s"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.o"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.i"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.s"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.o"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.i"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/_deltarobot_interfaces_s.ep.rosidl_typesupport_introspection_c.s"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.o"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.i"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/msg/_set_point_s.s"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.o"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.i"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/msg/_set_points_vector_s.s"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.o"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.i"
+	@echo "... rosidl_generator_py/deltarobot_interfaces/msg/_trajectory_task_s.s"
 	@echo "... rosidl_typesupport_c/deltarobot_interfaces/msg/set_point__type_support.o"
 	@echo "... rosidl_typesupport_c/deltarobot_interfaces/msg/set_point__type_support.i"
 	@echo "... rosidl_typesupport_c/deltarobot_interfaces/msg/set_point__type_support.s"

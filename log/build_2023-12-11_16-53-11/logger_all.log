@@ -1,0 +1,204 @@
+[0.862s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.863s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=8, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7f368a1d3a60>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7f368a1d2590>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7f368a1d2590>>)
+[0.902s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.902s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.902s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.902s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.902s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.903s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.903s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws'
+[0.903s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.903s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.903s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.903s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.903s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.903s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.903s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.903s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.903s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.911s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.911s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.911s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.911s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.911s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.911s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.912s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.912s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.912s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.912s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.912s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.912s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.912s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.912s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.912s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.912s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.912s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot) by extensions ['ignore', 'ignore_ament_install']
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot) by extension 'ignore'
+[0.913s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot) by extension 'ignore_ament_install'
+[0.914s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot) by extensions ['colcon_pkg']
+[0.914s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot) by extension 'colcon_pkg'
+[0.914s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot) by extensions ['colcon_meta']
+[0.914s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot) by extension 'colcon_meta'
+[0.914s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot) by extensions ['ros']
+[0.914s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot) by extension 'ros'
+[0.916s] DEBUG:colcon.colcon_core.package_identification:Package 'src/deltarobot' with type 'ros.ament_python' and name 'deltarobot'
+[0.916s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot_interfaces) by extensions ['ignore', 'ignore_ament_install']
+[0.916s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot_interfaces) by extension 'ignore'
+[0.916s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot_interfaces) by extension 'ignore_ament_install'
+[0.916s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot_interfaces) by extensions ['colcon_pkg']
+[0.916s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot_interfaces) by extension 'colcon_pkg'
+[0.916s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot_interfaces) by extensions ['colcon_meta']
+[0.916s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot_interfaces) by extension 'colcon_meta'
+[0.916s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot_interfaces) by extensions ['ros']
+[0.917s] Level 1:colcon.colcon_core.package_identification:_identify(src/deltarobot_interfaces) by extension 'ros'
+[0.917s] DEBUG:colcon.colcon_core.package_identification:Package 'src/deltarobot_interfaces' with type 'ros.ament_cmake' and name 'deltarobot_interfaces'
+[0.917s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.917s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.917s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.917s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.917s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[1.006s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[1.006s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[1.019s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/ostifede02/Documents/2dr_ws/install/deltarobot' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[1.020s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/ostifede02/Documents/2dr_ws/install/deltarobot_interfaces' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[1.020s] WARNING:colcon.colcon_ros.prefix_path.catkin:The path '/home/ostifede02/Documents/2dr_ws/install/deltarobot_interfaces' in the environment variable CMAKE_PREFIX_PATH doesn't exist
+[1.033s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 0 installed packages in /home/ostifede02/Documents/2dr_ws/install
+[1.047s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 270 installed packages in /opt/ros/humble
+[1.048s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[1.114s] Level 5:colcon.colcon_core.verb:set package 'deltarobot_interfaces' build argument 'cmake_args' from command line to 'None'
+[1.114s] Level 5:colcon.colcon_core.verb:set package 'deltarobot_interfaces' build argument 'cmake_target' from command line to 'None'
+[1.114s] Level 5:colcon.colcon_core.verb:set package 'deltarobot_interfaces' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.114s] Level 5:colcon.colcon_core.verb:set package 'deltarobot_interfaces' build argument 'cmake_clean_cache' from command line to 'False'
+[1.114s] Level 5:colcon.colcon_core.verb:set package 'deltarobot_interfaces' build argument 'cmake_clean_first' from command line to 'False'
+[1.114s] Level 5:colcon.colcon_core.verb:set package 'deltarobot_interfaces' build argument 'cmake_force_configure' from command line to 'False'
+[1.114s] Level 5:colcon.colcon_core.verb:set package 'deltarobot_interfaces' build argument 'ament_cmake_args' from command line to 'None'
+[1.114s] Level 5:colcon.colcon_core.verb:set package 'deltarobot_interfaces' build argument 'catkin_cmake_args' from command line to 'None'
+[1.114s] Level 5:colcon.colcon_core.verb:set package 'deltarobot_interfaces' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.114s] DEBUG:colcon.colcon_core.verb:Building package 'deltarobot_interfaces' with the following arguments: {'ament_cmake_args': None, 'build_base': '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces', 'merge_install': False, 'path': '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot_interfaces', 'symlink_install': False, 'test_result_base': None}
+[1.127s] Level 5:colcon.colcon_core.verb:set package 'deltarobot' build argument 'cmake_args' from command line to 'None'
+[1.127s] Level 5:colcon.colcon_core.verb:set package 'deltarobot' build argument 'cmake_target' from command line to 'None'
+[1.127s] Level 5:colcon.colcon_core.verb:set package 'deltarobot' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.127s] Level 5:colcon.colcon_core.verb:set package 'deltarobot' build argument 'cmake_clean_cache' from command line to 'False'
+[1.127s] Level 5:colcon.colcon_core.verb:set package 'deltarobot' build argument 'cmake_clean_first' from command line to 'False'
+[1.127s] Level 5:colcon.colcon_core.verb:set package 'deltarobot' build argument 'cmake_force_configure' from command line to 'False'
+[1.127s] Level 5:colcon.colcon_core.verb:set package 'deltarobot' build argument 'ament_cmake_args' from command line to 'None'
+[1.127s] Level 5:colcon.colcon_core.verb:set package 'deltarobot' build argument 'catkin_cmake_args' from command line to 'None'
+[1.127s] Level 5:colcon.colcon_core.verb:set package 'deltarobot' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.127s] DEBUG:colcon.colcon_core.verb:Building package 'deltarobot' with the following arguments: {'ament_cmake_args': None, 'build_base': '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot', 'merge_install': False, 'path': '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot', 'symlink_install': False, 'test_result_base': None}
+[1.139s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[1.152s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[1.152s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot_interfaces' with build type 'ament_cmake'
+[1.152s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot_interfaces'
+[1.166s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[1.166s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.167s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.214s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ostifede02/Documents/2dr_ws/install/deltarobot:/opt/ros/humble /usr/bin/cmake /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot_interfaces -DCMAKE_INSTALL_PREFIX=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces
+[3.392s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ostifede02/Documents/2dr_ws/install/deltarobot:/opt/ros/humble /usr/bin/cmake /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot_interfaces -DCMAKE_INSTALL_PREFIX=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces
+[3.394s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ostifede02/Documents/2dr_ws/install/deltarobot:/opt/ros/humble /usr/bin/cmake --build /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces -- -j8 -l8
+[5.995s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ostifede02/Documents/2dr_ws/install/deltarobot:/opt/ros/humble /usr/bin/cmake --build /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces -- -j8 -l8
+[6.231s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ostifede02/Documents/2dr_ws/install/deltarobot:/opt/ros/humble /usr/bin/cmake --install /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces
+[6.557s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(deltarobot_interfaces)
+[6.558s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ostifede02/Documents/2dr_ws/install/deltarobot:/opt/ros/humble /usr/bin/cmake --install /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces
+[6.573s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces' for CMake module files
+[6.576s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces' for CMake config files
+[6.580s] Level 1:colcon.colcon_core.shell:create_environment_hook('deltarobot_interfaces', 'cmake_prefix_path')
+[6.594s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/hook/cmake_prefix_path.ps1'
+[6.596s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/hook/cmake_prefix_path.dsv'
+[6.596s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/hook/cmake_prefix_path.sh'
+[6.597s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib'
+[6.597s] Level 1:colcon.colcon_core.shell:create_environment_hook('deltarobot_interfaces', 'ld_library_path_lib')
+[6.611s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/hook/ld_library_path_lib.ps1'
+[6.611s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/hook/ld_library_path_lib.dsv'
+[6.612s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/hook/ld_library_path_lib.sh'
+[6.612s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/bin'
+[6.612s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/pkgconfig/deltarobot_interfaces.pc'
+[6.613s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/python3.10/site-packages'
+[6.613s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/bin'
+[6.626s] INFO:colcon.colcon_core.shell:Creating package script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.ps1'
+[6.627s] INFO:colcon.colcon_core.shell:Creating package descriptor '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.dsv'
+[6.628s] INFO:colcon.colcon_core.shell:Creating package script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.sh'
+[6.628s] INFO:colcon.colcon_core.shell:Creating package script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.bash'
+[6.629s] INFO:colcon.colcon_core.shell:Creating package script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.zsh'
+[6.630s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/colcon-core/packages/deltarobot_interfaces)
+[6.919s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(deltarobot_interfaces)
+[6.933s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces' for CMake module files
+[6.937s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces' for CMake config files
+[6.941s] Level 1:colcon.colcon_core.shell:create_environment_hook('deltarobot_interfaces', 'cmake_prefix_path')
+[6.954s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/hook/cmake_prefix_path.ps1'
+[6.955s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/hook/cmake_prefix_path.dsv'
+[6.955s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/hook/cmake_prefix_path.sh'
+[6.956s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib'
+[6.956s] Level 1:colcon.colcon_core.shell:create_environment_hook('deltarobot_interfaces', 'ld_library_path_lib')
+[6.970s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/hook/ld_library_path_lib.ps1'
+[6.971s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/hook/ld_library_path_lib.dsv'
+[6.971s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/hook/ld_library_path_lib.sh'
+[6.972s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/bin'
+[6.972s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/pkgconfig/deltarobot_interfaces.pc'
+[6.972s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib/python3.10/site-packages'
+[6.972s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/bin'
+[6.986s] INFO:colcon.colcon_core.shell:Creating package script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.ps1'
+[6.987s] INFO:colcon.colcon_core.shell:Creating package descriptor '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.dsv'
+[6.987s] INFO:colcon.colcon_core.shell:Creating package script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.sh'
+[6.988s] INFO:colcon.colcon_core.shell:Creating package script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.bash'
+[6.988s] INFO:colcon.colcon_core.shell:Creating package script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.zsh'
+[6.988s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/colcon-core/packages/deltarobot_interfaces)
+[6.989s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot' with build type 'ament_python'
+[6.989s] Level 1:colcon.colcon_core.shell:create_environment_hook('deltarobot', 'ament_prefix_path')
+[7.003s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/deltarobot/hook/ament_prefix_path.ps1'
+[7.004s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/deltarobot/hook/ament_prefix_path.dsv'
+[7.004s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/deltarobot/hook/ament_prefix_path.sh'
+[7.017s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.017s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[7.310s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot'
+[7.323s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.324s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[7.771s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot': AMENT_PREFIX_PATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces:/home/ostifede02/Documents/2dr_ws/install/deltarobot_interfaces:/opt/openrobots LD_LIBRARY_PATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib:/home/ostifede02/Documents/2dr_ws/install/deltarobot_interfaces/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib:/opt/openrobots/lib PYTHONPATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/prefix_override:/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages:/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/deltarobot build --build-base /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build install --record /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/install.log --single-version-externally-managed
+[8.088s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot' returned '0': AMENT_PREFIX_PATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces:/home/ostifede02/Documents/2dr_ws/install/deltarobot_interfaces:/opt/openrobots LD_LIBRARY_PATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib:/home/ostifede02/Documents/2dr_ws/install/deltarobot_interfaces/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib:/opt/openrobots/lib PYTHONPATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/prefix_override:/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages:/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/deltarobot build --build-base /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build install --record /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/install.log --single-version-externally-managed
+[8.101s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot' for CMake module files
+[8.103s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot' for CMake config files
+[8.104s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib'
+[8.105s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/bin'
+[8.105s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/pkgconfig/deltarobot.pc'
+[8.105s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages'
+[8.105s] Level 1:colcon.colcon_core.shell:create_environment_hook('deltarobot', 'pythonpath')
+[8.119s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/deltarobot/hook/pythonpath.ps1'
+[8.120s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/deltarobot/hook/pythonpath.dsv'
+[8.120s] INFO:colcon.colcon_core.shell:Creating environment hook '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/deltarobot/hook/pythonpath.sh'
+[8.121s] Level 1:colcon.colcon_core.environment:checking '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/bin'
+[8.121s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(deltarobot)
+[8.135s] INFO:colcon.colcon_core.shell:Creating package script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/deltarobot/package.ps1'
+[8.136s] INFO:colcon.colcon_core.shell:Creating package descriptor '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/deltarobot/package.dsv'
+[8.136s] INFO:colcon.colcon_core.shell:Creating package script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/deltarobot/package.sh'
+[8.137s] INFO:colcon.colcon_core.shell:Creating package script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/deltarobot/package.bash'
+[8.137s] INFO:colcon.colcon_core.shell:Creating package script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/deltarobot/package.zsh'
+[8.138s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/colcon-core/packages/deltarobot)
+[8.138s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[8.138s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[8.138s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[8.138s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[8.158s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[8.158s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[8.158s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[8.164s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[8.178s] INFO:colcon.colcon_core.shell:Creating prefix script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/local_setup.ps1'
+[8.179s] INFO:colcon.colcon_core.shell:Creating prefix util module '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/_local_setup_util_ps1.py'
+[8.180s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/setup.ps1'
+[8.194s] INFO:colcon.colcon_core.shell:Creating prefix script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/local_setup.sh'
+[8.194s] INFO:colcon.colcon_core.shell:Creating prefix util module '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/_local_setup_util_sh.py'
+[8.195s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/setup.sh'
+[8.208s] INFO:colcon.colcon_core.shell:Creating prefix script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/local_setup.bash'
+[8.209s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/setup.bash'
+[8.222s] INFO:colcon.colcon_core.shell:Creating prefix script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/local_setup.zsh'
+[8.223s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/setup.zsh'

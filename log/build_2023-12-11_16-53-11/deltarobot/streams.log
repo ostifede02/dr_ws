@@ -1,0 +1,48 @@
+[0.781s] Invoking command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot': AMENT_PREFIX_PATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces:/home/ostifede02/Documents/2dr_ws/install/deltarobot_interfaces:/opt/openrobots LD_LIBRARY_PATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib:/home/ostifede02/Documents/2dr_ws/install/deltarobot_interfaces/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib:/opt/openrobots/lib PYTHONPATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/prefix_override:/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages:/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/deltarobot build --build-base /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build install --record /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/install.log --single-version-externally-managed
+[1.022s] running egg_info
+[1.022s] creating ../../build/deltarobot/deltarobot.egg-info
+[1.022s] writing ../../build/deltarobot/deltarobot.egg-info/PKG-INFO
+[1.023s] writing dependency_links to ../../build/deltarobot/deltarobot.egg-info/dependency_links.txt
+[1.023s] writing entry points to ../../build/deltarobot/deltarobot.egg-info/entry_points.txt
+[1.023s] writing requirements to ../../build/deltarobot/deltarobot.egg-info/requires.txt
+[1.024s] writing top-level names to ../../build/deltarobot/deltarobot.egg-info/top_level.txt
+[1.024s] writing manifest file '../../build/deltarobot/deltarobot.egg-info/SOURCES.txt'
+[1.026s] reading manifest file '../../build/deltarobot/deltarobot.egg-info/SOURCES.txt'
+[1.029s] writing manifest file '../../build/deltarobot/deltarobot.egg-info/SOURCES.txt'
+[1.029s] running build
+[1.029s] running build_py
+[1.029s] creating /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build
+[1.029s] creating /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib
+[1.029s] creating /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib/deltarobot
+[1.030s] copying deltarobot/gepetto_visualizer.py -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib/deltarobot
+[1.030s] copying deltarobot/robot_controller.py -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib/deltarobot
+[1.031s] copying deltarobot/task_handler.py -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib/deltarobot
+[1.032s] copying deltarobot/trajectory_generator.py -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib/deltarobot
+[1.032s] copying deltarobot/user_input_gui.py -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib/deltarobot
+[1.033s] copying deltarobot/__init__.py -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib/deltarobot
+[1.034s] running install
+[1.034s] running install_lib
+[1.035s] creating /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot
+[1.035s] copying /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib/deltarobot/gepetto_visualizer.py -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot
+[1.036s] copying /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib/deltarobot/robot_controller.py -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot
+[1.037s] copying /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib/deltarobot/task_handler.py -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot
+[1.038s] copying /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib/deltarobot/trajectory_generator.py -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot
+[1.039s] copying /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib/deltarobot/user_input_gui.py -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot
+[1.040s] copying /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build/lib/deltarobot/__init__.py -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot
+[1.041s] byte-compiling /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot/gepetto_visualizer.py to gepetto_visualizer.cpython-310.pyc
+[1.042s] byte-compiling /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot/robot_controller.py to robot_controller.cpython-310.pyc
+[1.043s] byte-compiling /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot/task_handler.py to task_handler.cpython-310.pyc
+[1.044s] byte-compiling /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot/trajectory_generator.py to trajectory_generator.cpython-310.pyc
+[1.045s] byte-compiling /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot/user_input_gui.py to user_input_gui.cpython-310.pyc
+[1.046s] byte-compiling /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot/__init__.py to __init__.cpython-310.pyc
+[1.047s] running install_data
+[1.048s] creating /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/ament_index
+[1.048s] creating /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/ament_index/resource_index
+[1.048s] creating /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/ament_index/resource_index/packages
+[1.048s] copying resource/deltarobot -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/ament_index/resource_index/packages
+[1.049s] copying package.xml -> /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/share/deltarobot
+[1.050s] running install_egg_info
+[1.052s] Copying ../../build/deltarobot/deltarobot.egg-info to /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages/deltarobot-0.0.0-py3.10.egg-info
+[1.058s] running install_scripts
+[1.078s] writing list of installed files to '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/install.log'
+[1.098s] Invoked command in '/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot' returned '0': AMENT_PREFIX_PATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces:/home/ostifede02/Documents/2dr_ws/install/deltarobot_interfaces:/opt/openrobots LD_LIBRARY_PATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/lib:/home/ostifede02/Documents/2dr_ws/install/deltarobot_interfaces/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib:/opt/openrobots/lib PYTHONPATH=/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/prefix_override:/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot/lib/python3.10/site-packages:/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/deltarobot build --build-base /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/build install --record /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot/install.log --single-version-externally-managed

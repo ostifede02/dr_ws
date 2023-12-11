@@ -9,6 +9,12 @@
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c.dir
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_cpp.dir
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_typesupport_cpp.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/ament_cmake_python_copy_deltarobot_interfaces.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/ament_cmake_python_build_deltarobot_interfaces_egg.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_generator_py.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_typesupport_introspection_c__pyext.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces__rosidl_typesupport_c__pyext.dir
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/test.dir
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/edit_cache.dir
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/rebuild_cache.dir
@@ -16,3 +22,11 @@
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/install.dir
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/install/local.dir
 /media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/install/strip.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces__py/CMakeFiles/deltarobot_interfaces__py.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces__py/CMakeFiles/test.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces__py/CMakeFiles/edit_cache.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces__py/CMakeFiles/rebuild_cache.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces__py/CMakeFiles/list_install_components.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces__py/CMakeFiles/install.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces__py/CMakeFiles/install/local.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/deltarobot_interfaces__py/CMakeFiles/install/strip.dir

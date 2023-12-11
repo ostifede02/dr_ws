@@ -23,7 +23,6 @@ function _colcon_prefix_chain_powershell_source_script {
 
 # source chained prefixes
 _colcon_prefix_chain_powershell_source_script "/opt/ros/humble\local_setup.ps1"
-_colcon_prefix_chain_powershell_source_script "/home/ostifede02/Documents/deltarobot_ws/install\local_setup.ps1"
 _colcon_prefix_chain_powershell_source_script "/home/ostifede02/Documents/2dr_ws/install\local_setup.ps1"
 
 # source this prefix
