@@ -1,0 +1,15 @@
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/ament_index/resource_index/package_run_dependencies/deltarobot_interfaces
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/ament_index/resource_index/parent_prefix_path/deltarobot_interfaces
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/environment/ament_prefix_path.sh
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/environment/ament_prefix_path.dsv
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/environment/path.sh
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/environment/path.dsv
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/local_setup.bash
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/local_setup.sh
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/local_setup.zsh
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/local_setup.dsv
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.dsv
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/ament_index/resource_index/packages/deltarobot_interfaces
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/deltarobot_interfacesConfig.cmake
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/cmake/deltarobot_interfacesConfig-version.cmake
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/install/deltarobot_interfaces/share/deltarobot_interfaces/package.xml

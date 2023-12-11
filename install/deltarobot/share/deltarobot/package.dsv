@@ -1,0 +1,6 @@
+source;share/deltarobot/hook/pythonpath.ps1
+source;share/deltarobot/hook/pythonpath.dsv
+source;share/deltarobot/hook/pythonpath.sh
+source;share/deltarobot/hook/ament_prefix_path.ps1
+source;share/deltarobot/hook/ament_prefix_path.dsv
+source;share/deltarobot/hook/ament_prefix_path.sh
