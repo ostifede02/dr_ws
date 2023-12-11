@@ -1,0 +1,9 @@
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/uninstall.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/deltarobot_interfaces_uninstall.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/test.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/edit_cache.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/rebuild_cache.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/list_install_components.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/install.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/install/local.dir
+/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/build/CMakeFiles/install/strip.dir
