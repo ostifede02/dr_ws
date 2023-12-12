@@ -449,16 +449,16 @@
 	"dependencies" : 
 	[
 		{
-			"backtrace" : 12,
-			"id" : "deltarobot_interfaces__rosidl_generator_c::@6890427a1f51a3e7e1df"
-		},
-		{
 			"backtrace" : 47,
 			"id" : "deltarobot_interfaces__rosidl_typesupport_c::@6890427a1f51a3e7e1df"
 		},
 		{
 			"backtrace" : 47,
 			"id" : "deltarobot_interfaces__py::@6045daa70a1fa30de286"
+		},
+		{
+			"backtrace" : 12,
+			"id" : "deltarobot_interfaces__rosidl_generator_c::@6890427a1f51a3e7e1df"
 		}
 	],
 	"id" : "deltarobot_interfaces__rosidl_generator_py::@6890427a1f51a3e7e1df",
