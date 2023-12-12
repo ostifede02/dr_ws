@@ -25,8 +25,17 @@ class TrajectoryGenerator(Node):
 
 
     def trajectory_generator_callback(self, trajectory_task_msg):
-            # do something
-            return
+        ## unpack the message
+        pos_start = trajectory_task_msg.pos_start
+        pos_end = trajectory_task_msg.pos_end
+        t_total_input = trajectory_task_msg.task_time        
+        path_routine_type = trajectory_task_msg.task_type
+
+        ## do the rest
+
+        ## publish the vector of {x, z, dt}
+       
+        return
 
 
 
