@@ -15,17 +15,17 @@ class TrajectoryGenerator(Node):
     def __init__(self):
         super().__init__('trajectory_generator')
 
-        self.pub = self.create_publisher(
+        self.set_points_vector_pub = self.create_publisher(
             SetPointsVector,
-            'trajectory_vector',
+            'set_points_vector',
             10)
         
-        self.sub = self.create_subscription(
+        self.trajectory_task_sub = self.create_subscription(
             TrajectoryTask,
             'trajectory_task',
             self.trajectory_generator_callback,
             10)
-        self.sub
+        self.trajectory_task_sub
 
 
     def trajectory_generator_callback(self, trajectory_task_msg):
@@ -47,7 +47,7 @@ class TrajectoryGenerator(Node):
             self.const_acceleration = self.max_acceleration_default
             self.const_velocity = self.__get_const_velocity(t_total_input, x_total)
             if self.const_velocity is None:
-                print(f"ERROR! with an acceleration of {self.const_acceleration}, the path of length {x_total} millimeters cannot be reached in {t_total_input} seconds.")
+                self.get_logger().error(f"With an acceleration of {self.const_acceleration}, the path of length {x_total} millimeters cannot be reached in {t_total_input} seconds.")
                 return None
         else:
             self.const_velocity = self.max_velocity_default
@@ -58,20 +58,29 @@ class TrajectoryGenerator(Node):
         self.x_acc_flag, self.t_acc_flag, t_total = self.__get_time_scaling_flags(x_total)
         
         # creating the set points vector
-        s_instance = np.linspace(0, 1, n_set_points)
-        set_points_vector = np.empty([3, n_set_points])
+        set_points_vector_msg = SetPointsVector()
+        set_point_prev = self.__get_pos_bezier_poly(0)
         x_travelled = 0
-        for index, s in enumerate(s_instance):
-            # x_travelled += norm(set_point - set_point_prev)
-            set_point = self.__get_pos_bezier_poly(s)
-            t = self.__get_t_next(None)
-            
-            set_points_vector[0, index] = set_point[0]
-            set_points_vector[1, index] = set_point[2]
-            set_points_vector[2, index] = t
+        
+        s_instance = np.linspace(0, 1, n_set_points)
+        for s in s_instance:
+            set_point_msg = SetPoint()
 
-        # publish vector
-        # ***********************       
+            set_point = self.__get_pos_bezier_poly(s)
+            x_travelled = np.linalg.norm(set_point - set_point_prev)
+            set_point_prev = set_point
+
+            if s == 1:
+                set_point_msg.t = self.__get_t_next(x_total, x_total, t_total)      # avoid x_travelled approximations errors 
+            else:
+                set_point_msg.t = self.__get_t_next(x_travelled, x_total, t_total)
+
+            set_point_msg.x = set_point[0]
+            set_point_msg.z = set_point[2]
+            
+            set_points_vector_msg.append(set_point_msg)
+
+        self.set_points_vector_pub.publish(set_points_vector_msg)
         return
     
 
@@ -110,12 +119,12 @@ class TrajectoryGenerator(Node):
     def __get_path_length(self):
         x_total = 0
         delta_s = conf.configuration["trajectory"]["delta_s_high_resolution"]
-        pos_current = self.__get_pos_bezier_poly(0, self.path_poly_points)
+        pos_current = self.__get_pos_bezier_poly(0)
 
         # compute curve's length
         s_instance = np.linspace(0, 1-delta_s, int(1/delta_s))
         for s in s_instance:
-            pos_next = self.__get_pos_bezier_poly(s+delta_s, self.path_poly_points)
+            pos_next = self.__get_pos_bezier_poly(s+delta_s)
             x_total += np.linalg.norm(pos_next-pos_current)
             pos_current = pos_next
 
@@ -168,18 +177,18 @@ class TrajectoryGenerator(Node):
         return x_acc_flag, t_acc_flag, t_total
     
 
-    def __get_t_next(self, x_next):
+    def __get_t_next(self, x_travelled, x_total, t_total):
         # acceleration profile
-        if x_next < self.x_acc_flag:
-            t_next = np.sqrt((2*x_next)/self.const_acceleration)
+        if x_travelled < self.x_acc_flag:
+            t_next = np.sqrt((2*x_travelled)/self.const_acceleration)
 
         # constant velocity profile
-        if x_next >= self.x_acc_flag and x_next < (self.x_total - self.x_acc_flag):
-            t_next = self.t_acc_flag + ((x_next - self.x_acc_flag) / self.const_velocity)
+        if x_travelled >= self.x_acc_flag and x_travelled < (x_total - self.x_acc_flag):
+            t_next = self.t_acc_flag + ((x_travelled - self.x_acc_flag) / self.const_velocity)
 
         # deceleration profile
-        if x_next >= (self.x_total - self.x_acc_flag):
-            t_next = self.t_total - np.sqrt((2*abs(self.x_total - x_next) / self.const_acceleration))
+        if x_travelled >= (x_total - self.x_acc_flag):
+            t_next = t_total - np.sqrt((2*abs(x_total - x_travelled) / self.const_acceleration))
 
         return t_next    
 
