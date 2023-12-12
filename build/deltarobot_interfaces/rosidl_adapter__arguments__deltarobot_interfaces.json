@@ -1,0 +1,8 @@
+{
+  "package_name": "deltarobot_interfaces",
+  "non_idl_tuples": [
+    "/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot_interfaces:msg/SetPoint.msg",
+    "/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot_interfaces:msg/SetPointsVector.msg",
+    "/media/ostifede02/F48A91EB8A91AB1E/Users/ostif/Documents/2dr_ws/src/deltarobot_interfaces:msg/TrajectoryTask.msg"
+  ]
+}
