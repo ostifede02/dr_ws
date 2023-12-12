@@ -1,4 +1,7 @@
+# vscode .json folder
 .vscode/
+
+# colcon build folders
 /build/
 /log/
 /install/
