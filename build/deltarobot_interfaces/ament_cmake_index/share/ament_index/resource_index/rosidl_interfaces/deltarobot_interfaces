@@ -1,6 +1,0 @@
-msg/SetPoint.idl
-msg/SetPoint.msg
-msg/SetPointsVector.idl
-msg/SetPointsVector.msg
-msg/TrajectoryTask.idl
-msg/TrajectoryTask.msg

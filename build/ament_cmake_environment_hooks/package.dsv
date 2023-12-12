@@ -1,4 +1,0 @@
-source;share/deltarobot_interfaces/local_setup.bash
-source;share/deltarobot_interfaces/local_setup.dsv
-source;share/deltarobot_interfaces/local_setup.sh
-source;share/deltarobot_interfaces/local_setup.zsh

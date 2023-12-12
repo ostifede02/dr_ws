@@ -1,4 +1,0 @@
-geometry_msgs/Point32 pos_start
-geometry_msgs/Point32 pos_end
-float32 task_time
-std_msgs/String task_type
