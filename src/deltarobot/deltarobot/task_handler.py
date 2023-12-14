@@ -13,7 +13,7 @@ class TaskHandler(Node):
         self.pub = self.create_publisher(
             SetPointsVector,
             'trajectory_task',
-            100)
+            10)
         
         self.sub = self.create_subscription(
             TrajectoryTask,

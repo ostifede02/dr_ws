@@ -4,6 +4,7 @@ from rclpy.node import Node
 from deltarobot_interfaces.msg import TrajectoryTask
 from deltarobot_interfaces.msg import SetPointsVector
 
+import pinocchio as pin
 
 class RobotController(Node):
 
@@ -24,7 +25,18 @@ class RobotController(Node):
 
 
     def robot_controller_callback(self, set_points_vector_msg):
-            # do something
+            for set_point_msg in set_points_vector_msg:
+                # compute inverse geometry
+                # check for collisions
+
+                # get delta_t
+
+                # update current position
+
+                # publish to viz            
+                pass
+
+            # publish feedback to task handler
             return
 
 
