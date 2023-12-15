@@ -16,7 +16,7 @@
         <collision>
             <origin xyz="0 0 9" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/carriage_1.stl" scale="0.9 1.5 0.9"/>
+                <mesh filename="package://deltarobot_description/meshes/rails_collision.stl" scale="0.9 1.5 0.9"/>
             </geometry>
         </collision>
     </link>
