@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            "input_gui = deltarobot.robot_controller_gui:main",
         ],
     },
 )

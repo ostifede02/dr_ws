@@ -16,6 +16,10 @@
   <depend>rclpy</depend>
   <depend>numpy</depend>
   <depend>deltarobot_interfaces</depend>
+  
+  <!-- robot_controller_gui.py -->
+  <depend>geometry_msgs</depend>
+  <depend>tkinter</depend>
 
   <exec_depend>ros2launch</exec_depend>
 
