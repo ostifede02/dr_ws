@@ -73,8 +73,6 @@ class RobotControllerGUI(Node):
     def start_button(self):
         msg = Point32()
 
-        self.x_entry.delete(0, tk.END)
-        self.z_entry.delete(0, tk.END)
 
         try:
             msg.x = float(self.x_entry.get())
@@ -83,6 +81,7 @@ class RobotControllerGUI(Node):
 
         except ValueError:
             self.get_logger().error("Insert a numerical value.")
+
         return
 
     def stop_button(self):
