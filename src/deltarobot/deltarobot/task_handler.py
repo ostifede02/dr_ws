@@ -8,23 +8,24 @@ from deltarobot_interfaces.msg import SetPointsVector
 class TaskHandler(Node):
 
     def __init__(self):
-        super().__init__('task_handler')
+        super().__init__('task_handler_node')
 
         self.pub = self.create_publisher(
-            SetPointsVector,
+            TrajectoryTask,
             'trajectory_task',
             10)
         
         self.sub = self.create_subscription(
             TrajectoryTask,
-            'user_input',
+            'input_gui',
             self.task_handler_callback,
             10)
         self.sub
 
 
     def task_handler_callback(self, task_input_msg):
-            # do something
+            ## needs to have a logic
+            self.pub.publish(task_input_msg)
             return
 
 

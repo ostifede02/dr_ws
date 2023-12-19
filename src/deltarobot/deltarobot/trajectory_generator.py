@@ -2,18 +2,20 @@ import rclpy
 from rclpy.node import Node
 
 import numpy as np
+import time
 
 from deltarobot_interfaces.msg import TrajectoryTask
 from deltarobot_interfaces.msg import SetPointsVector
 from deltarobot_interfaces.msg import SetPoint
 
-import configuration as conf
+from deltarobot import configuration as conf
+
 
 
 class TrajectoryGenerator(Node):
 
     def __init__(self):
-        super().__init__('trajectory_generator')
+        super().__init__('trajectory_generator_node')
 
         self.set_points_vector_pub = self.create_publisher(
             SetPointsVector,
@@ -27,17 +29,22 @@ class TrajectoryGenerator(Node):
             10)
         self.trajectory_task_sub
 
+        self.max_velocity_default = conf.configuration["trajectory"]["max_velocity"]
+        self.max_acceleration_default = conf.configuration["trajectory"]["max_acceleration"]
+        return
+    
 
     def trajectory_generator_callback(self, trajectory_task_msg):
+        time_start = time.time()
+        
         ## unpack the message
-        pos_start = trajectory_task_msg.pos_start
-        pos_end = trajectory_task_msg.pos_end
-        t_total_input = trajectory_task_msg.task_time        
-        path_routine_type = trajectory_task_msg.task_type
+        pos_start = np.array([trajectory_task_msg.pos_start.x, trajectory_task_msg.pos_start.y, trajectory_task_msg.pos_start.z])
+        pos_end = np.array([trajectory_task_msg.pos_end.x, trajectory_task_msg.pos_end.y, trajectory_task_msg.pos_end.z])
+        t_total_input = trajectory_task_msg.task_time
+        path_routine_type = trajectory_task_msg.task_type.data
 
         # the cubic bezier curve is a plynomial described by 4 points
         self.path_poly_points = self.__get_path_poly_points(pos_start, pos_end, path_routine_type)
-        
         x_total = self.__get_path_length()
 
         n_set_points = self.__get_number_set_points(x_total)     # avoid via points too close to each other
@@ -59,6 +66,8 @@ class TrajectoryGenerator(Node):
         
         # creating the set points vector
         set_points_vector_msg = SetPointsVector()
+        set_points_vector_msg.set_points = []
+
         set_point_prev = self.__get_pos_bezier_poly(0)
         x_travelled = 0
         
@@ -78,9 +87,12 @@ class TrajectoryGenerator(Node):
             set_point_msg.x = set_point[0]
             set_point_msg.z = set_point[2]
             
-            set_points_vector_msg.append(set_point_msg)
+            set_points_vector_msg.set_points.append(set_point_msg)
 
         self.set_points_vector_pub.publish(set_points_vector_msg)
+
+        time_stop = time.time()
+        self.get_logger().info(f"elapsed time: {(time_stop-time_start)*1e3} [milliseconds]")
         return
     
 
@@ -132,6 +144,8 @@ class TrajectoryGenerator(Node):
     
 
     def __get_pos_bezier_poly(self, s):
+        pos = np.empty(3)
+
         pos = pow(1-s, 3)*self.path_poly_points[0]
         pos += 3*pow(1-s, 2)*s*self.path_poly_points[1] 
         pos += 3*(1-s)*pow(s, 2)*self.path_poly_points[2] 

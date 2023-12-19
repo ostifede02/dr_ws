@@ -16,8 +16,10 @@
   <depend>rclpy</depend>
   <depend>numpy</depend>
   <depend>deltarobot_interfaces</depend>
+  <depend>configuration</depend>
   
   <!-- robot_controller_gui.py -->
+  <!--GUI token: figd_lbq505WhrS-hIDvLNQFptpQl91YswrZt9LKEzKBR-->
   <depend>geometry_msgs</depend>
   <depend>tkinter</depend>
 
