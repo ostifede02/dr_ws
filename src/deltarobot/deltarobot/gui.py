@@ -1,15 +1,13 @@
 import rclpy
 from rclpy.node import Node
-from ament_index_python.packages import get_package_share_directory
 
 import tkinter as tk
 from tkinter import ttk
 
-from geometry_msgs.msg import Point32
-from std_msgs.msg import String
+from deltarobot import configuration as conf
+
 from deltarobot_interfaces.msg import TrajectoryTask
 
-from deltarobot import configuration as conf
 
 
 class RobotControllerGUI(Node):
@@ -110,10 +108,10 @@ class RobotControllerGUI(Node):
             bg=bg_color,
             fg=fg_color,
             font=entry_font,
-            highlightthickness=0
+            highlightthickness=0,
         )
         self.entry_x.place(
-            x=192,
+            x=210,
             y=293,
             width=256,
             height=46
@@ -135,7 +133,7 @@ class RobotControllerGUI(Node):
             highlightthickness=0
         )
         self.entry_z.place(
-            x=192,
+            x=210,
             y=374,
             width=256,
             height=46
@@ -157,7 +155,7 @@ class RobotControllerGUI(Node):
             highlightthickness=0
         )
         self.entry_time.place(
-            x=192,
+            x=210,
             y=455,
             width=256,
             height=46
@@ -206,7 +204,7 @@ class RobotControllerGUI(Node):
             font=entry_font
         )
         self.combo_task_type.place(
-            x= 192,
+            x= 210,
             y= 531,
             width= 256,
             height= 45
