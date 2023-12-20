@@ -215,8 +215,6 @@ class RobotControllerGUI(Node):
     def start_button_pressed(self):
         msg = TrajectoryTask()
         try:
-            msg.pos_start.x = float(0)
-            msg.pos_start.z = float(0)
             msg.pos_end.x = float(self.entry_x.get())
             msg.pos_end.z = float(self.entry_z.get())
             msg.task_time = float(self.entry_time.get())

@@ -38,7 +38,7 @@ class TrajectoryGenerator(Node):
         time_start = time.time()
         
         ## unpack the message
-        pos_start = np.array([trajectory_task_msg.pos_start.x, trajectory_task_msg.pos_start.y, trajectory_task_msg.pos_start.z])
+        pos_start = np.array([0, 0, 0])     # create a service that takes the current position from robot_controller
         pos_end = np.array([trajectory_task_msg.pos_end.x, trajectory_task_msg.pos_end.y, trajectory_task_msg.pos_end.z])
         t_total_input = trajectory_task_msg.task_time
         path_routine_type = trajectory_task_msg.task_type.data

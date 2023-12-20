@@ -23,6 +23,7 @@ setup(
             "gui_node = deltarobot.gui:main",
             "task_handler_node = deltarobot.task_handler:main",
             "trajectory_generator_node = deltarobot.trajectory_generator:main",
+            "robot_controller_node = deltarobot.robot_controller:main",
         ],
     },
 )
