@@ -96,3 +96,27 @@ class InverseGeometry:
 
         # print(f"Convergence achived after {i} iteration.")
         return q
+    
+
+## test the algorithm
+import pinocchio as pin
+
+
+def main():
+    model_dir = "/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/urdf/"
+    urdf_filename = model_dir + "deltarobot_chain_1_reduced.urdf"
+    
+    # Load the urdf model
+    model = pin.buildModelFromUrdf(urdf_filename)
+    
+    print("******* model *******")
+    print(model)
+
+    print("\n******* neutral *******")
+    print(pin.neutral(model))
+
+    return
+
+
+if __name__ == "__main__":
+    main()
