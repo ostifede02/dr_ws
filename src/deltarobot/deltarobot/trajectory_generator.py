@@ -1,60 +1,28 @@
-import rclpy
-from rclpy.node import Node
-
 import numpy as np
-import time
-
-from deltarobot_interfaces.msg import TrajectoryTask
-from deltarobot_interfaces.msg import SetPointsVector
-from deltarobot_interfaces.msg import SetPoint
 
 from deltarobot import configuration as conf
 
 
-
-class TrajectoryGenerator(Node):
-
+class TrajectoryGenerator():
     def __init__(self):
-        super().__init__('trajectory_generator_node')
-
-        self.set_points_vector_pub = self.create_publisher(
-            SetPointsVector,
-            'set_points_vector',
-            10)
-        
-        self.trajectory_task_sub = self.create_subscription(
-            TrajectoryTask,
-            'trajectory_task',
-            self.trajectory_generator_callback,
-            10)
-        self.trajectory_task_sub
-
         self.max_velocity_default = conf.configuration["trajectory"]["max_velocity"]
-        self.max_acceleration_default = conf.configuration["trajectory"]["max_acceleration"]
+        self.max_acceleration_default = conf.configuration["trajectory"]["max_acceleration"]        
         return
     
 
-    def trajectory_generator_callback(self, trajectory_task_msg):
-        time_start = time.time()
+    def generate_trajectory(self, pos_start, pos_end, t_total_input, path_routine_type):
         
-        ## unpack the message
-        pos_start = np.array([0, 0, 0])     # create a service that takes the current position from robot_controller
-        pos_end = np.array([trajectory_task_msg.pos_end.x, trajectory_task_msg.pos_end.y, trajectory_task_msg.pos_end.z])
-        t_total_input = trajectory_task_msg.task_time
-        path_routine_type = trajectory_task_msg.task_type.data
-
         # the cubic bezier curve is a plynomial described by 4 points
         self.path_poly_points = self.__get_path_poly_points(pos_start, pos_end, path_routine_type)
         x_total = self.__get_path_length()
 
         n_set_points = self.__get_number_set_points(x_total)     # avoid via points too close to each other
-        
+
         # if the trajectory is time constrained (t > 0) -> set new max velocity, else default max velocity
         if t_total_input > 0:
             self.const_acceleration = self.max_acceleration_default
             self.const_velocity = self.__get_const_velocity(t_total_input, x_total)
             if self.const_velocity is None:
-                self.get_logger().error(f"With an acceleration of {self.const_acceleration}, the path of length {x_total} millimeters cannot be reached in {t_total_input} seconds.")
                 return None
         else:
             self.const_velocity = self.max_velocity_default
@@ -64,36 +32,38 @@ class TrajectoryGenerator(Node):
         # time scaling profile flags
         self.x_acc_flag, self.t_acc_flag, t_total = self.__get_time_scaling_flags(x_total)
         
-        # creating the set points vector
-        set_points_vector_msg = SetPointsVector()
-        set_points_vector_msg.set_points = []
+        # plot data ***********************************
+        # plot_array = np.empty((2, n_set_points))
+        #**********************************************
 
+        # creating the set points vector
+        set_points_vector = np.empty((3, n_set_points))
+        set_point = np.empty(3)
         set_point_prev = self.__get_pos_bezier_poly(0)
         x_travelled = 0
         
         s_instance = np.linspace(0, 1, n_set_points)
-        for s in s_instance:
-            set_point_msg = SetPoint()
-
+        for index, s in enumerate(s_instance):
             set_point = self.__get_pos_bezier_poly(s)
-            x_travelled = np.linalg.norm(set_point - set_point_prev)
-            set_point_prev = set_point
+            
+            x_travelled += np.linalg.norm(set_point - set_point_prev)
 
             if s == 1:
-                set_point_msg.t = self.__get_t_next(x_total, x_total, t_total)      # avoid x_travelled approximations errors 
+                t_travelled = self.__get_t_next(x_total, x_total, t_total)
             else:
-                set_point_msg.t = self.__get_t_next(x_travelled, x_total, t_total)
+                t_travelled = self.__get_t_next(x_travelled, x_total, t_total)
 
-            set_point_msg.x = set_point[0]
-            set_point_msg.z = set_point[2]
-            
-            set_points_vector_msg.set_points.append(set_point_msg)
+            set_points_vector[0, index] = set_point[0]
+            set_points_vector[1, index] = set_point[2]
+            set_points_vector[2, index] = t_travelled
 
-        self.set_points_vector_pub.publish(set_points_vector_msg)
+            set_point_prev = set_point
 
-        time_stop = time.time()
-        self.get_logger().info(f"elapsed time: {(time_stop-time_start)*1e3} [milliseconds]")
-        return
+            # plot data ***********************************
+            # plot_array[:, index] = np.array([t_travelled, x_travelled])
+            # *********************************************
+
+        return set_points_vector
     
 
     def __get_path_poly_points(self, pos_start, pos_end, path_routine_type):
@@ -145,11 +115,11 @@ class TrajectoryGenerator(Node):
 
     def __get_pos_bezier_poly(self, s):
         pos = np.empty(3)
-
         pos = pow(1-s, 3)*self.path_poly_points[0]
         pos += 3*pow(1-s, 2)*s*self.path_poly_points[1] 
         pos += 3*(1-s)*pow(s, 2)*self.path_poly_points[2] 
         pos += pow(s, 3)*self.path_poly_points[3]
+
         return pos
     
 
@@ -204,21 +174,34 @@ class TrajectoryGenerator(Node):
         if x_travelled >= (x_total - self.x_acc_flag):
             t_next = t_total - np.sqrt((2*abs(x_total - x_travelled) / self.const_acceleration))
 
-        return t_next    
+        return t_next
+    
 
 
 
 
-def main(args=None):
-    rclpy.init(args=args)
+## test the algorithm
+# import matplotlib.pyplot as plt
 
-    tg_node = TrajectoryGenerator()
+# def main():
+#     trajectory_generator = TrajectoryGenerator()
+    
+#     pos_start = np.array([0, 0, 0])     # create a service that takes the current position from robot_controller    
+#     pos_end = np.array([-50, 0, -250])
+#     task_time = 3.2
+#     task_type = conf.PICK_TRAJECTORY_ROUTINE
 
-    rclpy.spin(tg_node)
+#     trajectory_vector = trajectory_generator.generate_trajectory(pos_start, pos_end, task_time, task_type)
 
-    tg_node.destroy_node()
-    rclpy.shutdown()
+#     plt.plot(trajectory_vector[0,:], trajectory_vector[1,:], marker="o")
+
+#     plt.xlabel('time')
+#     plt.ylabel('length')
+#     plt.title('Plot of Coordinates')
+#     plt.grid(True)
+#     plt.show()
 
 
-if __name__ == '__main__':
-    main()
+
+# if __name__ == "__main__":
+#     main()
