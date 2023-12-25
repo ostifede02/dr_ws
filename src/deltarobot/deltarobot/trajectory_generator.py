@@ -63,6 +63,10 @@ class TrajectoryGenerator():
             # plot_array[:, index] = np.array([t_travelled, x_travelled])
             # *********************************************
 
+        # plot data ***********************************
+        # return plot_array
+        # *********************************************
+
         return set_points_vector
     
 
@@ -188,16 +192,16 @@ class TrajectoryGenerator():
     
 #     pos_start = np.array([0, 0, 0])     # create a service that takes the current position from robot_controller    
 #     pos_end = np.array([-50, 0, -250])
-#     task_time = 3.2
+#     task_time = -1
 #     task_type = conf.PICK_TRAJECTORY_ROUTINE
 
 #     trajectory_vector = trajectory_generator.generate_trajectory(pos_start, pos_end, task_time, task_type)
 
 #     plt.plot(trajectory_vector[0,:], trajectory_vector[1,:], marker="o")
 
-#     plt.xlabel('time')
-#     plt.ylabel('length')
-#     plt.title('Plot of Coordinates')
+#     plt.xlabel('time, [ s ]')
+#     plt.ylabel('length, [ mm ]')
+#     plt.title('Time scaling function')
 #     plt.grid(True)
 #     plt.show()
 

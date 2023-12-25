@@ -6,7 +6,7 @@
         <collision>
             <origin xyz="0 0 9" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/rails_collision.stl" scale="0.9 1.5 0.9"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/rails_collision.stl" scale="0.9 1.5 0.9"/>
             </geometry>
         </collision>
     </link>
@@ -30,10 +30,9 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/link_1.stl"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/link_1.stl"/>
             </geometry>
         </collision>
-
     </link>
 
     <joint name="rod_1_joint" type="revolute">

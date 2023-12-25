@@ -6,6 +6,7 @@ from deltarobot_interfaces.msg import SetPoint
 
 import pinocchio as pin
 
+
 class RobotController(Node):
 
     def __init__(self):
