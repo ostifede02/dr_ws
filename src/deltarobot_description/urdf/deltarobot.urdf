@@ -7,7 +7,7 @@
         <visual>
             <origin xyz="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/rails.stl"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/rails.stl"/>
             </geometry>
             <material name="gray">
               <color rgba="0.8 0.8 0.8 1"/>
@@ -16,7 +16,7 @@
         <collision>
             <origin xyz="0 0 9" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/rails_collision.stl" scale="0.9 1.5 0.9"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/rails_collision.stl" scale="0.9 1.5 0.9"/>
             </geometry>
         </collision>
     </link>
@@ -27,7 +27,7 @@
         <visual>
             <origin xyz="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/end_effector.stl"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/end_effector.stl"/>
             </geometry>
             <material name="gray">
               <color rgba="0.8 0.8 0.8 1"/>
@@ -52,7 +52,7 @@
         <visual>
             <origin xyz="0. 0. 0."/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/carriage_1.stl"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/carriage_1.stl"/>
             </geometry>
             <material name="white">
               <color rgba="1. 1. 1. 1."/>
@@ -76,7 +76,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/link_1.stl"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/link_1.stl"/>
             </geometry>
             <material name="red">
               <color rgba="1. 0.2 0.2 1."/>
@@ -85,7 +85,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/link_1.stl"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/link_1.stl"/>
             </geometry>
         </collision>
 
@@ -99,11 +99,11 @@
         <limit lower="0" upper="6.28" velocity="0" effort="0"/> 
     </joint>
 
-    <!-- <link name="rod_1_end-effector_link">
+    <!-- <link name="rod_1_end_effector_link">
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/end-effector_joint.stl"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/end_effector_joint.stl"/>
             </geometry>
             <material name="dark_grey">
                 <color rgba="0.9 0.9 0.9 1"/>
@@ -111,7 +111,7 @@
         </visual>
     </link> -->
 
-    <joint name="rod_1_end-effector_joint" type="revolute">
+    <joint name="rod_1_end_effector_joint" type="revolute">
         <origin xyz="0 0 -450"/>
         <parent link="rod_1_link"/>
         <child link="end_effector_link"/>
@@ -129,7 +129,7 @@
         <visual>
             <origin xyz="0. 0. 0."/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/carriage_2.stl"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/carriage_2.stl"/>
             </geometry>
             <material name="white">
               <color rgba="1. 1. 1. 1."/>
@@ -153,7 +153,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/link_2.stl"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/link_2.stl"/>
             </geometry>
             <material name="green">
               <color rgba="0 1 0 1"/>
@@ -162,7 +162,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/link_2.stl"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/link_2.stl"/>
             </geometry>
         </collision>
 
@@ -176,11 +176,11 @@
         <limit lower="0" upper="6.28" velocity="0" effort="0"/> 
     </joint>
 
-    <link name="rod_2_end-effector_link">
+    <link name="rod_2_end_effector_link">
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/end-effector_joint.stl"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/end_effector_joint.stl"/>
             </geometry>
             <material name="dark_grey">
                 <color rgba="0.9 0.9 0.9 1"/>
@@ -189,10 +189,10 @@
     
     </link>
 
-    <joint name="rod_2_end-effector_joint" type="fixed">
+    <joint name="rod_2_end_effector_joint" type="fixed">
         <origin xyz="0 0 -450"/>
         <parent link="rod_2_link"/>
-        <child link="rod_2_end-effector_link"/>
+        <child link="rod_2_end_effector_link"/>
     </joint>
     <!-- ROD 2 END-->
 
@@ -202,7 +202,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/link_1_c2.stl"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/link_1_c2.stl"/>
             </geometry>
             <material name="green">
               <color rgba="0 1 0 1"/>
@@ -218,11 +218,11 @@
         <limit lower="0" upper="6.28" velocity="0" effort="0"/> 
     </joint>
 
-    <link name="rod_3_end-effector_link">
+    <link name="rod_3_end_effector_link">
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://deltarobot_description/meshes/end-effector_joint.stl"/>
+                <mesh filename="/home/ostifede02/Documents/2dr_ws/src/deltarobot_description/meshes/end_effector_joint.stl"/>
             </geometry>
             <material name="dark_grey">
                 <color rgba="0.9 0.9 0.9 1"/>
@@ -231,10 +231,10 @@
     
     </link>
 
-    <joint name="rod_3_end-effector_joint" type="fixed">
+    <joint name="rod_3_end_effector_joint" type="fixed">
         <origin xyz="0 0 -450"/>
         <parent link="rod_3_link"/>
-        <child link="rod_3_end-effector_link"/>
+        <child link="rod_3_end_effector_link"/>
     </joint>
     <!-- ROD 3 END-->
 

@@ -12,6 +12,7 @@ import pinocchio as pin
 import numpy as np
 
 from os.path import join
+import time
 
 
 
@@ -23,7 +24,7 @@ class RobotController(Node):
         self.joint_position_viz_pub = self.create_publisher(
             JointPositionViz,
             'joint_position_viz',
-            10)
+            100)
         
         self.trajectory_task_sub = self.create_subscription(
             TrajectoryTask,
@@ -65,6 +66,8 @@ class RobotController(Node):
 
 
     def robot_controller_callback(self, trajectory_task_msg):
+            start = time.time()
+
             # unpack message
             pos_start = np.copy(self.pos_current)
             pos_end = np.array([trajectory_task_msg.pos_end.x, 
@@ -94,13 +97,12 @@ class RobotController(Node):
                 delta_q1 = q1_next[0] - self.q1_current[0]
                 delta_q2 = q2_next[0] - self.q2_current[0]
 
-                # update current status
+                # update current position
                 self.pos_current = pos_des
                 self.q1_current = q1_next
                 self.q2_current = q2_next
                 t_current = t_next
 
-                # update current position
 
                 ## publish to viz 
                 viz_msg = JointPositionViz()
@@ -112,12 +114,12 @@ class RobotController(Node):
                 viz_msg.q3 = self.q2_current[0]
                 viz_msg.q4 = self.q2_current[1]
                 viz_msg.q5 = self.q2_current[1]
+                viz_msg.delta_t = float(delta_t)
 
                 self.joint_position_viz_pub.publish(viz_msg)
 
-
-            # publish feedback to task handler
-            self.get_logger().info("\n\nTrajectory ended succesfully!\n")
+            stop = time.time()
+            self.get_logger().info(f"computing time: {(stop-start)*1e3} [ms]")
             return
 
 
