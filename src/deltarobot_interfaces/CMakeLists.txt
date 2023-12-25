@@ -16,9 +16,8 @@ find_package(std_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-    "msg/SetPoint.msg"
-    "msg/SetPointsVector.msg"
     "msg/TrajectoryTask.msg"
+    "msg/JointPositionViz.msg"
 
     # Add packages that above messages depend on
     DEPENDENCIES geometry_msgs 

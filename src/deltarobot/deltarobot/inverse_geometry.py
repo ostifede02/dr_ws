@@ -15,7 +15,7 @@ import pinocchio as pin
 from deltarobot import configuration as conf
 
 
-class InverseGeometry:
+class InverseGeometry():
 
     def __init__(self, model, data, frame_id):
         self.model = model
@@ -110,40 +110,40 @@ class InverseGeometry:
 
 # ***********************************************************************************************
 ## test the algorithm
-# from os.path import join
+from os.path import join
 
-# import pinocchio as pin
+import pinocchio as pin
 
 
-# def main():
-#     # import urdf file path
-#     package_path = "/home/ostifede02/Documents/2dr_ws/src/deltarobot_description"
-#     urdf_file_name_chain_1 = "deltarobot_chain_1_reduced.urdf"
-#     urdf_file_path_chain_1 = join(join(package_path, "urdf"), urdf_file_name_chain_1)
-#     urdf_file_name_chain_2 = "deltarobot_chain_2_reduced.urdf"
-#     urdf_file_path_chain_2 = join(join(package_path, "urdf"), urdf_file_name_chain_2)
+def main():
+    # import urdf file path
+    package_path = "/home/ostifede02/Documents/2dr_ws/src/deltarobot_description"
+    urdf_file_name_chain_1 = "deltarobot_chain_1_reduced.urdf"
+    urdf_file_path_chain_1 = join(join(package_path, "urdf"), urdf_file_name_chain_1)
+    urdf_file_name_chain_2 = "deltarobot_chain_2_reduced.urdf"
+    urdf_file_path_chain_2 = join(join(package_path, "urdf"), urdf_file_name_chain_2)
 
-#     # Load the urdf models
-#     model_chain_1 = pin.buildModelFromUrdf(urdf_file_path_chain_1)
-#     data_chain_1 = model_chain_1.createData()
-#     model_chain_2 = pin.buildModelFromUrdf(urdf_file_path_chain_2)
-#     data_chain_2 = model_chain_2.createData()
+    # Load the urdf models
+    model_chain_1 = pin.buildModelFromUrdf(urdf_file_path_chain_1)
+    data_chain_1 = model_chain_1.createData()
+    model_chain_2 = pin.buildModelFromUrdf(urdf_file_path_chain_2)
+    data_chain_2 = model_chain_2.createData()
     
-#     # initialize InverseGeometry object
-#     ig_chain_1 = InverseGeometry(model_chain_1, data_chain_1, 8)
-#     ig_chain_2 = InverseGeometry(model_chain_2, data_chain_2, 8)
+    # initialize InverseGeometry object
+    ig_chain_1 = InverseGeometry(model_chain_1, data_chain_1, 8)
+    ig_chain_2 = InverseGeometry(model_chain_2, data_chain_2, 8)
     
-#     q0 = np.array([0, 0])
-#     pos_des = np.array([50, 0, -320])
+    q0 = np.array([0, 0])
+    pos_des = np.array([50, 0, -320])
 
-#     q_next_1 = ig_chain_1.compute_inverse_geometry(q0, pos_des)
-#     q_next_2 = ig_chain_2.compute_inverse_geometry(q0, pos_des)
+    q_next_1 = ig_chain_1.compute_inverse_geometry(q0, pos_des)
+    q_next_2 = ig_chain_2.compute_inverse_geometry(q0, pos_des)
 
-#     print(f"pos: {pos_des}")
-#     print(f"q_1: {q_next_1}")
-#     print(f"q_2: {q_next_2}")
-#     return
+    print(f"pos: {pos_des}")
+    print(f"q_1: {q_next_1}")
+    print(f"q_2: {q_next_2}")
+    return
 
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()

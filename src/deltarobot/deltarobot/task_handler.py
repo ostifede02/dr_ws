@@ -2,7 +2,6 @@ import rclpy
 from rclpy.node import Node
 
 from deltarobot_interfaces.msg import TrajectoryTask
-from deltarobot_interfaces.msg import SetPointsVector
 
 
 class TaskHandler(Node):

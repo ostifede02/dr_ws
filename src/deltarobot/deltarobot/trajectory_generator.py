@@ -37,7 +37,7 @@ class TrajectoryGenerator():
         #**********************************************
 
         # creating the set points vector
-        set_points_vector = np.empty((3, n_set_points))
+        set_points_vector = np.empty((n_set_points, 4))
         set_point = np.empty(3)
         set_point_prev = self.__get_pos_bezier_poly(0)
         x_travelled = 0
@@ -53,9 +53,10 @@ class TrajectoryGenerator():
             else:
                 t_travelled = self.__get_t_next(x_travelled, x_total, t_total)
 
-            set_points_vector[0, index] = set_point[0]
-            set_points_vector[1, index] = set_point[2]
-            set_points_vector[2, index] = t_travelled
+            set_points_vector[index, 0] = set_point[0]
+            set_points_vector[index, 1] = set_point[1]
+            set_points_vector[index, 2] = set_point[2]
+            set_points_vector[index, 3] = t_travelled
 
             set_point_prev = set_point
 
@@ -197,13 +198,15 @@ class TrajectoryGenerator():
 
 #     trajectory_vector = trajectory_generator.generate_trajectory(pos_start, pos_end, task_time, task_type)
 
-#     plt.plot(trajectory_vector[0,:], trajectory_vector[1,:], marker="o")
+#     print(trajectory_vector)
+#     print(trajectory_vector[:,])
+#     # plt.plot(trajectory_vector[0,:], trajectory_vector[1,:], marker="o")
 
-#     plt.xlabel('time, [ s ]')
-#     plt.ylabel('length, [ mm ]')
-#     plt.title('Time scaling function')
-#     plt.grid(True)
-#     plt.show()
+#     # plt.xlabel('time, [ s ]')
+#     # plt.ylabel('length, [ mm ]')
+#     # plt.title('Time scaling function')
+#     # plt.grid(True)
+#     # plt.show()
 
 
 

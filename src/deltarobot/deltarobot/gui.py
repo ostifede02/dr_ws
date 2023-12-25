@@ -10,10 +10,10 @@ from deltarobot_interfaces.msg import TrajectoryTask
 
 
 
-class RobotControllerGUI(Node):
+class GUI(Node):
 
     def __init__(self):
-        super().__init__('input_gui_node')
+        super().__init__('gui_node')
 
         self.pub = self.create_publisher(
             TrajectoryTask,
@@ -238,7 +238,7 @@ class RobotControllerGUI(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    gui_node = RobotControllerGUI()
+    gui_node = GUI()
 
     # Execute the main event loop
     gui_node.window.mainloop()
