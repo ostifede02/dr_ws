@@ -14,7 +14,11 @@ class TrajectoryGenerator():
         
         # the cubic bezier curve is a plynomial described by 4 points
         self.path_poly_points = self.__get_path_poly_points(pos_start, pos_end, path_routine_type)
-        x_total = self.__get_path_length()
+        
+        if path_routine_type == conf.DIRECT_TRAJECTORY_ROUTINE:
+            x_total = np.linalg.norm(pos_end-pos_start)
+        else:            
+            x_total = self.__get_path_length()
 
         n_set_points = self.__get_number_set_points(x_total)     # avoid via points too close to each other
 
@@ -31,7 +35,7 @@ class TrajectoryGenerator():
         
         # time scaling profile flags
         self.x_acc_flag, self.t_acc_flag, t_total = self.__get_time_scaling_flags(x_total)
-        
+
         # plot data ***********************************
         # plot_array = np.empty((2, n_set_points))
         #**********************************************
@@ -129,11 +133,14 @@ class TrajectoryGenerator():
     
 
     def __get_number_set_points(self, x_total):
+        min_distance_between_set_points = conf.configuration["trajectory"]["min_distance_between_set_points"]
+        mean_distance_between_set_points = conf.configuration["trajectory"]["mean_distance_between_set_points"]
+        
         # if the travel distance is to short -> go directly there
-        if x_total <= 25:
+        if x_total <= min_distance_between_set_points:
             n_set_points = 2
         else:
-            n_set_points = int(x_total/10)
+            n_set_points = int(x_total/mean_distance_between_set_points)
 
         return n_set_points
 

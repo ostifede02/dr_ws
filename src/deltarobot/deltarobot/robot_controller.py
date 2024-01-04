@@ -50,7 +50,7 @@ class RobotController(Node):
         self.ig_chain_1 = InverseGeometry(model_chain_1, data_chain_1, frame_id=8)
         self.ig_chain_2 = InverseGeometry(model_chain_2, data_chain_2, frame_id=8)
 
-        # trajectory
+        # initialize trajectory
         self.trajectory_generator = TrajectoryGenerator()
 
         # define initial conditions
