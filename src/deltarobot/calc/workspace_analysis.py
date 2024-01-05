@@ -1,16 +1,23 @@
-'''
-### IGUS deltarobot
- - carriage stroke: 146 mm
- - carriage stroke start: 170 mm
- - link length: 400 mm
-'''
-
 import numpy as np
 from numpy import sqrt, dot, cross                       
 from numpy.linalg import norm
 import matplotlib.pyplot as plt
 
 PI = np.pi
+
+
+### set parameters
+'''
+### IGUS deltarobot
+ - carriage stroke: 146 mm
+ - carriage stroke start: 170 mm
+ - link length: 400 mm
+'''
+# define carriage stroke
+carriage_stroke = 146
+carriage_stroke_start = 170
+# define link lengths
+link_length = 400
 
 def main():
     # define rails vectors
@@ -23,17 +30,9 @@ def main():
     rail_3_versor = np.array([-np.sin(PI/6), np.cos(PI/6), 1])*np.cos(PI/4)
     rail_3_versor = rail_3_versor / norm(rail_3_versor)
 
-    print(rail_1_versor)
-    print(rail_2_versor)
-    print(rail_3_versor)
 
-    # define carriage stroke
-    carriage_stroke = 146
-    carriage_stroke_start = 170
     carriage_stroke_end = carriage_stroke_start + carriage_stroke
 
-    # define link lengths
-    link_length = 400
 
     # define simulation variables
     carriage_step = 4       # each carriage moves every 1 mm

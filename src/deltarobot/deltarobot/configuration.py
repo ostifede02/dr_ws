@@ -15,10 +15,11 @@ configuration["physical"] = {
 configuration["trajectory"] = {
     "max_acceleration": 500,
     "max_velocity": 800,
-    "delta_s_high_resolution": 0.05,
 
-    "mean_distance_between_set_points": 8,
-    "min_distance_between_set_points": 20,
+
+    "delta_s_high_resolution": 0.05,        # used for path length
+    "mean_distance_between_set_points": 30,
+    "min_distance_between_set_points": 25,
     
     
     "pos_home": np.array([0, 0, -50]),
@@ -49,8 +50,8 @@ configuration["inverse_geometry"] = {
 
 
 ##########   TRAJECTORY ROUTINES   ##########
-PICK_TRAJECTORY_ROUTINE = "pick_trajectory_routine"
-PLACE_TRAJECTORY_ROUTINE = "place_trajectory_routine"
-DIRECT_TRAJECTORY_ROUTINE = "direct_trajectory_routine"
+PICK_TRAJECTORY_ROUTINE = "pck"
+PLACE_TRAJECTORY_ROUTINE = "plc"
+DIRECT_TRAJECTORY_ROUTINE = "dir"
 
 ##########   ERRORS   ##########

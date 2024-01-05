@@ -46,6 +46,7 @@ class TrajectoryGenerator():
         set_point_prev = self.__get_pos_bezier_poly(0)
         x_travelled = 0
         
+
         s_instance = np.linspace(0, 1, n_set_points)
         for index, s in enumerate(s_instance):
             set_point = self.__get_pos_bezier_poly(s)
@@ -79,28 +80,38 @@ class TrajectoryGenerator():
 
         if path_routine_type == conf.DIRECT_TRAJECTORY_ROUTINE:
             x1_offset = (pos_end[0] - pos_start[0])*0.333
+            y1_offset = (pos_end[1] - pos_start[1])*0.333
             z1_offset = (pos_end[2] - pos_start[2])*0.333
+
             x2_offset = (pos_start[0] - pos_end[0])*0.333
+            y2_offset = (pos_start[1] - pos_end[1])*0.333
             z2_offset = (pos_start[2] - pos_end[2])*0.333
 
         elif path_routine_type == conf.PICK_TRAJECTORY_ROUTINE:
             x2_offset = 0
-            z2_offset = (pos_start[2] - pos_end[2])*0.35
-            x1_offset = ((pos_end[0]+x2_offset)-pos_start[0])*0.5
+            y2_offset = 0
+            z2_offset = (pos_start[2] - pos_end[2])*0.4
+
+            x1_offset = ((pos_end[0]+x2_offset)-pos_start[0])*0.4
+            y1_offset = ((pos_end[1]+y2_offset)-pos_start[1])*0.4
             z1_offset = ((pos_end[2]+z2_offset)-pos_start[2])*0.5
 
         elif path_routine_type == conf.PLACE_TRAJECTORY_ROUTINE:
             x1_offset = 0
+            y1_offset = 0
             z1_offset = min(abs(pos_start[0] - pos_end[0])*0.4, 80)
             z1_offset = max(abs(pos_start[0] - pos_end[0])*0.4, 30)
+
             x2_offset = 0
+            y2_offset = 0
             z2_offset = min(abs(pos_start[0] - pos_end[0])*0.4, 80)
             z2_offset = max(abs(pos_start[0] - pos_end[0])*0.4, 30)
+
         else:
             return None
         
-        P1 = np.array([pos_start[0]+x1_offset, 0, pos_start[2]+z1_offset])
-        P2 = np.array([pos_end[0]+x2_offset, 0, pos_end[2]+z2_offset])
+        P1 = np.array([pos_start[0]+x1_offset, pos_start[1]+y1_offset, pos_start[2]+z1_offset])
+        P2 = np.array([pos_end[0]+x2_offset, pos_end[1]+y2_offset, pos_end[2]+z2_offset])
 
         path_poly_points = np.array([pos_start, P1, P2, pos_end])
 
@@ -193,29 +204,39 @@ class TrajectoryGenerator():
 
 
 ## test the algorithm
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+import time
 
-# def main():
-#     trajectory_generator = TrajectoryGenerator()
+def main():
+    trajectory_generator = TrajectoryGenerator()
     
-#     pos_start = np.array([0, 0, 0])     # create a service that takes the current position from robot_controller    
-#     pos_end = np.array([-50, 0, -250])
-#     task_time = -1
-#     task_type = conf.PICK_TRAJECTORY_ROUTINE
+    pos_start = np.array([50, 0, 0])     # create a service that takes the current position from robot_controller    
+    pos_end = np.array([-50, 20, -250])
+    task_time = -1
+    task_type = conf.PICK_TRAJECTORY_ROUTINE
+    # task_type = conf.PLACE_TRAJECTORY_ROUTINE
+    # task_type = conf.DIRECT_TRAJECTORY_ROUTINE
 
-#     trajectory_vector = trajectory_generator.generate_trajectory(pos_start, pos_end, task_time, task_type)
-
-#     print(trajectory_vector)
-#     print(trajectory_vector[:,])
-#     # plt.plot(trajectory_vector[0,:], trajectory_vector[1,:], marker="o")
-
-#     # plt.xlabel('time, [ s ]')
-#     # plt.ylabel('length, [ mm ]')
-#     # plt.title('Time scaling function')
-#     # plt.grid(True)
-#     # plt.show()
+    t_start = time.time()
+    trajectory_vector = trajectory_generator.generate_trajectory(pos_start, pos_end, task_time, task_type)
+    t_end = time.time()
+    print(f"Computed time: {round((t_end - t_start)*1e3, 3)} [ ms ]")
 
 
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot(trajectory_vector[:,0], trajectory_vector[:,1],trajectory_vector[:,2], marker="o")
+    
 
-# if __name__ == "__main__":
-#     main()
+    # Label axes
+    ax.set_xlabel('X Axis')
+    ax.set_ylabel('Y Axis')
+    ax.set_zlabel('Z Axis')
+
+    ax.grid(True)
+    plt.show()
+
+
+
+if __name__ == "__main__":
+    main()
