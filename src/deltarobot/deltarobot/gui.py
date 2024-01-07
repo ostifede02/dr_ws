@@ -216,6 +216,7 @@ class GUI(Node):
         msg = TrajectoryTask()
         try:
             msg.pos_end.x = float(self.entry_x.get())
+            msg.pos_end.y = float(0)
             msg.pos_end.z = float(self.entry_z.get())
             msg.task_time = float(self.entry_time.get())
             msg.task_type.data = self.combo_task_type.get()

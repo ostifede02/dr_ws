@@ -18,7 +18,7 @@ configuration["trajectory"] = {
 
 
     "delta_s_high_resolution": 0.05,        # used for path length
-    "mean_distance_between_set_points": 30,
+    "mean_distance_between_set_points": 12,
     "min_distance_between_set_points": 25,
     
     
@@ -50,8 +50,8 @@ configuration["inverse_geometry"] = {
 
 
 ##########   TRAJECTORY ROUTINES   ##########
-PICK_TRAJECTORY_ROUTINE = "pck"
-PLACE_TRAJECTORY_ROUTINE = "plc"
-DIRECT_TRAJECTORY_ROUTINE = "dir"
+PICK_TRAJECTORY_ROUTINE = "pick"
+PLACE_TRAJECTORY_ROUTINE = "place"
+DIRECT_TRAJECTORY_ROUTINE = "direct"
 
 ##########   ERRORS   ##########
