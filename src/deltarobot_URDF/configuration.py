@@ -13,14 +13,9 @@ configuration["physical"] = {
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 200,
-    "max_velocity": 800,
-
-
-    "delta_s_high_resolution": 0.05,        # used for path length
-    "mean_distance_between_set_points": 12,
-    "min_distance_between_set_points": 25,
-    
+    "max_acceleration": 2000,
+    "max_velocity": 1600,
+    "delta_s_high_resolution": 0.02,
     
     "pos_home": np.array([0, 0, -50]),
     "pos_neutral": np.array([0, 0, -150]),
@@ -49,9 +44,20 @@ configuration["inverse_geometry"] = {
 
 
 
+##########   STATES   ##########
+READ_CAM_STATE = "read_cam_state"
+TRAJECTORY_PLANNER_STATE = "trajectory_planner_state"
+COMPUTE_NEXT_POS_STATE = "compute_next_pos_state"
+TASK_PLANNER_STATE = "task_planner_state"
+
+DISPLAY_STATE = "display_state"
+
 ##########   TRAJECTORY ROUTINES   ##########
-PICK_TRAJECTORY_ROUTINE = "pick"
-PLACE_TRAJECTORY_ROUTINE = "place"
-DIRECT_TRAJECTORY_ROUTINE = "direct"
+PICK_TRAJECTORY_ROUTINE = "pick_trajectory_routine"
+PLACE_TRAJECTORY_ROUTINE = "place_trajectory_routine"
+DIRECT_TRAJECTORY_ROUTINE = "direct_trajectory_routine"
+
+
+
 
 ##########   ERRORS   ##########
