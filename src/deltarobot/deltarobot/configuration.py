@@ -9,7 +9,9 @@ configuration["physical"] = {
     },
     "stepper": {
         "n_steps": 800
-    }
+    },
+    "ee_radius": 25,
+    "link_pitch": 50
 }
 
 configuration["trajectory"] = {
@@ -18,7 +20,7 @@ configuration["trajectory"] = {
 
 
     "delta_s_high_resolution": 0.05,        # used for path length
-    "mean_distance_between_set_points": 12,
+    "mean_distance_between_set_points": 4,
     "min_distance_between_set_points": 25,
     
     

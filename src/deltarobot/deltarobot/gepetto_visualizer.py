@@ -42,13 +42,26 @@ class GepettoVisualizer(Node):
 
     def display_callback(self, joint_position_msg):
             # unpack the message
-            q = np.empty(6)
-            q[0] = joint_position_msg.q0
-            q[1] = joint_position_msg.q1
-            q[2] = joint_position_msg.q2
-            q[3] = joint_position_msg.q3
-            q[4] = joint_position_msg.q4
-            q[5] = joint_position_msg.q5
+            q = np.empty(self.robot.nq)
+
+            # chain 1
+            q[0] = joint_position_msg.q[0]
+            q[1] = joint_position_msg.q[1]
+            q[2] = joint_position_msg.q[2]
+            q[3] = joint_position_msg.q[1]
+            q[4] = joint_position_msg.q[2]
+            # chain 2
+            q[5] = joint_position_msg.q[3]
+            q[6] = joint_position_msg.q[4]
+            q[7] = joint_position_msg.q[5]
+            q[8] = joint_position_msg.q[4]
+            q[9] = joint_position_msg.q[5]
+            # chain 3
+            q[10] = joint_position_msg.q[6]
+            q[11] = joint_position_msg.q[7]
+            q[12] = joint_position_msg.q[8]
+            q[13] = joint_position_msg.q[7]
+            q[14] = joint_position_msg.q[8]
             
             delta_t = joint_position_msg.delta_t
 
