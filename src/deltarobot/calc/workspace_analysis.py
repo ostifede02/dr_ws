@@ -52,45 +52,45 @@ def main():
     carriage_3_steps = np.linspace(carriage_stroke_start, carriage_stroke_end, n_carriage_steps).reshape(-1, 1)
     carriage_3_steps = carriage_3_steps * rail_3_versor
 
-    # # define plot datas
-    # ws_points = np.empty((n_carriage_steps**3, 3))
-    # index = 0
+    # define plot datas
+    ws_points = np.empty((n_carriage_steps**3, 3))
+    index = 0
     
-    # # get all combinations
-    # for C1 in carriage_1_steps:
-    #     for C2 in carriage_2_steps:
-    #         for C3 in carriage_3_steps:
-    #             # compute forward kinematics
-    #             P = three_spheres_intersection(C1, C2, C3, link_length)
-    #             ws_points[index, :] = P
-    #             index += 1
-    #     print(f"[{int(100*index/n_carriage_steps**3)} %] completed")
+    # get all combinations
+    for C1 in carriage_1_steps:
+        for C2 in carriage_2_steps:
+            for C3 in carriage_3_steps:
+                # compute forward kinematics
+                P = three_spheres_intersection(C1, C2, C3, link_length)
+                ws_points[index, :] = P
+                index += 1
+        print(f"[{int(100*index/n_carriage_steps**3)} %] completed")
 
 
-    # ## plot data
-    # # Create a 3D plot
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111, projection='3d')
+    ## plot data
+    # Create a 3D plot
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
 
-    # # Plot the points
-    # ax.scatter(ws_points[:, 0], ws_points[:, 1], ws_points[:, 2], 
-    #            ('g', 'o'),
-    #            edgecolors='k', 
-    #            alpha=1)
+    # Plot the points
+    ax.scatter(ws_points[:, 0], ws_points[:, 1], ws_points[:, 2], 
+               ('g', 'o'),
+               edgecolors='k', 
+               alpha=1)
     
-    # # Plot the rails
-    # ax.plot(carriage_1_steps[:, 0], carriage_1_steps[:, 1], carriage_1_steps[:, 2], linestyle='-', linewidth=5)
-    # ax.plot(carriage_2_steps[:, 0], carriage_2_steps[:, 1], carriage_2_steps[:, 2], linestyle='-', linewidth=5)
-    # ax.plot(carriage_3_steps[:, 0], carriage_3_steps[:, 1], carriage_3_steps[:, 2], linestyle='-', linewidth=5)
+    # Plot the rails
+    ax.plot(carriage_1_steps[:, 0], carriage_1_steps[:, 1], carriage_1_steps[:, 2], linestyle='-', linewidth=5)
+    ax.plot(carriage_2_steps[:, 0], carriage_2_steps[:, 1], carriage_2_steps[:, 2], linestyle='-', linewidth=5)
+    ax.plot(carriage_3_steps[:, 0], carriage_3_steps[:, 1], carriage_3_steps[:, 2], linestyle='-', linewidth=5)
 
-    # # Label axes
-    # ax.set_xlabel('X Axis')
-    # ax.set_ylabel('Y Axis')
-    # ax.set_zlabel('Z Axis')
+    # Label axes
+    ax.set_xlabel('X Axis')
+    ax.set_ylabel('Y Axis')
+    ax.set_zlabel('Z Axis')
 
-    # # Show the plot
-    # ax.view_init(elev=0, azim=0)
-    # plt.show()
+    # Show the plot
+    ax.view_init(elev=0, azim=0)
+    plt.show()
 
     return
 

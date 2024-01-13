@@ -72,7 +72,7 @@ class GUI(Node):
         )
         self.button_stop.place(
             x=64.0,
-            y=776.0,
+            y=778.0,
             width=512.0,
             height=110.0
         )
@@ -90,7 +90,7 @@ class GUI(Node):
         )
         button_start.place(
             x=64.0,
-            y=688.0,
+            y=690.0,
             width=512.0,
             height=72.0
         )
@@ -100,7 +100,7 @@ class GUI(Node):
             file=self.relative_to_assets("entry_x.png"))
         self.canvas.create_image(
             320.0,
-            310.5,
+            266,
             image=self.entry_x_img
         )
         self.entry_x = tk.Entry(
@@ -112,7 +112,29 @@ class GUI(Node):
         )
         self.entry_x.place(
             x=210,
-            y=293,
+            y=245,
+            width=256,
+            height=46
+        )
+
+        ## input Y coordinate
+        self.entry_y_img = tk.PhotoImage(
+            file=self.relative_to_assets("entry_y.png"))
+        self.canvas.create_image(
+            320.0,
+            343.5,
+            image=self.entry_y_img
+        )
+        self.entry_y = tk.Entry(
+            bd=0,
+            bg=bg_color,
+            fg=fg_color,
+            font=entry_font,
+            highlightthickness=0,
+        )
+        self.entry_y.place(
+            x=210,
+            y=323,
             width=256,
             height=46
         )
@@ -122,7 +144,7 @@ class GUI(Node):
             file=self.relative_to_assets("entry_z.png"))
         self.canvas.create_image(
             320.0,
-            391.5,
+            420.5,
             image=self.entry_z_img
         )
         self.entry_z = tk.Entry(
@@ -134,7 +156,7 @@ class GUI(Node):
         )
         self.entry_z.place(
             x=210,
-            y=374,
+            y=400,
             width=256,
             height=46
         )
@@ -144,7 +166,7 @@ class GUI(Node):
             file=self.relative_to_assets("entry_time.png"))
         self.canvas.create_image(
             320.0,
-            472.5,
+            522.0,
             image=self.entry_time_img
         )
         self.entry_time = tk.Entry(
@@ -156,7 +178,7 @@ class GUI(Node):
         )
         self.entry_time.place(
             x=210,
-            y=455,
+            y=501,
             width=256,
             height=46
         )
@@ -166,7 +188,7 @@ class GUI(Node):
             file=self.relative_to_assets("entry_type.png"))
         self.canvas.create_image(
             320.0,
-            554.0,
+            600,
             image=self.entry_path_type_img
         )
 
@@ -205,7 +227,7 @@ class GUI(Node):
         )
         self.combo_task_type.place(
             x= 210,
-            y= 531,
+            y= 577,
             width= 256,
             height= 45
         )
@@ -216,7 +238,7 @@ class GUI(Node):
         msg = TrajectoryTask()
         try:
             msg.pos_end.x = float(self.entry_x.get())
-            msg.pos_end.y = float(0)
+            msg.pos_end.y = float(self.entry_y.get())
             msg.pos_end.z = float(self.entry_z.get())
             msg.task_time = float(self.entry_time.get())
             msg.task_type.data = self.combo_task_type.get()
