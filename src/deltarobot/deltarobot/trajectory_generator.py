@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.linalg import norm
 
 from deltarobot import configuration as conf
 
@@ -99,13 +100,13 @@ class TrajectoryGenerator():
         elif path_routine_type == conf.PLACE_TRAJECTORY_ROUTINE:
             x1_offset = 0
             y1_offset = 0
-            z1_offset = min(abs(pos_start[0] - pos_end[0])*0.4, 80)
-            z1_offset = max(abs(pos_start[0] - pos_end[0])*0.4, 30)
+            z1_offset = min(norm(pos_start[0:2] - pos_end[0:2])*0.4, 60)
+            z1_offset = max(norm(pos_start[0:2] - pos_end[0:2])*0.4, 30)
 
             x2_offset = 0
             y2_offset = 0
-            z2_offset = min(abs(pos_start[0] - pos_end[0])*0.4, 80)
-            z2_offset = max(abs(pos_start[0] - pos_end[0])*0.4, 30)
+            z2_offset = min(norm(pos_start[0:2] - pos_end[0:2])*0.4, 60)
+            z2_offset = max(norm(pos_start[0:2] - pos_end[0:2])*0.4, 30)
 
         else:
             return None
@@ -220,8 +221,8 @@ class TrajectoryGenerator():
 # def main():
 #     trajectory_generator = TrajectoryGenerator()
     
-#     pos_start = np.array([0, 0, 0])
-#     pos_end = np.array([200, 0, 0])
+#     pos_start = np.array([0, -200, -200])
+#     pos_end = np.array([0, 200, -200])
 #     task_time = -1
 #     task_type = conf.PLACE_TRAJECTORY_ROUTINE
 #     # task_type = conf.PICK_TRAJECTORY_ROUTINE

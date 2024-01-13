@@ -212,6 +212,7 @@ class GUI(Node):
                    conf.DIRECT_TRAJECTORY_ROUTINE,
                    conf.PICK_TRAJECTORY_ROUTINE,
                    conf.PLACE_TRAJECTORY_ROUTINE,
+                   "neutral"
                    ]
         self.combo_task_type = ttk.Combobox(self.window, 
             values=options,
@@ -236,16 +237,25 @@ class GUI(Node):
 
     def start_button_pressed(self):
         msg = TrajectoryTask()
-        try:
-            msg.pos_end.x = float(self.entry_x.get())
-            msg.pos_end.y = float(self.entry_y.get())
-            msg.pos_end.z = float(self.entry_z.get())
-            msg.task_time = float(self.entry_time.get())
-            msg.task_type.data = self.combo_task_type.get()
-            pass
+        
+        if self.combo_task_type.get() == "neutral":
+            pos_neutral = conf.configuration["trajectory"]["pos_neutral"]
 
-        except:
-            self.get_logger().error("insert valid input")
+            msg.pos_end.x = float(pos_neutral[0])
+            msg.pos_end.y = float(pos_neutral[1])
+            msg.pos_end.z = float(pos_neutral[2])
+            msg.task_time = float(-1.0)
+            msg.task_type.data = conf.DIRECT_TRAJECTORY_ROUTINE
+        
+        else:
+            try:
+                msg.pos_end.x = float(self.entry_x.get())
+                msg.pos_end.y = float(self.entry_y.get())
+                msg.pos_end.z = float(self.entry_z.get())
+                msg.task_time = float(self.entry_time.get())
+                msg.task_type.data = self.combo_task_type.get()
+            except:
+                self.get_logger().error("insert valid input")
         
         self.pub.publish(msg)
         return

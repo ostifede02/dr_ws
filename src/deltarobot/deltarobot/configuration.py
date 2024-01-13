@@ -24,8 +24,8 @@ configuration["trajectory"] = {
     "min_distance_between_set_points": 25,
     
     
-    "pos_home": np.array([0, 0, -50]),
-    "pos_neutral": np.array([0, 0, -150]),
+    "pos_home": np.array([0, 0, -150]),
+    "pos_neutral": np.array([0, 0, -200]),
 
     "end_effector_x_offset": 22.5
 }
