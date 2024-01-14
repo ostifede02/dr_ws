@@ -3,7 +3,7 @@ from rclpy.node import Node
 
 from deltarobot_interfaces.msg import TrajectoryTask
 from deltarobot_interfaces.msg import JointPositionViz
-from deltarobot_interfaces.msg import JointPositionMicro
+from deltarobot_interfaces.msg import JointPositionTelemetry
 
 from deltarobot.inverse_geometry import InverseGeometry
 from deltarobot.trajectory_generator import TrajectoryGenerator
@@ -27,9 +27,9 @@ class RobotController(Node):
             'joint_position_viz',
             100)
         
-        self.joint_position_micro_pub = self.create_publisher(
-            JointPositionMicro,
-            'joint_position_micro',
+        self.joint_position_telemetry_pub = self.create_publisher(
+            JointPositionTelemetry,
+            'joint_position_telemetry',
             100)
         
         self.trajectory_task_sub = self.create_subscription(
@@ -40,7 +40,7 @@ class RobotController(Node):
         self.trajectory_task_sub
 
         # import urdf file path
-        package_path = "/home/ostifede02/Documents/2dr_ws/src/deltarobot_description"
+        package_path = "/home/ostifede02/Documents/dr_ws/src/deltarobot_description"
         # chain 1
         urdf_file_name_chain_1 = "deltarobot_c1.urdf"
         urdf_file_path_chain_1 = join(join(package_path, "urdf"), urdf_file_name_chain_1)
@@ -138,10 +138,10 @@ class RobotController(Node):
             t_current = t_next
 
             ## publish to micro
-            micro_msg = JointPositionMicro()
+            micro_msg = JointPositionTelemetry()
             micro_msg.q = [float(self.q1_current[0]), float(self.q2_current[0]), float(self.q3_current[0])]
             micro_msg.t = float(t_current)
-            self.joint_position_micro_pub.publish(micro_msg)
+            self.joint_position_telemetry_pub.publish(micro_msg)
 
 
             ## publish to viz
@@ -152,9 +152,9 @@ class RobotController(Node):
             viz_msg.delta_t = float(delta_t)
             self.joint_position_viz_pub.publish(viz_msg)
 
-        micro_msg = JointPositionMicro()
+        micro_msg = JointPositionTelemetry()
         micro_msg.t = float(-1.0)
-        self.joint_position_micro_pub.publish(micro_msg)
+        self.joint_position_telemetry_pub.publish(micro_msg)
 
         stop = time.time()
         self.get_logger().info(f"computing time: {(stop-start)*1e3} [ms]")

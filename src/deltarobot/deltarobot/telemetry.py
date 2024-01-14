@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 
-from deltarobot_interfaces.msg import JointPositionMicro
+from deltarobot_interfaces.msg import JointPositionTelemetry
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,8 +14,8 @@ class Telemetry(Node):
         super().__init__('telemetry_node')
 
         self.sub = self.create_subscription(
-            JointPositionMicro,
-            'joint_position_micro',
+            JointPositionTelemetry,
+            'joint_position_telemetry',
             self.telemetry_callback,
             100)
         self.sub
@@ -32,25 +32,10 @@ class Telemetry(Node):
             self.q_carriage_1_array = np.empty((2,120))
             self.q_carriage_2_array = np.empty((2,120))
             self.q_carriage_3_array = np.empty((2,120))
-            plt.close('all')
         
         elif t == -1.0:
-            # initialize plot
-            fig = plt.figure()
-            plot = fig.add_subplot(111)
-
-            # plot the datas
-            plot.plot(self.q_carriage_1_array[0, 0:self.plot_index], self.q_carriage_1_array[1, 0:self.plot_index], "r", label="joint 1")
-            plot.plot(self.q_carriage_2_array[0, 0:self.plot_index], self.q_carriage_2_array[1, 0:self.plot_index], "g", label="joint 2")
-            plot.plot(self.q_carriage_3_array[0, 0:self.plot_index], self.q_carriage_3_array[1, 0:self.plot_index], "b", label="joint 3")
-            
-            plt.legend()
-            plt.title("carriage joints position")
-            plt.xlabel("time [ s ]")
-            plt.ylabel("joint position [ mm ]")
-            plt.show()
+            self.plot_datas()
             return
-
 
         q1_current = joint_position_msg.q[0]
         q2_current = joint_position_msg.q[1]
@@ -68,7 +53,25 @@ class Telemetry(Node):
         self.plot_index += 1
         return
 
+    def plot_datas(self):
+        # initialize plot
+        fig = plt.figure()
+        plot = fig.add_subplot(111)
 
+        # plot position
+        plot.plot(self.q_carriage_1_array[0, 0:self.plot_index], self.q_carriage_1_array[1, 0:self.plot_index], "r", label="joint 1")
+        plot.plot(self.q_carriage_2_array[0, 0:self.plot_index], self.q_carriage_2_array[1, 0:self.plot_index], "g", label="joint 2")
+        plot.plot(self.q_carriage_3_array[0, 0:self.plot_index], self.q_carriage_3_array[1, 0:self.plot_index], "b", label="joint 3")
+        
+        # compute and plot velocity
+        ## TO DO...
+
+        plt.legend()
+        plt.title("carriage joints position")
+        plt.xlabel("time [ s ]")
+        plt.ylabel("joint position [ mm ]")
+        plt.show()
+        return
 
 
 def main(args=None):

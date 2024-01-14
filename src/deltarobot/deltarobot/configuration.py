@@ -15,7 +15,7 @@ configuration["physical"] = {
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 150,
+    "max_acceleration": 180,
     "max_velocity": 800,
 
 

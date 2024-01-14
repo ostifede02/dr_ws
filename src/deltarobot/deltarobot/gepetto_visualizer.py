@@ -25,7 +25,7 @@ class GepettoVisualizer(Node):
 
         ## init robot model
         # import URDF files
-        package_path = "/home/ostifede02/Documents/2dr_ws/src/deltarobot_description"
+        package_path = "/home/ostifede02/Documents/dr_ws/src/deltarobot_description"
         urdf_file_name = "deltarobot.urdf"
         urdf_file_path = join(join(package_path, "urdf"), urdf_file_name)
         mesh_dir = join(package_path,"meshes")
