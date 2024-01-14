@@ -24,6 +24,7 @@ setup(
             "task_handler_node = deltarobot.task_handler:main",
             "robot_controller_node = deltarobot.robot_controller:main",
             "gepetto_visualizer_node = deltarobot.gepetto_visualizer:main",
+            "telemetry_node = deltarobot.telemetry:main",
         ],
     },
 )

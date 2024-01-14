@@ -3,6 +3,7 @@ from rclpy.node import Node
 
 from deltarobot_interfaces.msg import TrajectoryTask
 from deltarobot_interfaces.msg import JointPositionViz
+from deltarobot_interfaces.msg import JointPositionMicro
 
 from deltarobot.inverse_geometry import InverseGeometry
 from deltarobot.trajectory_generator import TrajectoryGenerator
@@ -24,6 +25,11 @@ class RobotController(Node):
         self.joint_position_viz_pub = self.create_publisher(
             JointPositionViz,
             'joint_position_viz',
+            100)
+        
+        self.joint_position_micro_pub = self.create_publisher(
+            JointPositionMicro,
+            'joint_position_micro',
             100)
         
         self.trajectory_task_sub = self.create_subscription(
@@ -83,8 +89,8 @@ class RobotController(Node):
 
         # unpack message
         pos_start = np.copy(self.pos_current)
-        pos_end = np.array([trajectory_task_msg.pos_end.x, 
-                            trajectory_task_msg.pos_end.y, 
+        pos_end = np.array([trajectory_task_msg.pos_end.x,
+                            trajectory_task_msg.pos_end.y,
                             trajectory_task_msg.pos_end.z])
         task_time = trajectory_task_msg.task_time
         task_type = trajectory_task_msg.task_type.data
@@ -106,13 +112,14 @@ class RobotController(Node):
             ee_2_offset = np.array([-np.sin((2/3)*np.pi), np.cos((2/3)*np.pi), 0])*self.ee_radius
             pos_next_2 = pos_des + ee_2_offset
             q2_next = self.ig_chain_2.compute_inverse_geometry(np.copy(self.q2_current), pos_next_2)
-            
+
             # chain 3
             ee_3_offset = np.array([-np.sin((4/3)*np.pi), np.cos((4/3)*np.pi), 0])*self.ee_radius
             pos_next_3 = pos_des + ee_3_offset
             q3_next = self.ig_chain_3.compute_inverse_geometry(np.copy(self.q3_current), pos_next_3)
 
             # check for collisions
+            # TO DO...
 
             # get delta_t
             t_next = set_point[3]
@@ -130,16 +137,24 @@ class RobotController(Node):
             self.q3_current = q3_next
             t_current = t_next
 
+            ## publish to micro
+            micro_msg = JointPositionMicro()
+            micro_msg.q = [float(self.q1_current[0]), float(self.q2_current[0]), float(self.q3_current[0])]
+            micro_msg.t = float(t_current)
+            self.joint_position_micro_pub.publish(micro_msg)
 
-            ## publish to viz 
+
+            ## publish to viz
             viz_msg = JointPositionViz()
-            # chain 1
-            viz_msg.q = [self.q1_current[0], self.q1_current[1], self.q1_current[2],
+            viz_msg.q = [   self.q1_current[0], self.q1_current[1], self.q1_current[2],
                             self.q2_current[0], self.q2_current[1], self.q2_current[2],
                             self.q3_current[0], self.q3_current[1], self.q3_current[2]]
             viz_msg.delta_t = float(delta_t)
-
             self.joint_position_viz_pub.publish(viz_msg)
+
+        micro_msg = JointPositionMicro()
+        micro_msg.t = float(-1.0)
+        self.joint_position_micro_pub.publish(micro_msg)
 
         stop = time.time()
         self.get_logger().info(f"computing time: {(stop-start)*1e3} [ms]")

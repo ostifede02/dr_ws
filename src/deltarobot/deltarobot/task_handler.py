@@ -23,9 +23,9 @@ class TaskHandler(Node):
 
 
     def task_handler_callback(self, task_input_msg):
-            ## needs to have a logic
-            self.pub.publish(task_input_msg)
-            return
+        ## needs to have a logic
+        self.pub.publish(task_input_msg)
+        return
 
 
 
