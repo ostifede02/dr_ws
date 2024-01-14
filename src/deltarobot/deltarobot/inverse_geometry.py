@@ -34,7 +34,7 @@ class InverseGeometry():
     
 
     # Gauss-Newton algorithm
-    def gauss_newton_step(self, q, pos, pos_des, J, i):
+    def gauss_newton_step(self, q, pos, pos_des, J):
         e = pos_des - pos
         cost = norm(e)
         
@@ -85,8 +85,10 @@ class InverseGeometry():
     
     # method computes inverse geomtery
     def compute_inverse_geometry(self, q, pos_des):
+        q_next = q
 
-        for i in range(self.max_iterations):
+        while q_next is not None:
+            q = q_next
 
             pin.forwardKinematics(self.model, self.data, q)
             pos = pin.updateFramePlacement(self.model, self.data, self.frame_id).translation
@@ -94,14 +96,8 @@ class InverseGeometry():
             J6 = pin.computeFrameJacobian(self.model, self.data, q, self.frame_id)
             J = J6[0:3,:]
 
-            q_next = self.gauss_newton_step(q, pos, pos_des, J, i)
+            q_next = self.gauss_newton_step(q, pos, pos_des, J)
 
-            if(q_next is None):
-                break
-            else:
-                q = q_next
-
-        print(f"Convergence achived after {i} iteration.")
         return q
 
 
@@ -110,60 +106,60 @@ class InverseGeometry():
 
 # ***********************************************************************************************
 ## test the algorithm
-from os.path import join
+# from os.path import join
 
-import pinocchio as pin
+# import pinocchio as pin
 
 
-def main():
-    # import urdf file path
-    package_path = "/home/ostifede02/Documents/2dr_ws/src/deltarobot_description"
-    # chain 1
-    urdf_file_name_chain_1 = "deltarobot_c1.urdf"
-    urdf_file_path_chain_1 = join(join(package_path, "urdf"), urdf_file_name_chain_1)
-    # chain 2
-    urdf_file_name_chain_2 = "deltarobot_c2.urdf"
-    urdf_file_path_chain_2 = join(join(package_path, "urdf"), urdf_file_name_chain_2)
-    # chain 3
-    urdf_file_name_chain_3 = "deltarobot_c3.urdf"
-    urdf_file_path_chain_3 = join(join(package_path, "urdf"), urdf_file_name_chain_3)
+# def main():
+#     # import urdf file path
+#     package_path = "/home/ostifede02/Documents/2dr_ws/src/deltarobot_description"
+#     # chain 1
+#     urdf_file_name_chain_1 = "deltarobot_c1.urdf"
+#     urdf_file_path_chain_1 = join(join(package_path, "urdf"), urdf_file_name_chain_1)
+#     # chain 2
+#     urdf_file_name_chain_2 = "deltarobot_c2.urdf"
+#     urdf_file_path_chain_2 = join(join(package_path, "urdf"), urdf_file_name_chain_2)
+#     # chain 3
+#     urdf_file_name_chain_3 = "deltarobot_c3.urdf"
+#     urdf_file_path_chain_3 = join(join(package_path, "urdf"), urdf_file_name_chain_3)
 
-    # Load the urdf models
-    model_chain_1 = pin.buildModelFromUrdf(urdf_file_path_chain_1)
-    data_chain_1 = model_chain_1.createData()
-    model_chain_2 = pin.buildModelFromUrdf(urdf_file_path_chain_2)
-    data_chain_2 = model_chain_2.createData()
-    model_chain_3 = pin.buildModelFromUrdf(urdf_file_path_chain_3)
-    data_chain_3 = model_chain_3.createData()
+#     # Load the urdf models
+#     model_chain_1 = pin.buildModelFromUrdf(urdf_file_path_chain_1)
+#     data_chain_1 = model_chain_1.createData()
+#     model_chain_2 = pin.buildModelFromUrdf(urdf_file_path_chain_2)
+#     data_chain_2 = model_chain_2.createData()
+#     model_chain_3 = pin.buildModelFromUrdf(urdf_file_path_chain_3)
+#     data_chain_3 = model_chain_3.createData()
 
-    # initialize InverseGeometry object
-    ig_chain_1 = InverseGeometry(model_chain_1, data_chain_1, 10)
-    ig_chain_2 = InverseGeometry(model_chain_2, data_chain_2, 10)
-    ig_chain_3 = InverseGeometry(model_chain_3, data_chain_3, 10)
+#     # initialize InverseGeometry object
+#     ig_chain_1 = InverseGeometry(model_chain_1, data_chain_1, 10)
+#     ig_chain_2 = InverseGeometry(model_chain_2, data_chain_2, 10)
+#     ig_chain_3 = InverseGeometry(model_chain_3, data_chain_3, 10)
     
-    q0 = np.array([0, 0, 0])
-    pos_des = np.array([0, 0, -200])
+#     q0 = np.array([0, 0, 0])
+#     pos_des = np.array([0, 0, -200])
 
-    ee_radius = 25
+#     ee_radius = 25
 
-    ee_1_offset = np.array([np.sin(0), np.cos(0), 0])*ee_radius
-    pos_next_1 = pos_des + ee_1_offset
-    q_next_1 = ig_chain_1.compute_inverse_geometry(q0, pos_next_1)
+#     ee_1_offset = np.array([np.sin(0), np.cos(0), 0])*ee_radius
+#     pos_next_1 = pos_des + ee_1_offset
+#     q_next_1 = ig_chain_1.compute_inverse_geometry(q0, pos_next_1)
 
-    ee_2_offset = np.array([-np.sin((2/3)*np.pi), np.cos((2/3)*np.pi), 0])*ee_radius
-    pos_next_2 = pos_des + ee_2_offset
-    q_next_2 = ig_chain_2.compute_inverse_geometry(q0, pos_next_2)
+#     ee_2_offset = np.array([-np.sin((2/3)*np.pi), np.cos((2/3)*np.pi), 0])*ee_radius
+#     pos_next_2 = pos_des + ee_2_offset
+#     q_next_2 = ig_chain_2.compute_inverse_geometry(q0, pos_next_2)
 
-    ee_3_offset = np.array([-np.sin((4/3)*np.pi), np.cos((4/3)*np.pi), 0])*ee_radius
-    pos_next_3 = pos_des + ee_3_offset
-    q_next_3 = ig_chain_3.compute_inverse_geometry(q0, pos_next_3)
+#     ee_3_offset = np.array([-np.sin((4/3)*np.pi), np.cos((4/3)*np.pi), 0])*ee_radius
+#     pos_next_3 = pos_des + ee_3_offset
+#     q_next_3 = ig_chain_3.compute_inverse_geometry(q0, pos_next_3)
 
-    print(f"pos: {pos_des}")
-    print(f"q_1: {q_next_1}")
-    print(f"q_2: {q_next_2}")
-    print(f"q_3: {q_next_3}")
-    return
+#     print(f"pos: {pos_des}")
+#     print(f"q_1: {q_next_1}")
+#     print(f"q_2: {q_next_2}")
+#     print(f"q_3: {q_next_3}")
+#     return
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
