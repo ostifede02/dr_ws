@@ -29,9 +29,9 @@ class Telemetry(Node):
 
         if t == 0:
             self.plot_index = 0
-            self.q_carriage_1_array = np.empty((2,120))
-            self.q_carriage_2_array = np.empty((2,120))
-            self.q_carriage_3_array = np.empty((2,120))
+            self.q_carriage_1_array = np.empty((2,100))
+            self.q_carriage_2_array = np.empty((2,100))
+            self.q_carriage_3_array = np.empty((2,100))
         
         elif t == -1.0:
             self.plot_datas()
@@ -55,23 +55,38 @@ class Telemetry(Node):
 
     def plot_datas(self):
         # initialize plot
-        fig = plt.figure()
-        plot = fig.add_subplot(111)
-
-        # plot position
-        plot.plot(self.q_carriage_1_array[0, 0:self.plot_index], self.q_carriage_1_array[1, 0:self.plot_index], "r", label="joint 1")
-        plot.plot(self.q_carriage_2_array[0, 0:self.plot_index], self.q_carriage_2_array[1, 0:self.plot_index], "g", label="joint 2")
-        plot.plot(self.q_carriage_3_array[0, 0:self.plot_index], self.q_carriage_3_array[1, 0:self.plot_index], "b", label="joint 3")
-        
-        # compute and plot velocity
-        ## TO DO...
-
+        fig1 = plt.figure()
+        plot_pos = fig1.add_subplot(111)
         plt.legend()
-        plt.title("carriage joints position")
+        plt.title("joint position")
         plt.xlabel("time [ s ]")
         plt.ylabel("joint position [ mm ]")
+
+        fig2 = plt.figure()
+        plot_vel = fig2.add_subplot(111)
+        plt.legend()
+        plt.title("joint velocity")
+        plt.xlabel("time [ s ]")
+        plt.ylabel("joint velocity [ mm/s ]")
+
+
+        # plot position
+        plot_pos.plot(self.q_carriage_1_array[0, 0:self.plot_index], self.q_carriage_1_array[1, 0:self.plot_index], "r", label="joint 1")
+        plot_pos.plot(self.q_carriage_2_array[0, 0:self.plot_index], self.q_carriage_2_array[1, 0:self.plot_index], "g", label="joint 2")
+        plot_pos.plot(self.q_carriage_3_array[0, 0:self.plot_index], self.q_carriage_3_array[1, 0:self.plot_index], "b", label="joint 3")
+        
+        # compute and plot velocity
+        dt_q_carriage_1_array = np.gradient(self.q_carriage_1_array[1, 0:self.plot_index], self.q_carriage_1_array[0, 0:self.plot_index])
+        dt_q_carriage_2_array = np.gradient(self.q_carriage_2_array[1, 0:self.plot_index], self.q_carriage_2_array[0, 0:self.plot_index])
+        dt_q_carriage_3_array = np.gradient(self.q_carriage_3_array[1, 0:self.plot_index], self.q_carriage_3_array[0, 0:self.plot_index])
+
+        plot_vel.plot(self.q_carriage_1_array[0, 0:self.plot_index], dt_q_carriage_1_array[0:self.plot_index], "r", label="dt joint 1")
+        plot_vel.plot(self.q_carriage_2_array[0, 0:self.plot_index], dt_q_carriage_2_array[0:self.plot_index], "g", label="dt joint 2")
+        plot_vel.plot(self.q_carriage_3_array[0, 0:self.plot_index], dt_q_carriage_3_array[0:self.plot_index], "b", label="dt joint 3")
+        
         plt.show()
         return
+    
 
 
 def main(args=None):

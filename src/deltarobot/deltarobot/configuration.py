@@ -2,6 +2,11 @@ import numpy as np
 
 configuration = {}
 
+configuration["paths"] = {
+    "package_path": "/home/ostifede02/Documents/dr_ws/src/deltarobot_description",
+    "gui_assets_path": "/home/ostifede02/Documents/dr_ws/assets/gui/"
+}
+
 configuration["physical"] = {
     "pulley": {
         "n_teeth": 20,
@@ -15,13 +20,13 @@ configuration["physical"] = {
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 180,
-    "max_velocity": 800,
+    "max_acceleration": 120,
+    "max_velocity": 400,
 
 
     "delta_s_high_resolution": 0.05,        # used for path length
-    "mean_distance_between_set_points": 4,
-    "min_distance_between_set_points": 25,
+    "mean_distance_between_set_points": 10,
+    "min_distance_between_set_points": 20,
     
     
     "pos_home": np.array([0, 0, -150]),

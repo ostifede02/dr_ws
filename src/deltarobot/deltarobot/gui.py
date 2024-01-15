@@ -26,7 +26,7 @@ class GUI(Node):
     
 
     def relative_to_assets(self, path):
-        ASSETS_PATH = "/home/ostifede02/Documents/2dr_ws/assets/gui/"
+        ASSETS_PATH = conf.configuration["paths"]["gui_assets_path"]
         return str(ASSETS_PATH + path)
         
 
