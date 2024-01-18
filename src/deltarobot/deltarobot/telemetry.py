@@ -29,9 +29,9 @@ class Telemetry(Node):
 
         if t == 0:
             self.plot_index = 0
-            self.q_carriage_1_array = np.empty((2,100))
-            self.q_carriage_2_array = np.empty((2,100))
-            self.q_carriage_3_array = np.empty((2,100))
+            self.q_carriage_1_array = np.empty((2,2000))
+            self.q_carriage_2_array = np.empty((2,2000))
+            self.q_carriage_3_array = np.empty((2,2000))
         
         elif t == -1.0:
             self.plot_datas()
@@ -69,6 +69,13 @@ class Telemetry(Node):
         plt.xlabel("time [ s ]")
         plt.ylabel("joint velocity [ mm/s ]")
 
+        fig3 = plt.figure()
+        plot_acc = fig3.add_subplot(111)
+        plt.legend()
+        plt.title("joint acceleration")
+        plt.xlabel("time [ s ]")
+        plt.ylabel("joint acceleration [ mm/s2 ]")
+
 
         # plot position
         plot_pos.plot(self.q_carriage_1_array[0, 0:self.plot_index], self.q_carriage_1_array[1, 0:self.plot_index], "r", label="joint 1")
@@ -83,6 +90,15 @@ class Telemetry(Node):
         plot_vel.plot(self.q_carriage_1_array[0, 0:self.plot_index], dt_q_carriage_1_array[0:self.plot_index], "r", label="dt joint 1")
         plot_vel.plot(self.q_carriage_2_array[0, 0:self.plot_index], dt_q_carriage_2_array[0:self.plot_index], "g", label="dt joint 2")
         plot_vel.plot(self.q_carriage_3_array[0, 0:self.plot_index], dt_q_carriage_3_array[0:self.plot_index], "b", label="dt joint 3")
+        
+        # compute and plot velocity
+        ddt_q_carriage_1_array = np.gradient(dt_q_carriage_1_array[0:self.plot_index], self.q_carriage_1_array[0, 0:self.plot_index])
+        ddt_q_carriage_2_array = np.gradient(dt_q_carriage_2_array[0:self.plot_index], self.q_carriage_2_array[0, 0:self.plot_index])
+        ddt_q_carriage_3_array = np.gradient(dt_q_carriage_3_array[0:self.plot_index], self.q_carriage_3_array[0, 0:self.plot_index])
+
+        plot_acc.plot(self.q_carriage_1_array[0, 0:self.plot_index], ddt_q_carriage_1_array[0:self.plot_index], "r", label="dt joint 1")
+        plot_acc.plot(self.q_carriage_2_array[0, 0:self.plot_index], ddt_q_carriage_2_array[0:self.plot_index], "g", label="dt joint 2")
+        plot_acc.plot(self.q_carriage_3_array[0, 0:self.plot_index], ddt_q_carriage_3_array[0:self.plot_index], "b", label="dt joint 3")
         
         plt.show()
         return
