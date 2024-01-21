@@ -19,6 +19,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
     "msg/TrajectoryTask.msg"
     "msg/JointPositionViz.msg"
     "msg/JointPositionTelemetry.msg"
+    "msg/JointPositionMicro.msg"
 
     # Add packages that above messages depend on
     DEPENDENCIES geometry_msgs 

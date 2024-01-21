@@ -11,12 +11,16 @@ class TrajectoryGenerator():
         return
     
 
-    def generate_trajectory(self, pos_start, pos_end, t_total_input, path_routine_type):
+    def generate_trajectory_joint_space(self, pos_start, pos_end, t_total_input):
+        return
+    
+
+    def generate_trajectory_task_space(self, pos_start, pos_end, t_total_input, path_routine_type):
         
         # the cubic bezier curve is a plynomial described by 4 points
         self.path_poly_points = self.__get_path_poly_points(pos_start, pos_end, path_routine_type)
         
-        if path_routine_type == conf.DIRECT_TRAJECTORY_ROUTINE:
+        if path_routine_type == conf.TASK_SPACE_DIRECT_TRAJECTORY_ROUTINE:
             x_total = np.linalg.norm(pos_end-pos_start)
         else:            
             x_total = self.__get_path_length()
@@ -79,7 +83,7 @@ class TrajectoryGenerator():
 
     def __get_path_poly_points(self, pos_start, pos_end, path_routine_type):
 
-        if path_routine_type == conf.DIRECT_TRAJECTORY_ROUTINE:
+        if path_routine_type == conf.TASK_SPACE_DIRECT_TRAJECTORY_ROUTINE:
             x1_offset = (pos_end[0] - pos_start[0])*0.333
             y1_offset = (pos_end[1] - pos_start[1])*0.333
             z1_offset = (pos_end[2] - pos_start[2])*0.333
@@ -226,7 +230,7 @@ class TrajectoryGenerator():
 #     task_time = -1
 #     task_type = conf.PLACE_TRAJECTORY_ROUTINE
 #     # task_type = conf.PICK_TRAJECTORY_ROUTINE
-#     # task_type = conf.DIRECT_TRAJECTORY_ROUTINE
+#     # task_type = conf.TASK_SPACE_DIRECT_TRAJECTORY_ROUTINE
 
 #     t_start = time.time()
 #     trajectory_vector = trajectory_generator.generate_trajectory(pos_start, pos_end, task_time, task_type)

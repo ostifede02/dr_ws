@@ -209,7 +209,8 @@ class GUI(Node):
         combostyle.theme_use('combostyle')
 
         options = ["", 
-                   conf.DIRECT_TRAJECTORY_ROUTINE,
+                   conf.TASK_SPACE_DIRECT_TRAJECTORY_ROUTINE,
+                   conf.JOINT_SPACE_DIRECT_TRAJECTORY_ROUTINE,
                    conf.PICK_TRAJECTORY_ROUTINE,
                    conf.PLACE_TRAJECTORY_ROUTINE,
                    "neutral"
@@ -245,7 +246,7 @@ class GUI(Node):
             msg.pos_end.y = float(pos_neutral[1])
             msg.pos_end.z = float(pos_neutral[2])
             msg.task_time = float(-1.0)
-            msg.task_type.data = conf.DIRECT_TRAJECTORY_ROUTINE
+            msg.task_type.data = conf.TASK_DIRECT_TRAJECTORY_ROUTINE
         
         else:
             try:

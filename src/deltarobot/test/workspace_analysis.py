@@ -14,8 +14,8 @@ PI = np.pi
  - link length: 400 mm
 '''
 # define carriage stroke
-carriage_stroke = 146
-carriage_stroke_start = 170
+carriage_stroke = 150
+carriage_stroke_start = 140
 # define link lengths
 link_length = 400
 
@@ -38,7 +38,7 @@ def main():
 
 
     # define simulation variables
-    carriage_step = 4       # each carriage moves every 1 mm
+    carriage_step = 6       # each carriage moves every 1 mm
     n_carriage_steps = int(carriage_stroke / carriage_step)
 
 

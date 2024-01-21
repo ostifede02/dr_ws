@@ -23,9 +23,8 @@ configuration["trajectory"] = {
     "max_acceleration": 120,
     "max_velocity": 400,
 
-
     "delta_s_high_resolution": 0.05,        # used for path length
-    "mean_distance_between_set_points": 0.1,
+    "mean_distance_between_set_points": 10,
     "min_distance_between_set_points": 20,
     
     
@@ -59,6 +58,7 @@ configuration["inverse_geometry"] = {
 ##########   TRAJECTORY ROUTINES   ##########
 PICK_TRAJECTORY_ROUTINE = "pick"
 PLACE_TRAJECTORY_ROUTINE = "place"
-DIRECT_TRAJECTORY_ROUTINE = "direct"
+TASK_SPACE_DIRECT_TRAJECTORY_ROUTINE = "p2p_task_space"
+JOINT_SPACE_DIRECT_TRAJECTORY_ROUTINE = "p2p_joint_space"
 
 ##########   ERRORS   ##########

@@ -95,9 +95,26 @@ class RobotController(Node):
         task_time = trajectory_task_msg.task_time
         task_type = trajectory_task_msg.task_type.data
         
+        # only the POINT to POINT joint space trajectory is implemented
+        if task_type == conf.JOINT_SPACE_DIRECT_TRAJECTORY_ROUTINE:
+            ## implement the joint space trajectory planning and control
+            pass
+        else:
+            ## task space trajectory planning and control
+            self.robot_controller_task_space_trajectory(pos_start, pos_end, task_time, task_type)
+
+        # last msg to show graph
+        self.publish_joint_position_telemetry(0,0,0,-1)
+
+        stop = time.time()
+        self.get_logger().info(f"computing time: {(stop-start)*1e3} [ms]")
+        return
+
+
+    def robot_controller_task_space_trajectory(self, pos_start, pos_end, task_time, task_type):
+        # returns an array of x-y-z setpoints and time
+        set_points_vector = self.trajectory_generator.generate_trajectory_task_space(pos_start, pos_end, task_time, task_type)
         t_current = 0
-        # returns an array of x-z setpoints and time
-        set_points_vector = self.trajectory_generator.generate_trajectory(pos_start, pos_end, task_time, task_type)
 
         for set_point in set_points_vector:
             pos_des = set_point[0:3]
@@ -138,26 +155,32 @@ class RobotController(Node):
             t_current = t_next
 
             ## publish to micro
-            micro_msg = JointPositionTelemetry()
-            micro_msg.q = [float(self.q1_current[0]), float(self.q2_current[0]), float(self.q3_current[0])]
-            micro_msg.t = float(t_current)
-            self.joint_position_telemetry_pub.publish(micro_msg)
+            # TO DO...
 
+            # create graphs
+            self.publish_joint_position_telemetry(q1_next[0], q2_next[0], q3_next[0], t_current)
 
             ## publish to viz
-            viz_msg = JointPositionViz()
-            viz_msg.q = [   self.q1_current[0], self.q1_current[1], self.q1_current[2],
-                            self.q2_current[0], self.q2_current[1], self.q2_current[2],
-                            self.q3_current[0], self.q3_current[1], self.q3_current[2]]
-            viz_msg.delta_t = float(delta_t)
-            self.joint_position_viz_pub.publish(viz_msg)
+            self.publish_joint_position_viewer(q1_next, q2_next, q3_next, delta_t)         
 
+        return
+        
+
+    def publish_joint_position_telemetry(self, q1, q2, q3, t_current):
         micro_msg = JointPositionTelemetry()
-        micro_msg.t = float(-1.0)
+        micro_msg.q = [float(q1), float(q2), float(q3)]
+        micro_msg.t = float(t_current)
         self.joint_position_telemetry_pub.publish(micro_msg)
+        return
+    
 
-        stop = time.time()
-        self.get_logger().info(f"computing time: {(stop-start)*1e3} [ms]")
+    def publish_joint_position_viewer(self, q1, q2, q3, delta_t):
+        viz_msg = JointPositionViz()
+        viz_msg.q = [   q1[0], q1[1], q1[2],
+                        q2[0], q2[1], q2[2],
+                        q3[0], q3[1], q3[2]]
+        viz_msg.delta_t = float(delta_t)
+        self.joint_position_viz_pub.publish(viz_msg)
         return
 
 

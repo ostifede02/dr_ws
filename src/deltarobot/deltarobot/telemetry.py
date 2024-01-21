@@ -29,9 +29,9 @@ class Telemetry(Node):
 
         if t == 0:
             self.plot_index = 0
-            self.q_carriage_1_array = np.empty((2,2000))
-            self.q_carriage_2_array = np.empty((2,2000))
-            self.q_carriage_3_array = np.empty((2,2000))
+            self.q_carriage_1_array = np.empty((2,1000))
+            self.q_carriage_2_array = np.empty((2,1000))
+            self.q_carriage_3_array = np.empty((2,1000))
         
         elif t == -1.0:
             self.plot_datas()
