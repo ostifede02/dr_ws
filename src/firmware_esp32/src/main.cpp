@@ -5,20 +5,43 @@
 #include <rclc/rclc.h>
 #include <rclc/executor.h>
 
-#include <std_msgs/msg/int32.h>
+#include <std_msgs/msg/int64.h>
+
+#include "ShiftRegister74HC595.h"
 
 #if !defined(MICRO_ROS_TRANSPORT_ARDUINO_SERIAL)
 #error This example is only avaliable for Arduino framework with serial transport.
 #endif
 
-rcl_publisher_t publisher;
-std_msgs__msg__Int32 msg;
+
+// HARDWARE
+#define PIN_STEP 1
+#define PIN_DIR 2
+
+// create a global shift register object
+#define NUMBER_SHIFT_REG 1
+#define I2S_DATA_PIN 21
+#define I2S_CLOCK_PIN 16
+#define I2S_LATCH_PIN 17
+
+ShiftRegister74HC595<NUMBER_SHIFT_REG> sr(I2S_DATA_PIN, I2S_CLOCK_PIN, I2S_LATCH_PIN);
+
+
+
+// Function prototype:
+void (* rclc_subscription_callback_t)(const void *);
+void do_step(void);
+
 
 rclc_executor_t executor;
 rclc_support_t support;
 rcl_allocator_t allocator;
 rcl_node_t node;
-rcl_timer_t timer;
+
+// Subscriber object
+rcl_subscription_t subscriber;
+
+
 
 #define RCCHECK(fn)                 \
 {                                   \
@@ -45,22 +68,17 @@ void error_loop()
     }
 }
 
-void timer_callback(rcl_timer_t *timer, int64_t last_call_time)
-{
-    RCLC_UNUSED(last_call_time);
-    if (timer != NULL)
-    {
-        RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
-        msg.data += 1;
-    }
-}
-
 void setup()
 {
     // Configure serial transport
     Serial.begin(115200);
     set_microros_serial_transports(Serial);
     delay(2000);
+
+    pinMode(I2S_DATA_PIN, OUTPUT);
+    pinMode(I2S_DATA_PIN, OUTPUT);
+    pinMode(I2S_LATCH_PIN, OUTPUT);
+    
 
     allocator = rcl_get_default_allocator();
 
@@ -70,24 +88,28 @@ void setup()
     // create node
     RCCHECK(rclc_node_init_default(&node, "micro_ros_esp32_node", "", &support));
 
-    // create publisher
-    RCCHECK(rclc_publisher_init_default(
-        &publisher,
-        &node,
-        ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
-        "micro_ros_platformio_node_publisher"));
-
-    // create timer,
-    const unsigned int timer_timeout = 1000;
-    RCCHECK(rclc_timer_init_default(
-        &timer,
-        &support,
-        RCL_MS_TO_NS(timer_timeout),
-        timer_callback));
+    // **** initialize reliable subscriber ****
+    const char * topic_name = "joint_position_micro";
+    // Get message type support
+    const rosidl_message_type_support_t * type_support =
+    ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int64);
+    // Initialize a reliable subscriber
+    rcl_ret_t rc = rclc_subscription_init_default(
+    &subscriber, &node,
+    type_support, topic_name);
 
     // create executor
     RCCHECK(rclc_executor_init(&executor, &support.context, 1, &allocator));
-    RCCHECK(rclc_executor_add_timer(&executor, &timer));
+
+
+    // Message object to receive publisher data
+    std_msgs__msg__Int64 msg;
+    // Add subscription to the executor
+    rcl_ret_t rc = rclc_executor_add_subscription(
+    &executor, &subscriber, &msg,
+    &subscription_callback, ON_NEW_DATA);
+
+
 
     msg.data = 0;
 }
@@ -96,4 +118,27 @@ void loop()
 {
     delay(100);
     RCSOFTCHECK(rclc_executor_spin_some(&executor, RCL_MS_TO_NS(100)));
+}
+
+
+
+// Implementation example:
+void subscription_callback(const void * msgin)
+{
+    // Cast received message to used type
+    const std_msgs__msg__Int64 * msg = (const std_msgs__msg__Int64 *)msgin;
+
+    // Process message
+
+}
+
+void do_step(void)
+{
+    // digitalWrite(PIN_STEP, HIGH);
+    sr.set(PIN_STEP, HIGH);
+    delayMicroseconds(40);
+    // digitalWrite(PIN_STEP, LOW);
+    sr.set(PIN_STEP, LOW);
+    delayMicroseconds(40);
+    return;
 }

@@ -4,6 +4,7 @@ from rclpy.node import Node
 from deltarobot_interfaces.msg import TrajectoryTask
 from deltarobot_interfaces.msg import JointPositionViz
 from deltarobot_interfaces.msg import JointPositionTelemetry
+from std_msgs.msg import Int64
 
 from deltarobot.inverse_geometry import InverseGeometry
 from deltarobot.trajectory_generator import TrajectoryGenerator
@@ -30,6 +31,11 @@ class RobotController(Node):
         self.joint_position_telemetry_pub = self.create_publisher(
             JointPositionTelemetry,
             'joint_position_telemetry',
+            100)
+        
+        self.joint_position_micro_pub = self.create_publisher(
+            Int64,
+            'joint_position_micro',
             100)
         
         self.trajectory_task_sub = self.create_subscription(
@@ -156,6 +162,8 @@ class RobotController(Node):
 
             ## publish to micro
             # TO DO...
+            self.publish_joint_position_micro(delta_q1, None, None, delta_t)
+
 
             # create graphs
             self.publish_joint_position_telemetry(q1_next[0], q2_next[0], q3_next[0], t_current)
@@ -181,6 +189,20 @@ class RobotController(Node):
                         q3[0], q3[1], q3[2]]
         viz_msg.delta_t = float(delta_t)
         self.joint_position_viz_pub.publish(viz_msg)
+        return
+    
+    def publish_joint_position_micro(self, delta_q1, delta_q2, delta_q3, delta_t):
+        micro_msg = Int64()
+        delta_t_msg = int(round(delta_t*1e6,1))     # time in microseconds
+        delta_q1_msg = int(round(delta_q1*10,1)*1e9)   # position
+        
+        if delta_q1_msg < 0:
+            micro_msg.data = delta_q1_msg - delta_t_msg
+        else:
+            micro_msg.data = delta_q1_msg + delta_t_msg
+            
+        self.joint_position_micro_pub.publish(micro_msg)
+        self.get_logger().info(f"delta_q1: {delta_q1_msg/1e10} [mm], delta_t: {delta_t_msg/1e6} [s], msg: {micro_msg.data}")
         return
 
 
