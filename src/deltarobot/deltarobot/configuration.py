@@ -24,7 +24,7 @@ configuration["trajectory"] = {
     "max_velocity": 400,
 
     "delta_s_high_resolution": 0.05,        # used for path length
-    "mean_distance_between_set_points": 10,
+    "mean_distance_between_set_points": 5,
     "min_distance_between_set_points": 20,
     
     
