@@ -40,7 +40,7 @@ class RobotController(Node):
         self.trajectory_task_sub
 
         # import urdf file path
-        package_path = "/home/ostifede02/Documents/dr_ws/src/deltarobot_description"
+        package_path = conf.configuration["paths"]["package_path"]
         # chain 1
         urdf_file_name_chain_1 = "deltarobot_c1.urdf"
         urdf_file_path_chain_1 = join(join(package_path, "urdf"), urdf_file_name_chain_1)

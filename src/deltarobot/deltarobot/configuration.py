@@ -3,8 +3,8 @@ import numpy as np
 configuration = {}
 
 configuration["paths"] = {
-    "package_path": "/home/ostifede02/Documents/dr_ws/src/deltarobot_description",
-    "gui_assets_path": "/home/ostifede02/Documents/dr_ws/assets/gui/"
+    "package_path": "/home/ostifede02/dr_ws/src/deltarobot_description",
+    "gui_assets_path": "/home/ostifede02/dr_ws/assets/gui/",
 }
 
 configuration["physical"] = {
