@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(deltarobot_interfaces)
+project(micro_custom_messages)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -10,22 +10,6 @@ find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
-find_package(geometry_msgs REQUIRED)
-find_package(std_msgs REQUIRED)
-
-find_package(rosidl_default_generators REQUIRED)
-
-rosidl_generate_interfaces(${PROJECT_NAME}
-    "msg/TrajectoryTask.msg"
-    "msg/JointPositionViz.msg"
-    "msg/JointPositionTelemetry.msg"
-    "msg/JointPositionMicro.msg"
-    "msg/QuaternionArray.msg"
-
-    # Add packages that above messages depend on
-    DEPENDENCIES geometry_msgs 
-    DEPENDENCIES std_msgs 
-)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -38,5 +22,13 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+find_package(rosidl_default_generators REQUIRED)
+find_package(geometry_msgs REQUIRED)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/QuaternionArray.msg"
+  DEPENDENCIES geometry_msgs
+)
 
 ament_package()

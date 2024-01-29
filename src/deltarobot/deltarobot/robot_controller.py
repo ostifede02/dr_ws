@@ -4,7 +4,8 @@ from rclpy.node import Node
 from deltarobot_interfaces.msg import TrajectoryTask
 from deltarobot_interfaces.msg import JointPositionViz
 from deltarobot_interfaces.msg import JointPositionTelemetry
-from std_msgs.msg import Int64
+from deltarobot_interfaces.msg import QuaternionArray
+from geometry_msgs.msg import Quaternion
 
 from deltarobot.inverse_geometry import InverseGeometry
 from deltarobot.trajectory_generator import TrajectoryGenerator
@@ -34,7 +35,7 @@ class RobotController(Node):
             100)
         
         self.joint_position_micro_pub = self.create_publisher(
-            Int64,
+            QuaternionArray,
             'joint_position_micro',
             100)
         
@@ -78,14 +79,23 @@ class RobotController(Node):
         
         self.ee_radius = conf.configuration["physical"]["ee_radius"]
 
+        # init chain 1
         q0_1 = pin.neutral(model_chain_1)
-        self.q1_current = self.ig_chain_1.compute_inverse_geometry(q0_1, self.pos_current)
+        ee_1_offset = np.array([np.sin(0), np.cos(0), 0])*self.ee_radius
+        pos_next_1 = self.pos_current + ee_1_offset
+        self.q1_current = self.ig_chain_1.compute_inverse_geometry(q0_1, pos_next_1)
         
+        # init chain 2
         q0_2 = pin.neutral(model_chain_2)
-        self.q2_current = self.ig_chain_2.compute_inverse_geometry(q0_2, self.pos_current)
+        ee_2_offset = np.array([-np.sin((2/3)*np.pi), np.cos((2/3)*np.pi), 0])*self.ee_radius
+        pos_next_2 = self.pos_current + ee_2_offset
+        self.q2_current = self.ig_chain_2.compute_inverse_geometry(q0_2, pos_next_2)
 
+        # init chain 3
         q0_3 = pin.neutral(model_chain_3)
-        self.q3_current = self.ig_chain_3.compute_inverse_geometry(q0_3, self.pos_current)
+        ee_3_offset = np.array([-np.sin((4/3)*np.pi), np.cos((4/3)*np.pi), 0])*self.ee_radius
+        pos_next_3 = self.pos_current + ee_3_offset
+        self.q3_current = self.ig_chain_3.compute_inverse_geometry(q0_3, pos_next_3)
 
         return
 
@@ -110,7 +120,7 @@ class RobotController(Node):
             self.robot_controller_task_space_trajectory(pos_start, pos_end, task_time, task_type)
 
         # last msg to show graph
-        self.publish_joint_position_telemetry(0,0,0,-1)
+        # self.publish_joint_position_telemetry(0,0,0,-1)
 
         stop = time.time()
         self.get_logger().info(f"computing time: {(stop-start)*1e3} [ms]")
@@ -122,7 +132,8 @@ class RobotController(Node):
         set_points_vector = self.trajectory_generator.generate_trajectory_task_space(pos_start, pos_end, task_time, task_type)
         t_current = 0
 
-        for set_point in set_points_vector:
+        joint_trajectory_vector = np.empty((len(set_points_vector), 4))
+        for i, set_point in enumerate(set_points_vector):
             pos_des = set_point[0:3]
             
             # compute inverse geometry
@@ -160,16 +171,16 @@ class RobotController(Node):
             self.q3_current = q3_next
             t_current = t_next
 
-            ## publish to micro
-            # TO DO...
-            self.publish_joint_position_micro(delta_q1, None, None, delta_t)
+            joint_trajectory_vector[i, :] = np.array([delta_q1, delta_q2, delta_q3, delta_t])
 
+        ## publish to micro
+        self.publish_joint_position_micro(joint_trajectory_vector)
 
-            # create graphs
-            self.publish_joint_position_telemetry(q1_next[0], q2_next[0], q3_next[0], t_current)
+        # create graphs
+        # self.publish_joint_position_telemetry(q1_next[0], q2_next[0], q3_next[0], t_current)
 
-            ## publish to viz
-            self.publish_joint_position_viewer(q1_next, q2_next, q3_next, delta_t)         
+        ## publish to viz
+        # self.publish_joint_position_viewer(q1_next, q2_next, q3_next, delta_t)         
 
         return
         
@@ -191,21 +202,19 @@ class RobotController(Node):
         self.joint_position_viz_pub.publish(viz_msg)
         return
     
-    def publish_joint_position_micro(self, delta_q1, delta_q2, delta_q3, delta_t):
-        micro_msg = Int64()
-        delta_t_msg = int(round(delta_t*1e6,1))     # time in microseconds
-        delta_q1_msg = int(round(delta_q1*10,1)*1e9)   # position
-        
-        if delta_q1_msg < 0:
-            micro_msg.data = delta_q1_msg - delta_t_msg
-        else:
-            micro_msg.data = delta_q1_msg + delta_t_msg
+    def publish_joint_position_micro(self, msg_array):
+        msg_micro_array = QuaternionArray()
+        for msg in msg_array:
+            msg_micro = Quaternion()
+            msg_micro.x = round(msg[0], 2)          # [ millimeters ]
+            msg_micro.y = round(msg[1], 2)          # [ millimeters ]
+            msg_micro.z = round(msg[2], 2)          # [ millimeters ]
+            msg_micro.w = round(msg[3]*1e6, 1)      # [ microseconds ]
             
-        self.joint_position_micro_pub.publish(micro_msg)
-        self.get_logger().info(f"delta_q1: {delta_q1_msg/1e10} [mm], delta_t: {delta_t_msg/1e6} [s], msg: {micro_msg.data}")
+            msg_micro_array.data.append(msg_micro)
+
+        self.joint_position_micro_pub.publish(msg_micro_array)
         return
-
-
 
 
 def main(args=None):

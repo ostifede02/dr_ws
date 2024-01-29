@@ -13,15 +13,15 @@ configuration["physical"] = {
         "module": 3
     },
     "stepper": {
-        "n_steps": 800
+        "n_steps": 1600
     },
     "ee_radius": 25,
     "link_pitch": 50
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 120,
-    "max_velocity": 400,
+    "max_acceleration": 800,
+    "max_velocity": 1200,
 
     "delta_s_high_resolution": 0.05,        # used for path length
     "mean_distance_between_set_points": 5,
