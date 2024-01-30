@@ -4,7 +4,9 @@ from rclpy.node import Node
 from deltarobot_interfaces.msg import TrajectoryTask
 from deltarobot_interfaces.msg import JointPositionViz
 from deltarobot_interfaces.msg import JointPositionTelemetry
-# from micro_custom_messages.msg import QuaternionArray
+
+from micro_custom_messages.msg import SetPoint
+from micro_custom_messages.msg import SetPointArray
 
 from deltarobot.inverse_geometry import InverseGeometry
 from deltarobot.trajectory_generator import TrajectoryGenerator
@@ -34,7 +36,7 @@ class RobotController(Node):
             100)
         
         self.joint_position_micro_pub = self.create_publisher(
-            QuaternionArray,
+            SetPointArray,
             'joint_position_micro',
             100)
         
@@ -202,19 +204,19 @@ class RobotController(Node):
         return
     
     def publish_joint_position_micro(self, msg_array):
-        msg_micro_array = QuaternionArray()
+        msg_micro_array = SetPointArray()
         for set_point_index, msg in enumerate(msg_array):
-            msg_micro = Quaternion()
-            msg_micro.x = round(msg[0], 2)          # [ millimeters ]
-            msg_micro.y = round(msg[1], 2)          # [ millimeters ]
-            msg_micro.z = round(msg[2], 2)          # [ millimeters ]
-            msg_micro.w = round(msg[3]*1e6, 1)      # [ microseconds ]
+            msg_micro = SetPoint()
+            msg_micro.delta_q1 = round(msg[0], 2)          # [ millimeters ]
+            msg_micro.delta_q2 = round(msg[1], 2)          # [ millimeters ]
+            msg_micro.delta_q3 = round(msg[2], 2)          # [ millimeters ]
+            msg_micro.delta_t = round(msg[3]*1e6, 1)      # [ microseconds ]
             
             msg_micro_array.set_points[set_point_index] = msg_micro
 
         # end of array
-        msg_micro = Quaternion()
-        msg_micro.w = float(-1)      # [ microseconds ]
+        msg_micro = SetPoint()
+        msg_micro.delta_t = float(-1)      # [ microseconds ]
         msg_micro_array.set_points[set_point_index+1] = msg_micro
 
         self.joint_position_micro_pub.publish(msg_micro_array)

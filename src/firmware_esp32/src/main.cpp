@@ -30,15 +30,6 @@ void setup()
 	rclc_support_t support;
 
 
-	// allocate msg memory
-	bool rc = micro_custom_messages__msg__SetPoint__Sequence__init(
-    	set_point_sequence_msg,
-    	set_point_sequence_size);
-
-	if(rc == false){
-		error_loop();
-	}
-
 	// create init_options
 	RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
 
@@ -64,10 +55,12 @@ void setup()
 		1, 
 		&allocator));
     
+
+	// add subscription to topic
 	RCCHECK(rclc_executor_add_subscription(
 		&executor, 
 		&subscriber, 
-		&set_point_sequence_msg, 
+		&set_point_array_msg,
 		&subscription_callback,
 		ON_NEW_DATA));
 

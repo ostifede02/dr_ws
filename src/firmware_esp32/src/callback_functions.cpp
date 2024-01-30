@@ -1,9 +1,10 @@
 #include "callback_functions.h"
 
+micro_custom_messages__msg__SetPointArray * set_point_array_msg;
 
 void subscription_callback(const void * msgin)
 {
-    set_point_sequence_msg = (micro_custom_messages__msg__SetPoint__Sequence *) msgin;
+    set_point_array_msg = (micro_custom_messages__msg__SetPointArray *) msgin;
 
     float delta_q1;
     float delta_q2;
@@ -21,18 +22,19 @@ void subscription_callback(const void * msgin)
 
     while(true){
         // unpack message set point
-        delta_t_micros = set_point_sequence_msg[set_point_index].data->delta_t;
+        delta_t_micros = set_point_array_msg[set_point_index].set_points->delta_t;
 
         if(delta_t_micros < 0){         // break if end of msg
             break;
         }
         else if(delta_t_micros == 0){   // do not process message if delta_t is zero
+            set_point_index += 1;
             continue;
         }
         
-        delta_q1 = set_point_sequence_msg[set_point_index].data->delta_q1;
-        delta_q2 = set_point_sequence_msg[set_point_index].data->delta_q2;
-        delta_q3 = set_point_sequence_msg[set_point_index].data->delta_q3;
+        delta_q1 = set_point_array_msg[set_point_index].set_points->delta_q1;
+        delta_q2 = set_point_array_msg[set_point_index].set_points->delta_q2;
+        delta_q3 = set_point_array_msg[set_point_index].set_points->delta_q3;
 
         set_point_index += 1;
 
