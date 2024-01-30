@@ -4,8 +4,7 @@ from rclpy.node import Node
 from deltarobot_interfaces.msg import TrajectoryTask
 from deltarobot_interfaces.msg import JointPositionViz
 from deltarobot_interfaces.msg import JointPositionTelemetry
-from deltarobot_interfaces.msg import QuaternionArray
-from geometry_msgs.msg import Quaternion
+# from micro_custom_messages.msg import QuaternionArray
 
 from deltarobot.inverse_geometry import InverseGeometry
 from deltarobot.trajectory_generator import TrajectoryGenerator
@@ -204,14 +203,19 @@ class RobotController(Node):
     
     def publish_joint_position_micro(self, msg_array):
         msg_micro_array = QuaternionArray()
-        for msg in msg_array:
+        for set_point_index, msg in enumerate(msg_array):
             msg_micro = Quaternion()
             msg_micro.x = round(msg[0], 2)          # [ millimeters ]
             msg_micro.y = round(msg[1], 2)          # [ millimeters ]
             msg_micro.z = round(msg[2], 2)          # [ millimeters ]
             msg_micro.w = round(msg[3]*1e6, 1)      # [ microseconds ]
             
-            msg_micro_array.data.append(msg_micro)
+            msg_micro_array.set_points[set_point_index] = msg_micro
+
+        # end of array
+        msg_micro = Quaternion()
+        msg_micro.w = float(-1)      # [ microseconds ]
+        msg_micro_array.set_points[set_point_index+1] = msg_micro
 
         self.joint_position_micro_pub.publish(msg_micro_array)
         return

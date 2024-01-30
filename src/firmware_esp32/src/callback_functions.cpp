@@ -3,9 +3,8 @@
 
 void subscription_callback(const void * msgin)
 {
-    // Cast received message to used type
-    const micro_custom_messages__msg__QuaternionArray * msg = (const micro_custom_messages__msg__QuaternionArray *) msgin;
-    
+    set_point_sequence_msg = (micro_custom_messages__msg__SetPoint__Sequence *) msgin;
+
     float delta_q1;
     float delta_q2;
     float delta_q3;
@@ -21,9 +20,9 @@ void subscription_callback(const void * msgin)
     
 
     while(true){
-
         // unpack message set point
-        delta_t_micros = msg[set_point_index].data->w;
+        delta_t_micros = set_point_sequence_msg[set_point_index].data->delta_t;
+
         if(delta_t_micros < 0){         // break if end of msg
             break;
         }
@@ -31,11 +30,13 @@ void subscription_callback(const void * msgin)
             continue;
         }
         
-        delta_q1 = msg[set_point_index].data->x;
-        delta_q2 = msg[set_point_index].data->y;
-        delta_q3 = msg[set_point_index].data->z;
+        delta_q1 = set_point_sequence_msg[set_point_index].data->delta_q1;
+        delta_q2 = set_point_sequence_msg[set_point_index].data->delta_q2;
+        delta_q3 = set_point_sequence_msg[set_point_index].data->delta_q3;
 
-        // Process message
+        set_point_index += 1;
+
+        // Process set point message
         set_direction(PIN_STEPPER_1_DIR, delta_q1);
         set_direction(PIN_STEPPER_2_DIR, delta_q2);
         set_direction(PIN_STEPPER_3_DIR, delta_q3);

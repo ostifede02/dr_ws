@@ -27,8 +27,8 @@ find_package(rosidl_default_generators REQUIRED)
 find_package(geometry_msgs REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/QuaternionArray.msg"
-  DEPENDENCIES geometry_msgs
+  "msg/SetPoint.msg"
+  # DEPENDENCIES geometry_msgs
 )
 
 ament_package()
