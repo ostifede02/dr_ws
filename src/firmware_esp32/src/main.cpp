@@ -12,6 +12,8 @@
 #include "callback_functions.h"
 
 
+micro_custom_messages__msg__SetPointArray set_point_array_msg;
+
 
 void setup()
 {
@@ -43,9 +45,17 @@ void setup()
 	RCCHECK(rclc_subscription_init_default(
 		&subscriber,
 		&node,
-		ROSIDL_GET_MSG_TYPE_SUPPORT(micro_custom_messages, msg, SetPoint),
+		ROSIDL_GET_MSG_TYPE_SUPPORT(micro_custom_messages, msg, SetPointArray),
 		"joint_position_micro"));
 
+	for(int j=0; j<2; j++){
+		for (int i = 0; i < 400; ++i)
+        {
+            do_half_step(PIN_STEPPER_1_STEP, i);
+            delayMicroseconds(200);
+        }
+		delay(1000);
+	}
 
 	// create executor
 	rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
@@ -55,6 +65,14 @@ void setup()
 		1, 
 		&allocator));
     
+	for(int j=0; j<2; j++){
+		for (int i = 0; i < 400; ++i)
+        {
+            do_half_step(PIN_STEPPER_1_STEP, i);
+            delayMicroseconds(200);
+        }
+		delay(1000);
+	}
 
 	// add subscription to topic
 	RCCHECK(rclc_executor_add_subscription(
@@ -63,6 +81,7 @@ void setup()
 		&set_point_array_msg,
 		&subscription_callback,
 		ON_NEW_DATA));
+
 
 	// spin the node
   	rclc_executor_spin(&executor);

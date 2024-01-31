@@ -15,13 +15,13 @@ void do_half_step(char PIN_STEPPER_X_STEP, int counter)
 }
 
 
-void set_direction(char PIN_STEPPER_X_STEP, float sign)
+void set_direction(char PIN_STEPPER_X_DIR, float sign)
 {
     if(sign < 0){
-        sr.set(PIN_STEPPER_X_STEP, HIGH);
+        sr.set(PIN_STEPPER_X_DIR, HIGH);
     }
     else {
-        sr.set(PIN_STEPPER_X_STEP, LOW);
+        sr.set(PIN_STEPPER_X_DIR, LOW);
     }
     return;
 }

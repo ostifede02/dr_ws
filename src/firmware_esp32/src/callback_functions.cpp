@@ -1,10 +1,21 @@
 #include "callback_functions.h"
 
-micro_custom_messages__msg__SetPointArray * set_point_array_msg;
 
 void subscription_callback(const void * msgin)
 {
-    set_point_array_msg = (micro_custom_messages__msg__SetPointArray *) msgin;
+    const micro_custom_messages__msg__SetPointArray * msg = (const micro_custom_messages__msg__SetPointArray *) msgin;
+
+    // int loops = abs(msg->set_points[2].delta_q1);
+
+    // for(int j=0; j<loops; j++){
+	// 	for (int i = 0; i < 1600; ++i)
+    //     {
+    //         do_half_step(PIN_STEPPER_1_STEP, i);
+    //         delayMicroseconds(200);
+    //     }
+	// 	delay(1000);
+	// }
+
 
     float delta_q1;
     float delta_q2;
@@ -22,7 +33,7 @@ void subscription_callback(const void * msgin)
 
     while(true){
         // unpack message set point
-        delta_t_micros = set_point_array_msg[set_point_index].set_points->delta_t;
+        delta_t_micros = msg->set_points[set_point_index].delta_t;
 
         if(delta_t_micros < 0){         // break if end of msg
             break;
@@ -32,9 +43,9 @@ void subscription_callback(const void * msgin)
             continue;
         }
         
-        delta_q1 = set_point_array_msg[set_point_index].set_points->delta_q1;
-        delta_q2 = set_point_array_msg[set_point_index].set_points->delta_q2;
-        delta_q3 = set_point_array_msg[set_point_index].set_points->delta_q3;
+        delta_q1 = msg->set_points[set_point_index].delta_q1;
+        delta_q2 = msg->set_points[set_point_index].delta_q2;
+        delta_q3 = msg->set_points[set_point_index].delta_q3;
 
         set_point_index += 1;
 
@@ -43,7 +54,7 @@ void subscription_callback(const void * msgin)
         set_direction(PIN_STEPPER_2_DIR, delta_q2);
         set_direction(PIN_STEPPER_3_DIR, delta_q3);
 
-        stepper1_half_steps = 2*((delta_q1 / (PI * D_PULLEY))*STEPS_PER_REV);
+        stepper1_half_steps = 2*((abs(delta_q1) / (PI * D_PULLEY))*STEPS_PER_REV);
         stepper1_delay_micros = delta_t_micros / stepper1_half_steps;
         stepper1_counter = 0;
 

@@ -20,8 +20,8 @@ configuration["physical"] = {
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 800,
-    "max_velocity": 1200,
+    "max_acceleration": 1200,
+    "max_velocity": 1600,
 
     "delta_s_high_resolution": 0.05,        # used for path length
     "mean_distance_between_set_points": 5,

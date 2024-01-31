@@ -104,7 +104,7 @@ class RobotController(Node):
     def robot_controller_callback(self, trajectory_task_msg):
         start = time.time()
 
-        # unpack message
+        # unpack messagep2p_task_space
         pos_start = np.copy(self.pos_current)
         pos_end = np.array([trajectory_task_msg.pos_end.x,
                             trajectory_task_msg.pos_end.y,
@@ -220,6 +220,7 @@ class RobotController(Node):
         msg_micro_array.set_points[set_point_index+1] = msg_micro
 
         self.joint_position_micro_pub.publish(msg_micro_array)
+
         return
 
 
