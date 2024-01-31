@@ -6,6 +6,6 @@
 #include "custom_messages.h"
 #include "board_pinout.h"
 
-void subscription_callback(const void * msgin);
+void trajectory_task_callback(const void * msgin);
 
 #endif  //CALLBACK_FUNCTIONS_H

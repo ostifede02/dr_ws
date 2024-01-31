@@ -104,7 +104,7 @@ class RobotController(Node):
     def robot_controller_callback(self, trajectory_task_msg):
         start = time.time()
 
-        # unpack messagep2p_task_space
+        # unpack message
         pos_start = np.copy(self.pos_current)
         pos_end = np.array([trajectory_task_msg.pos_end.x,
                             trajectory_task_msg.pos_end.y,
@@ -172,6 +172,7 @@ class RobotController(Node):
             self.q3_current = q3_next
             t_current = t_next
 
+            self.publish_joint_position_viewer(q1_next, q2_next, q3_next, delta_t)         
             joint_trajectory_vector[i, :] = np.array([delta_q1, delta_q2, delta_q3, delta_t])
 
         ## publish to micro
@@ -181,7 +182,6 @@ class RobotController(Node):
         # self.publish_joint_position_telemetry(q1_next[0], q2_next[0], q3_next[0], t_current)
 
         ## publish to viz
-        # self.publish_joint_position_viewer(q1_next, q2_next, q3_next, delta_t)         
 
         return
         
@@ -210,7 +210,7 @@ class RobotController(Node):
             msg_micro.delta_q1 = round(msg[0], 2)          # [ millimeters ]
             msg_micro.delta_q2 = round(msg[1], 2)          # [ millimeters ]
             msg_micro.delta_q3 = round(msg[2], 2)          # [ millimeters ]
-            msg_micro.delta_t = round(msg[3]*1e6, 1)      # [ microseconds ]
+            msg_micro.delta_t = round(msg[3]*1e6, 1)       # [ microseconds ]
             
             msg_micro_array.set_points[set_point_index] = msg_micro
 
