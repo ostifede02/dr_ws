@@ -27,6 +27,7 @@ configuration["trajectory"] = {
     "mean_distance_between_set_points": 8,
     "min_distance_between_set_points": 20,
 
+    "joint_space_linspace_resolution": 200,
 
     "pos_home": np.array([0, 0, -150]),
     "pos_neutral": np.array([0, 0, -200]),

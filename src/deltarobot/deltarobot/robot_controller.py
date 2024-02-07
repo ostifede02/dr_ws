@@ -115,7 +115,7 @@ class RobotController(Node):
         # only the POINT to POINT joint space trajectory is implemented
         if task_type == conf.JOINT_SPACE_DIRECT_TRAJECTORY_ROUTINE:
             ## implement the joint space trajectory planning and control
-            pass
+            self.robot_controller_joint_space_trajectory(pos_end, task_time)
         else:
             ## task space trajectory planning and control
             self.robot_controller_task_space_trajectory(pos_start, pos_end, task_time, task_type)
@@ -176,15 +176,57 @@ class RobotController(Node):
             joint_trajectory_vector[i, :] = np.array([delta_q1, delta_q2, delta_q3, delta_t])
 
         ## publish to micro
-        self.publish_joint_position_micro(joint_trajectory_vector)
+        # self.publish_joint_position_micro(joint_trajectory_vector)
 
         # create graphs
         # self.publish_joint_position_telemetry(q1_next[0], q2_next[0], q3_next[0], t_current)
 
         ## publish to viz
+        # self.publish_joint_position_viewer(q1_next[0], q2_next[0], q3_next[0], delta_t)
 
         return
+    
+
+    def robot_controller_joint_space_trajectory(self, pos_end, task_time):
+        # get current joint configuration in pos_start
+        q1_start = self.q1_current
+        q2_start = self.q2_current
+        q3_start = self.q3_current
         
+        # compute joint configuration in pos_end
+        # chain 1
+        ee_1_offset = np.array([np.sin(0), np.cos(0), 0])*self.ee_radius
+        pos_next_1 = pos_end + ee_1_offset
+        q1_end = self.ig_chain_1.compute_inverse_geometry(np.copy(self.q1_current), pos_next_1)
+
+        # chain 2
+        ee_2_offset = np.array([-np.sin((2/3)*np.pi), np.cos((2/3)*np.pi), 0])*self.ee_radius
+        pos_next_2 = pos_end + ee_2_offset
+        q2_end = self.ig_chain_2.compute_inverse_geometry(np.copy(self.q2_current), pos_next_2)
+
+        # chain 3
+        ee_3_offset = np.array([-np.sin((4/3)*np.pi), np.cos((4/3)*np.pi), 0])*self.ee_radius
+        pos_next_3 = pos_end + ee_3_offset
+        q3_end = self.ig_chain_3.compute_inverse_geometry(np.copy(self.q3_current), pos_next_3)
+
+        # get joint trajectory as delta_X
+        joint_trajectory_vector = self.trajectory_generator.generate_trajectory_joint_space(
+                                        np.array([q1_start, q2_start, q3_start]),
+                                        np.array([q1_end, q2_end, q3_end]),
+                                        task_time
+                                    )
+        
+        # publish trajectory as delta_X
+        self.publish_joint_position_micro(joint_trajectory_vector)
+
+        # update current position
+        self.pos_current = pos_end
+        self.q1_current = q1_end
+        self.q2_current = q2_end
+        self.q3_current = q3_end
+
+        return
+    
 
     def publish_joint_position_telemetry(self, q1, q2, q3, t_current):
         micro_msg = JointPositionTelemetry()
