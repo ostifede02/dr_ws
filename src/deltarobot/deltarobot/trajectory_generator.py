@@ -120,11 +120,8 @@ class TrajectoryGenerator():
         
         # the cubic bezier curve is a plynomial described by 4 points
         self.path_poly_points = self.__get_path_poly_points(pos_start, pos_end, path_routine_type)
-        
-        if path_routine_type == conf.TASK_SPACE_DIRECT_TRAJECTORY_ROUTINE:
-            x_total = np.linalg.norm(pos_end-pos_start)
-        else:            
-            x_total = self.__get_path_length()
+                  
+        x_total = self.__get_path_length()
 
         n_set_points = self.__get_number_set_points(x_total)     # avoid via points too close to each other
 
@@ -169,6 +166,22 @@ class TrajectoryGenerator():
 
         return set_points_vector
     
+
+    def generate_trajectory_task_space_simple_point_to_point(self, pos_start, pos_end, t_total_input):
+        set_points_vector = np.empty((2, 4))
+        
+        set_points_vector[0, 0] = pos_start[0]
+        set_points_vector[0, 1] = pos_start[1]
+        set_points_vector[0, 2] = pos_start[2]
+        set_points_vector[0, 3] = 0
+
+        set_points_vector[1, 0] = pos_end[0]
+        set_points_vector[1, 1] = pos_end[1]
+        set_points_vector[1, 2] = pos_end[2]
+        set_points_vector[1, 3] = t_total_input
+        
+        return set_points_vector
+
 
     def __get_path_poly_points(self, pos_start, pos_end, path_routine_type):
 

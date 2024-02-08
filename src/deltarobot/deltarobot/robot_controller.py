@@ -112,7 +112,7 @@ class RobotController(Node):
         task_time = trajectory_task_msg.task_time
         task_type = trajectory_task_msg.task_type.data
         
-        # only the POINT to POINT joint space trajectory is implemented
+        # distinguish between joint space and task space
         if task_type == conf.JOINT_SPACE_DIRECT_TRAJECTORY_ROUTINE:
             ## implement the joint space trajectory planning and control
             self.robot_controller_joint_space_trajectory(pos_end, task_time)
@@ -129,8 +129,14 @@ class RobotController(Node):
 
 
     def robot_controller_task_space_trajectory(self, pos_start, pos_end, task_time, task_type):
-        # returns an array of x-y-z setpoints and time
-        set_points_vector = self.trajectory_generator.generate_trajectory_task_space(pos_start, pos_end, task_time, task_type)
+        if task_type == conf.TASK_SPACE_SIMPLE_P2P_TRAJECTORY_ROUTINE:
+            set_points_vector = self.trajectory_generator.generate_trajectory_task_space_simple_point_to_point(
+                pos_start, pos_end, task_time)
+        else:
+            # returns an array of x-y-z setpoints and time
+            set_points_vector = self.trajectory_generator.generate_trajectory_task_space(
+                pos_start, pos_end, task_time, task_type)
+        
         t_current = 0
 
         joint_trajectory_vector = np.empty((len(set_points_vector), 4))
@@ -172,17 +178,17 @@ class RobotController(Node):
             self.q3_current = q3_next
             t_current = t_next
 
-            self.publish_joint_position_viewer(q1_next, q2_next, q3_next, delta_t)         
+            # create array of delta X
             joint_trajectory_vector[i, :] = np.array([delta_q1, delta_q2, delta_q3, delta_t])
+            
+            ## publish to geppetto viewer
+            self.publish_joint_position_viewer(q1_next, q2_next, q3_next, delta_t)         
 
         ## publish to micro
         # self.publish_joint_position_micro(joint_trajectory_vector)
 
         # create graphs
         # self.publish_joint_position_telemetry(q1_next[0], q2_next[0], q3_next[0], t_current)
-
-        ## publish to viz
-        # self.publish_joint_position_viewer(q1_next[0], q2_next[0], q3_next[0], delta_t)
 
         return
     
@@ -226,7 +232,7 @@ class RobotController(Node):
         self.q3_current = q3_end
 
         return
-    
+
 
     def publish_joint_position_telemetry(self, q1, q2, q3, t_current):
         micro_msg = JointPositionTelemetry()
@@ -234,7 +240,7 @@ class RobotController(Node):
         micro_msg.t = float(t_current)
         self.joint_position_telemetry_pub.publish(micro_msg)
         return
-    
+
 
     def publish_joint_position_viewer(self, q1, q2, q3, delta_t):
         viz_msg = JointPositionViz()
@@ -245,6 +251,7 @@ class RobotController(Node):
         self.joint_position_viz_pub.publish(viz_msg)
         return
     
+
     def publish_joint_position_micro(self, msg_array):
         msg_micro_array = SetPointArray()
         for set_point_index, msg in enumerate(msg_array):

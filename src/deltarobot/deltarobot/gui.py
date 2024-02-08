@@ -210,6 +210,7 @@ class GUI(Node):
 
         options = ["", 
                    conf.TASK_SPACE_DIRECT_TRAJECTORY_ROUTINE,
+                   conf.TASK_SPACE_SIMPLE_P2P_TRAJECTORY_ROUTINE,
                    conf.JOINT_SPACE_DIRECT_TRAJECTORY_ROUTINE,
                    conf.PICK_TRAJECTORY_ROUTINE,
                    conf.PLACE_TRAJECTORY_ROUTINE,

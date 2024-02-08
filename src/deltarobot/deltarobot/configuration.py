@@ -15,7 +15,7 @@ configuration["physical"] = {
     "stepper": {
         "n_steps": 1600
     },
-    "ee_radius": 25,
+    "ee_radius": 40,
     "link_pitch": 50
 }
 
@@ -45,10 +45,6 @@ configuration["inverse_geometry"] = {
         "beta": 0.1,                            # backtracking line search parameter
         "gamma": 1e-2,                          # line search convergence parameters
         "hessian_regu": 1e-2                    # Hessian regularization
-    },
-    "frame_ids": {
-        "chain_1": 8,
-        "chain_2": 14
     }
 }
 
@@ -60,6 +56,7 @@ configuration["inverse_geometry"] = {
 PICK_TRAJECTORY_ROUTINE = "pick"
 PLACE_TRAJECTORY_ROUTINE = "place"
 TASK_SPACE_DIRECT_TRAJECTORY_ROUTINE = "p2p_task_space"
+TASK_SPACE_SIMPLE_P2P_TRAJECTORY_ROUTINE = "simple_p2p_task_space"
 JOINT_SPACE_DIRECT_TRAJECTORY_ROUTINE = "p2p_joint_space"
 
 ##########   ERRORS   ##########
