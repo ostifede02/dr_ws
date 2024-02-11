@@ -116,7 +116,7 @@ class TrajectoryGenerator():
        |_/_/   \_\____/|_|\_\  |____/|_| /_/   \_\____|_____|                                                            
                                                                                                                          
     '''
-    def generate_trajectory_task_space(self, pos_start, pos_end, t_total_input, path_routine_type):
+    def generate_trajectory__task_space__bezier(self, pos_start, pos_end, t_total_input, path_routine_type):
         
         # the cubic bezier curve is a plynomial described by 4 points
         self.path_poly_points = self.__get_path_poly_points(pos_start, pos_end, path_routine_type)
@@ -127,14 +127,16 @@ class TrajectoryGenerator():
 
         # if the trajectory is time constrained (t > 0) -> set new max velocity, else default max velocity
         if t_total_input > 0:
-            self.const_acceleration = self.max_acceleration_default
-            self.const_velocity = self.__get_const_velocity(t_total_input, x_total)
-            if self.const_velocity is None:
-                return None
+            error_check = self.__get_const_velocity(t_total_input, x_total)
+            if error_check == conf.ERROR__INVALID_TRAJECTORY:
+                return error_check
+            else:
+                self.const_velocity = error_check
+        
         else:
             self.const_velocity = self.max_velocity_default
-            self.const_acceleration = self.max_acceleration_default
 
+        self.const_acceleration = self.max_acceleration_default
         
         # time scaling profile flags
         self.x_acc_flag, self.t_acc_flag, t_total = self.__get_time_scaling_flags(x_total)
@@ -167,9 +169,64 @@ class TrajectoryGenerator():
         return set_points_vector
     
 
-    def generate_trajectory_task_space_simple_point_to_point(self, pos_start, pos_end, t_total_input):
-        set_points_vector = np.empty((2, 4))
+    def generate_trajectory__task_space__point_to_point__continuous(self, pos_start, pos_end, t_total_input):
+
+        x_total = np.linalg.norm(pos_end - pos_start)
+
+        n_set_points = self.__get_number_set_points(x_total)     # avoid via points too close to each other
+
+        # if the trajectory is time constrained (t > 0) -> set new max velocity, else default max velocity
+        if t_total_input > 0:
+            self.const_acceleration = self.max_acceleration_default
+            self.const_velocity = self.__get_const_velocity(t_total_input, x_total)
+            if self.const_velocity is None:
+                ## ************** ADD error index !!! ************
+                return None
+        else:
+            self.const_velocity = self.max_velocity_default
+            self.const_acceleration = self.max_acceleration_default
+
         
+        # time scaling profile flags
+        self.x_acc_flag, self.t_acc_flag, t_total = self.__get_time_scaling_flags(x_total)
+
+        # creating the set points vector
+        set_points_vector = np.empty((n_set_points, 4))
+        set_point = np.empty(3)
+        set_point_prev = pos_start
+        x_travelled = 0
+        
+
+        s_instance = np.linspace(0, 1, n_set_points)
+        for index, s in enumerate(s_instance):
+            set_point = (1-s)*pos_start + s*pos_end
+            
+            x_travelled += np.linalg.norm(set_point - set_point_prev)            
+
+            if s == 1:
+                t_travelled = self.__get_t_next(x_total, x_total, t_total)
+            else:
+                t_travelled = self.__get_t_next(x_travelled, x_total, t_total)
+
+            set_points_vector[index, 0] = set_point[0]
+            set_points_vector[index, 1] = set_point[1]
+            set_points_vector[index, 2] = set_point[2]
+            set_points_vector[index, 3] = t_travelled
+
+            set_point_prev = set_point
+
+        return set_points_vector
+
+
+    def generate_trajectory__task_space__point_to_point__direct(self, pos_start, pos_end, t_total_input):
+        set_points_vector = np.empty((2, 4))
+
+        # get optimal trajectory time
+        x_total = np.linalg.norm(pos_end - pos_start)
+        delta_t_vel_constrained = x_total / self.max_velocity_default
+        delta_t = max(t_total_input, delta_t_vel_constrained)
+        
+        ## add to values vector
         set_points_vector[0, 0] = pos_start[0]
         set_points_vector[0, 1] = pos_start[1]
         set_points_vector[0, 2] = pos_start[2]
@@ -178,23 +235,23 @@ class TrajectoryGenerator():
         set_points_vector[1, 0] = pos_end[0]
         set_points_vector[1, 1] = pos_end[1]
         set_points_vector[1, 2] = pos_end[2]
-        set_points_vector[1, 3] = t_total_input
+        set_points_vector[1, 3] = delta_t
         
         return set_points_vector
 
 
     def __get_path_poly_points(self, pos_start, pos_end, path_routine_type):
 
-        if path_routine_type == conf.TASK_SPACE_DIRECT_TRAJECTORY_ROUTINE:
-            x1_offset = (pos_end[0] - pos_start[0])*0.333
-            y1_offset = (pos_end[1] - pos_start[1])*0.333
-            z1_offset = (pos_end[2] - pos_start[2])*0.333
+        # if path_routine_type == conf.TASK_SPACE_DIRECT_TRAJECTORY_ROUTINE:
+        #     x1_offset = (pos_end[0] - pos_start[0])*0.333
+        #     y1_offset = (pos_end[1] - pos_start[1])*0.333
+        #     z1_offset = (pos_end[2] - pos_start[2])*0.333
 
-            x2_offset = (pos_start[0] - pos_end[0])*0.333
-            y2_offset = (pos_start[1] - pos_end[1])*0.333
-            z2_offset = (pos_start[2] - pos_end[2])*0.333
+        #     x2_offset = (pos_start[0] - pos_end[0])*0.333
+        #     y2_offset = (pos_start[1] - pos_end[1])*0.333
+        #     z2_offset = (pos_start[2] - pos_end[2])*0.333
 
-        elif path_routine_type == conf.PICK_TRAJECTORY_ROUTINE:
+        if path_routine_type == conf.PICK_TRAJECTORY:
             x2_offset = 0
             y2_offset = 0
             z2_offset = (pos_start[2] - pos_end[2])*0.4
@@ -203,7 +260,7 @@ class TrajectoryGenerator():
             y1_offset = ((pos_end[1]+y2_offset)-pos_start[1])*0.4
             z1_offset = ((pos_end[2]+z2_offset)-pos_start[2])*0.5
 
-        elif path_routine_type == conf.PLACE_TRAJECTORY_ROUTINE:
+        elif path_routine_type == conf.PLACE_TRAJECTORY:
             x1_offset = 0
             y1_offset = 0
             z1_offset = min(norm(pos_start[0:2] - pos_end[0:2])*0.4, 60)
@@ -268,7 +325,7 @@ class TrajectoryGenerator():
         delta = pow(t_total * self.const_acceleration, 2)-4*x_total*self.const_acceleration
         
         if delta < 0:
-            return None
+            return conf.ERROR__INVALID_TRAJECTORY
         
         velocity = (t_total * self.const_acceleration-np.sqrt(pow(t_total * self.const_acceleration, 2)-4*x_total*self.const_acceleration))/2
         return velocity

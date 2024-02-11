@@ -27,8 +27,8 @@ find_package(rosidl_default_generators REQUIRED)
 # find_package(geometry_msgs REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/SetPoint.msg"
-  "msg/SetPointArray.msg"
+  "msg/SetPointJointSpace.msg"
+  "msg/SetPointJointSpaceArray.msg"
   # DEPENDENCIES geometry_msgs
 )
 
