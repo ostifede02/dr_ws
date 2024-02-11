@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 
-from deltarobot_interfaces.msg import JointPositionViz
+from deltarobot_interfaces.msg import JointTrajectoryArray
 from deltarobot import configuration as conf
 
 import pinocchio as pin
@@ -18,10 +18,10 @@ class GepettoVisualizer(Node):
         super().__init__('gepetto_visualizer_node')
        
         self.sub = self.create_subscription(
-            JointPositionViz,
-            'joint_position_viz',
+            JointTrajectoryArray,
+            'joint_trajectory',
             self.display_callback,
-            100)
+            10)
         self.sub
 
         ## init robot model
@@ -41,33 +41,37 @@ class GepettoVisualizer(Node):
 
 
 
-    def display_callback(self, joint_position_msg):
-            # unpack the message
+    def display_callback(self, joint_trajectory_array_msg):
             q = np.empty(self.robot.nq)
+            t_previous = 0
 
-            # chain 1
-            q[0] = joint_position_msg.q[0]
-            q[1] = joint_position_msg.q[1]
-            q[2] = joint_position_msg.q[2]
-            q[3] = joint_position_msg.q[1]
-            q[4] = joint_position_msg.q[2]
-            # chain 2
-            q[5] = joint_position_msg.q[3]
-            q[6] = joint_position_msg.q[4]
-            q[7] = joint_position_msg.q[5]
-            q[8] = joint_position_msg.q[4]
-            q[9] = joint_position_msg.q[5]
-            # chain 3
-            q[10] = joint_position_msg.q[6]
-            q[11] = joint_position_msg.q[7]
-            q[12] = joint_position_msg.q[8]
-            q[13] = joint_position_msg.q[7]
-            q[14] = joint_position_msg.q[8]
+            for joint_trajectory_msg in joint_trajectory_array_msg.set_points:
+                ## unpack the message
+                # chain 1
+                q[0] = joint_trajectory_msg.q1_1
+                q[1] = joint_trajectory_msg.q1_2
+                q[2] = joint_trajectory_msg.q1_3
+                q[3] = joint_trajectory_msg.q1_2
+                q[4] = joint_trajectory_msg.q1_3
+                # chain 2
+                q[5] = joint_trajectory_msg.q2_1
+                q[6] = joint_trajectory_msg.q2_2
+                q[7] = joint_trajectory_msg.q2_3
+                q[8] = joint_trajectory_msg.q2_2
+                q[9] = joint_trajectory_msg.q2_3
+                # chain 3
+                q[10] = joint_trajectory_msg.q3_1
+                q[11] = joint_trajectory_msg.q3_2
+                q[12] = joint_trajectory_msg.q3_3
+                q[13] = joint_trajectory_msg.q3_2
+                q[14] = joint_trajectory_msg.q3_3
             
-            delta_t = joint_position_msg.delta_t
+                self.robot.viz.display(q)
 
-            self.robot.viz.display(q)
-            time.sleep(delta_t)
+                delta_t = joint_trajectory_msg.time - t_previous
+                t_previous = joint_trajectory_msg.time
+                time.sleep(delta_t)
+                
             return
 
 

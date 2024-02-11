@@ -7,10 +7,10 @@ from geometry_msgs.msg import Point32
 from deltarobot import configuration as conf
 
 
-class TaskHandler(Node):
+class TaskManager(Node):
 
     def __init__(self):
-        super().__init__('task_handler_node')
+        super().__init__('task_manager_node')
 
         self.pub = self.create_publisher(
             TrajectoryTask,
@@ -20,14 +20,14 @@ class TaskHandler(Node):
         self.sub = self.create_subscription(
             TrajectoryTask,
             'input_gui',
-            self.task_handler_callback,
+            self.task_manager_callback,
             10)
         self.sub
 
         self.pos_current = conf.configuration["trajectory"]["pos_home"]     ## after home calibration
 
 
-    def task_handler_callback(self, task_input_msg):
+    def task_manager_callback(self, task_input_msg):
         task_output_msg = TrajectoryTask()
 
         pos_start_ = Point32()
@@ -39,6 +39,8 @@ class TaskHandler(Node):
         task_output_msg.pos_end = task_input_msg.pos_end
         task_output_msg.trajectory_delta_time = task_input_msg.trajectory_delta_time
         task_output_msg.task_type = task_input_msg.task_type
+        task_output_msg.is_joint_velocity_profile = task_input_msg.is_joint_velocity_profile
+        task_output_msg.is_trajectory_absolute_coordinates = task_input_msg.is_trajectory_absolute_coordinates
 
         self.pub.publish(task_output_msg)
 
@@ -53,11 +55,11 @@ class TaskHandler(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    th_node = TaskHandler()
+    tm_node = TaskManager()
 
-    rclpy.spin(th_node)
+    rclpy.spin(tm_node)
 
-    th_node.destroy_node()
+    tm_node.destroy_node()
     rclpy.shutdown()
 
 

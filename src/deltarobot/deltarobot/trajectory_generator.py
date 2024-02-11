@@ -46,8 +46,6 @@ class TrajectoryGenerator():
         a5 = -(6*(q_start[0]-q_end[0]))/pow(tf, 5)
 
         s1 = self.__quintic_polinomial(a0, 0, 0, a3, a4, a5, t_instance)
-        q1_trajectory_array = self.__sequential_to_intervals(s1)
-
 
         # joint trajectory chain 2
         a0 = q_start[1]
@@ -57,8 +55,6 @@ class TrajectoryGenerator():
         a5 = -(6*(q_start[1]-q_end[1]))/pow(tf, 5)
 
         s2 = self.__quintic_polinomial(a0, 0, 0, a3, a4, a5, t_instance)
-        q2_trajectory_array = self.__sequential_to_intervals(s2)
-
 
         # joint trajectory chain 3
         a0 = q_start[2]
@@ -68,13 +64,8 @@ class TrajectoryGenerator():
         a5 = -(6*(q_start[2]-q_end[2]))/pow(tf, 5)
 
         s3 = self.__quintic_polinomial(a0, 0, 0, a3, a4, a5, t_instance)
-        q3_trajectory_array = self.__sequential_to_intervals(s3)
 
-        delta_t_array = self.__sequential_to_intervals(t_instance)
-
-        # return np.array([q1_trajectory_array, q2_trajectory_array, 
-        #                 q3_trajectory_array, delta_t_array])
-        return np.array([s1, s2, s3, t_instance])
+        return np.array([s1, s2, s3, t_instance]).transpose()
     
 
     def __get_max_time_vel_constrained(self, q_start, q_end):

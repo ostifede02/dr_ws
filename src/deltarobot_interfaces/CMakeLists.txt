@@ -16,6 +16,8 @@ find_package(geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+    "msg/JointTrajectory.msg"
+    "msg/JointTrajectoryArray.msg"
     "msg/TrajectoryTask.msg"
 
     # Add packages that above messages depend on

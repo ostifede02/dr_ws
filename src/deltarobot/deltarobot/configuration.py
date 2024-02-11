@@ -27,7 +27,7 @@ configuration["trajectory"] = {
     "mean_distance_between_set_points": 8,
     "min_distance_between_set_points": 20,
 
-    "joint_space_linspace_resolution": 200,
+    "joint_space_linspace_resolution": 20,
 
     "pos_home": np.array([0, 0, -150]),
     "pos_neutral": np.array([0, 0, -200]),
@@ -53,11 +53,11 @@ configuration["inverse_geometry"] = {
 
 
 ##########   TRAJECTORY ROUTINES   ##########
-PICK_TRAJECTORY = 1
-PLACE_TRAJECTORY = 2
-P2P_DIRECT_TRAJECTORY = 3
-P2P_CONTINUOUS_TRAJECTORY = 4
+P2P_DIRECT_TRAJECTORY = 0
+P2P_CONTINUOUS_TRAJECTORY = 1
+PICK_TRAJECTORY = 2
+PLACE_TRAJECTORY = 3
 
 ##########   ERRORS   ##########
-ERROR__INVALID_TRAJECTORY = 400
-ERROR__COLLISION_DETECTED = 401
+ERROR__INVALID_TRAJECTORY = 50
+ERROR__COLLISION_DETECTED = 51
