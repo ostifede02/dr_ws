@@ -210,12 +210,14 @@ class GUI(Node):
 
         self.options_list = {
             "P2P_DIRECT_TRAJECTORY": conf.P2P_DIRECT_TRAJECTORY,
+            "P2P_JOINT_TRAJECTORY": conf.P2P_JOINT_TRAJECTORY,
             "P2P_CONTINUOUS_TRAJECTORY": conf.P2P_CONTINUOUS_TRAJECTORY,
             "PICK_TRAJECTORY": conf.PICK_TRAJECTORY,
             "PLACE_TRAJECTORY": conf.PLACE_TRAJECTORY}
         
         options = ["", 
                    "P2P_DIRECT_TRAJECTORY",
+                   "P2P_JOINT_TRAJECTORY",
                    "P2P_CONTINUOUS_TRAJECTORY",
                    "PICK_TRAJECTORY",
                    "PLACE_TRAJECTORY"]
@@ -234,7 +236,7 @@ class GUI(Node):
         self.combo_task_type.place(
             x= 210,
             y= 577,
-            width= 256,
+            width= 236,
             height= 45
         )
         return
@@ -247,9 +249,8 @@ class GUI(Node):
             msg.pos_end.x = float(self.entry_x.get())
             msg.pos_end.y = float(self.entry_y.get())
             msg.pos_end.z = float(self.entry_z.get())
-            msg.trajectory_delta_time = float(self.entry_time.get())
+            msg.time = float(self.entry_time.get())
             msg.task_type = int(self.options_list[self.combo_task_type.get()])
-            msg.is_joint_velocity_profile = int(True)
             msg.is_trajectory_absolute_coordinates = int(False)
         except:
             self.get_logger().error("insert valid input")

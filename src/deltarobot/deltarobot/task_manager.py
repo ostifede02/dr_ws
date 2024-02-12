@@ -37,9 +37,8 @@ class TaskManager(Node):
         task_output_msg.pos_start = pos_start_
         
         task_output_msg.pos_end = task_input_msg.pos_end
-        task_output_msg.trajectory_delta_time = task_input_msg.trajectory_delta_time
+        task_output_msg.time = task_input_msg.time
         task_output_msg.task_type = task_input_msg.task_type
-        task_output_msg.is_joint_velocity_profile = task_input_msg.is_joint_velocity_profile
         task_output_msg.is_trajectory_absolute_coordinates = task_input_msg.is_trajectory_absolute_coordinates
 
         self.pub.publish(task_output_msg)

@@ -8,8 +8,8 @@ class TrajectoryGenerator():
     def __init__(self):
         # import parameters
         self.max_velocity_default = conf.configuration["trajectory"]["max_velocity"]
-        self.max_acceleration_default = conf.configuration["trajectory"]["max_acceleration"]        
-        self.joint_space_linspace_resolution = conf.configuration["trajectory"]["joint_space_linspace_resolution"]        
+        self.max_acceleration_default = conf.configuration["trajectory"]["max_acceleration"]
+        self.min_delta_time = conf.configuration["trajectory"]["min_delta_time"]
         return
     
 
@@ -24,44 +24,45 @@ class TrajectoryGenerator():
 
     def generate_trajectory_joint_space(self, q_start, q_end, t_total_input):
         # get overall max task time
-        tf_1 = max(
+        t_total_1 = max(
             self.__get_max_time_vel_constrained(q_start[0], q_end[0]),
             self.__get_max_time_acc_constrained(q_start[0], q_end[0]))
-        tf_2 = max(
+        t_total_2 = max(
             self.__get_max_time_vel_constrained(q_start[1], q_end[1]),
             self.__get_max_time_acc_constrained(q_start[1], q_end[1]))
-        tf_3 = max(
+        t_total_3 = max(
             self.__get_max_time_vel_constrained(q_start[2], q_end[2]),
             self.__get_max_time_acc_constrained(q_start[2], q_end[2]))
         
-        tf = max(tf_1, tf_2, tf_3, t_total_input)
-
-        t_instance = np.linspace(0, tf, self.joint_space_linspace_resolution)
+        t_total = max(t_total_1, t_total_2, t_total_3, t_total_input)
+        
+        linspace_resolution = int(t_total / self.min_delta_time)+1
+        t_instance = np.linspace(0, t_total, linspace_resolution)
 
         # joint trajectory chain 1
         a0 = q_start[0]
         # a1 = 0, a2 = 0
-        a3 = -(10*(q_start[0]-q_end[0]))/pow(tf, 3)
-        a4 = (15*(q_start[0]-q_end[0]))/pow(tf, 4)
-        a5 = -(6*(q_start[0]-q_end[0]))/pow(tf, 5)
+        a3 = -(10*(q_start[0]-q_end[0]))/pow(t_total, 3)
+        a4 = (15*(q_start[0]-q_end[0]))/pow(t_total, 4)
+        a5 = -(6*(q_start[0]-q_end[0]))/pow(t_total, 5)
 
         s1 = self.__quintic_polinomial(a0, 0, 0, a3, a4, a5, t_instance)
 
         # joint trajectory chain 2
         a0 = q_start[1]
         # a1 = 0, a2 = 0
-        a3 = -(10*(q_start[1]-q_end[1]))/pow(tf, 3)
-        a4 = (15*(q_start[1]-q_end[1]))/pow(tf, 4)
-        a5 = -(6*(q_start[1]-q_end[1]))/pow(tf, 5)
+        a3 = -(10*(q_start[1]-q_end[1]))/pow(t_total, 3)
+        a4 = (15*(q_start[1]-q_end[1]))/pow(t_total, 4)
+        a5 = -(6*(q_start[1]-q_end[1]))/pow(t_total, 5)
 
         s2 = self.__quintic_polinomial(a0, 0, 0, a3, a4, a5, t_instance)
 
         # joint trajectory chain 3
         a0 = q_start[2]
         # a1 = 0, a2 = 0
-        a3 = -(10*(q_start[2]-q_end[2]))/pow(tf, 3)
-        a4 = (15*(q_start[2]-q_end[2]))/pow(tf, 4)
-        a5 = -(6*(q_start[2]-q_end[2]))/pow(tf, 5)
+        a3 = -(10*(q_start[2]-q_end[2]))/pow(t_total, 3)
+        a4 = (15*(q_start[2]-q_end[2]))/pow(t_total, 4)
+        a5 = -(6*(q_start[2]-q_end[2]))/pow(t_total, 5)
 
         s3 = self.__quintic_polinomial(a0, 0, 0, a3, a4, a5, t_instance)
 
@@ -69,14 +70,15 @@ class TrajectoryGenerator():
     
 
     def __get_max_time_vel_constrained(self, q_start, q_end):
-        tf = abs((15*(q_start-q_end))/(8*self.max_velocity_default))
-        return tf
+        t_total = abs((15*(q_start-q_end))/(8*self.max_velocity_default))
+        return t_total
     
 
     def __get_max_time_acc_constrained(self, q_start, q_end):
-        tf = (3*np.sqrt(5/2)*np.sqrt(abs(-q_start+q_end)))/(2*np.sqrt(self.max_acceleration_default))
-        return tf
+        t_total = (3*np.sqrt(5/2)*np.sqrt(abs(-q_start+q_end)))/(2*np.sqrt(self.max_acceleration_default))
+        return t_total
     
+
     def __quintic_polinomial(self, a0, a1, a2, a3, a4, a5, t):
         s = a0
         s += a1*t
@@ -86,16 +88,6 @@ class TrajectoryGenerator():
         s += a5*pow(t, 5)
         return s
     
-    def __sequential_to_intervals(self, array):
-        length_array = len(array)
-        delta_array = np.empty(length_array-1)
-
-        for i in range(length_array-1):
-            x_current = array[i]
-            x_next = array[i+1]
-            delta_array[i] = x_next - x_current
-
-        return delta_array
     
 
 
@@ -337,7 +329,7 @@ class TrajectoryGenerator():
         t_total += np.sqrt((2*abs(x_acc_flag)/self.const_acceleration))
 
         return x_acc_flag, t_acc_flag, t_total
-    
+
 
     def __get_t_next(self, x_travelled, x_total, t_total):
         # acceleration profile
@@ -353,10 +345,6 @@ class TrajectoryGenerator():
             t_next = t_total - np.sqrt((2*abs(x_total - x_travelled) / self.const_acceleration))
 
         return t_next
-    
-
-
-
 
 
 

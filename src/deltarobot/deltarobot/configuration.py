@@ -15,8 +15,9 @@ configuration["physical"] = {
     "stepper": {
         "n_steps": 1600
     },
-    "ee_radius": 40,
-    "link_pitch": 50
+    "end_effector_radius": 40,
+    "link_pitch": 50,
+    "end_effector_x_offset": 22.5
 }
 
 configuration["trajectory"] = {
@@ -27,12 +28,11 @@ configuration["trajectory"] = {
     "mean_distance_between_set_points": 8,
     "min_distance_between_set_points": 20,
 
-    "joint_space_linspace_resolution": 20,
+    "min_delta_time": 0.04,
 
     "pos_home": np.array([0, 0, -150]),
     "pos_neutral": np.array([0, 0, -200]),
 
-    "end_effector_x_offset": 22.5
 }
 
 configuration["inverse_geometry"] = {
@@ -53,10 +53,11 @@ configuration["inverse_geometry"] = {
 
 
 ##########   TRAJECTORY ROUTINES   ##########
-P2P_DIRECT_TRAJECTORY = 0
-P2P_CONTINUOUS_TRAJECTORY = 1
-PICK_TRAJECTORY = 2
-PLACE_TRAJECTORY = 3
+P2P_JOINT_TRAJECTORY        = 0
+P2P_DIRECT_TRAJECTORY       = 1
+P2P_CONTINUOUS_TRAJECTORY   = 2
+PICK_TRAJECTORY             = 3
+PLACE_TRAJECTORY            = 4
 
 ##########   ERRORS   ##########
 ERROR__INVALID_TRAJECTORY = 50

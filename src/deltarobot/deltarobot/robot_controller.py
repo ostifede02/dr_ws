@@ -16,7 +16,7 @@ import pinocchio as pin
 import numpy as np
 
 from os.path import join
-import time
+import time as time_
 
 
 
@@ -78,9 +78,9 @@ class RobotController(Node):
 
         # define initial conditions
         self.pos_current = conf.configuration["trajectory"]["pos_home"]     ## after home calibration
-        
-        self.ee_radius = conf.configuration["physical"]["ee_radius"]
+        self.end_effector_radius = conf.configuration["physical"]["end_effector_radius"]
 
+        # initialize joint position
         self.q1 = np.zeros(3)
         self.q2 = np.zeros(3)
         self.q3 = np.zeros(3)
@@ -89,6 +89,7 @@ class RobotController(Node):
     
 
     def robot_controller_callback(self, trajectory_task_msg):
+        time_start = time_.time()
         # unpack message
         pos_start = np.array([trajectory_task_msg.pos_start.x,
                             trajectory_task_msg.pos_start.y,
@@ -98,7 +99,7 @@ class RobotController(Node):
                             trajectory_task_msg.pos_end.y,
                             trajectory_task_msg.pos_end.z])
         
-        delta_t_input = trajectory_task_msg.trajectory_delta_time
+        delta_t_input = trajectory_task_msg.time
         task_type = trajectory_task_msg.task_type
         
 
@@ -106,18 +107,27 @@ class RobotController(Node):
         if task_type == conf.PLACE_TRAJECTORY:
             task_space_trajectory_vector = self.trajectory_generator.generate_trajectory__task_space__bezier(
                 pos_start, pos_end, delta_t_input, task_type)
+            is_joint_trajectory = False
         
         elif task_type == conf.PICK_TRAJECTORY:
             task_space_trajectory_vector = self.trajectory_generator.generate_trajectory__task_space__bezier(
                 pos_start, pos_end, delta_t_input, task_type)
+            is_joint_trajectory = False
         
         elif task_type == conf.P2P_DIRECT_TRAJECTORY:
             task_space_trajectory_vector = self.trajectory_generator.generate_trajectory__task_space__point_to_point__direct(
                 pos_start, pos_end, delta_t_input)
+            is_joint_trajectory = False
+            
+        elif task_type == conf.P2P_JOINT_TRAJECTORY:
+            task_space_trajectory_vector = self.trajectory_generator.generate_trajectory__task_space__point_to_point__direct(
+                pos_start, pos_end, delta_t_input)
+            is_joint_trajectory = True
         
         elif task_type == conf.P2P_CONTINUOUS_TRAJECTORY:
             task_space_trajectory_vector = self.trajectory_generator.generate_trajectory__task_space__point_to_point__continuous(
-                pos_start, pos_end, delta_t_input)             
+                pos_start, pos_end, delta_t_input)
+            is_joint_trajectory = False 
 
         # check for valid trajectory
         # if task_space_trajectory_vector == conf.ERROR__INVALID_TRAJECTORY:
@@ -129,9 +139,9 @@ class RobotController(Node):
         joint_trajectory_vector = np.empty((len(task_space_trajectory_vector), self.robot_nq+1))
             
         # end effector offsets
-        ee_1_offset = np.array([np.sin(0), np.cos(0), 0])*self.ee_radius
-        ee_2_offset = np.array([-np.sin((2/3)*np.pi), np.cos((2/3)*np.pi), 0])*self.ee_radius
-        ee_3_offset = np.array([-np.sin((4/3)*np.pi), np.cos((4/3)*np.pi), 0])*self.ee_radius
+        ee_1_offset = np.array([np.sin(0), np.cos(0), 0])*self.end_effector_radius
+        ee_2_offset = np.array([-np.sin((2/3)*np.pi), np.cos((2/3)*np.pi), 0])*self.end_effector_radius
+        ee_3_offset = np.array([-np.sin((4/3)*np.pi), np.cos((4/3)*np.pi), 0])*self.end_effector_radius
 
         for set_point_index, set_point in enumerate(task_space_trajectory_vector):
             pos_des = set_point[0:3]
@@ -159,17 +169,18 @@ class RobotController(Node):
             joint_trajectory_vector[set_point_index, self.robot_nq] = time
 
         # generate joint velocity profiles
-        if trajectory_task_msg.is_joint_velocity_profile:
+        if is_joint_trajectory:
             q_start = np.array([
-                joint_trajectory_vector[0, 0],
-                joint_trajectory_vector[0, 3],
-                joint_trajectory_vector[0, 6]])
+                joint_trajectory_vector[0, 0],      # chain 1
+                joint_trajectory_vector[0, 3],      # chain 2
+                joint_trajectory_vector[0, 6]])     # chain 3
             q_end = np.array([
-                joint_trajectory_vector[1, 0],
-                joint_trajectory_vector[1, 3],
-                joint_trajectory_vector[1, 6]])
+                joint_trajectory_vector[len(task_space_trajectory_vector)-1, 0],    # chain 1
+                joint_trajectory_vector[len(task_space_trajectory_vector)-1, 3],    # chain 2
+                joint_trajectory_vector[len(task_space_trajectory_vector)-1, 6]])   # chain 3
             
-            joint_trajectory_vector_joint_space = self.trajectory_generator.generate_trajectory_joint_space(q_start, q_end, time)
+            joint_trajectory_vector_joint_space = self.trajectory_generator.generate_trajectory_joint_space(
+                q_start, q_end, time)
 
             # publish joint trajectory
             self.publish_joint_trajectory_reduced(joint_trajectory_vector_joint_space)
@@ -179,11 +190,13 @@ class RobotController(Node):
             self.publish_joint_trajectory(joint_trajectory_vector)
             self.publish_joint_trajectory_reduced(joint_trajectory_vector)
 
+        time_stop = time_.time()
+        self.get_logger().info(f"computation time: {(time_stop-time_start)*1e3} milliseconds")
         return
 
     def publish_joint_trajectory(self, joint_trajectory_vector):
         joint_trajectory_array_msg = JointTrajectoryArray()
-        joint_trajectory_array_msg.array_size = len(joint_trajectory_vector)
+        joint_trajectory_array_msg.array_size = int(len(joint_trajectory_vector))
 
         for joint_trajectory in joint_trajectory_vector:
             joint_trajectory_msg = JointTrajectory()
@@ -241,187 +254,3 @@ def main(args=None):
 
 if __name__ == '__main__':
         main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# def robot_controller_callback(self, trajectory_task_msg):
-#         start = time.time()
-
-#         # unpack message
-#         pos_start = np.copy(self.pos_current)
-#         pos_end = np.array([trajectory_task_msg.pos_end.x,
-#                             trajectory_task_msg.pos_end.y,
-#                             trajectory_task_msg.pos_end.z])
-#         task_time = trajectory_task_msg.task_time
-#         task_type = trajectory_task_msg.task_type.data
-        
-#         # distinguish between joint space and task space
-#         if task_type == conf.JOINT_SPACE_DIRECT_TRAJECTORY_ROUTINE:
-#             ## implement the joint space trajectory planning and control
-#             self.robot_controller_joint_space_trajectory(pos_end, task_time)
-#         else:
-#             ## task space trajectory planning and control
-#             self.robot_controller_task_space_trajectory(pos_start, pos_end, task_time, task_type)
-
-#         # last msg to show graph
-#         # self.publish_joint_position_telemetry(0,0,0,-1)
-
-#         stop = time.time()
-#         self.get_logger().info(f"computing time: {(stop-start)*1e3} [ms]")
-#         return
-
-
-#     def robot_controller_task_space_trajectory(self, pos_start, pos_end, task_time, task_type):
-#         if task_type == conf.TASK_SPACE_SIMPLE_P2P_TRAJECTORY_ROUTINE:
-#             set_points_vector = self.trajectory_generator.generate_trajectory_task_space_simple_point_to_point(
-#                 pos_start, pos_end, task_time)
-#         else:
-#             # returns an array of x-y-z setpoints and time
-#             set_points_vector = self.trajectory_generator.generate_trajectory_task_space(
-#                 pos_start, pos_end, task_time, task_type)
-        
-#         t_current = 0
-
-#         joint_trajectory_vector = np.empty((len(set_points_vector), 4))
-#         for i, set_point in enumerate(set_points_vector):
-#             pos_des = set_point[0:3]
-            
-#             # compute inverse geometry
-#             # chain 1
-#             ee_1_offset = np.array([np.sin(0), np.cos(0), 0])*self.ee_radius
-#             pos_next_1 = pos_des + ee_1_offset
-#             q1_next = self.ig_chain_1.compute_inverse_geometry(np.copy(self.q1_current), pos_next_1)
-
-#             # chain 2
-#             ee_2_offset = np.array([-np.sin((2/3)*np.pi), np.cos((2/3)*np.pi), 0])*self.ee_radius
-#             pos_next_2 = pos_des + ee_2_offset
-#             q2_next = self.ig_chain_2.compute_inverse_geometry(np.copy(self.q2_current), pos_next_2)
-
-#             # chain 3
-#             ee_3_offset = np.array([-np.sin((4/3)*np.pi), np.cos((4/3)*np.pi), 0])*self.ee_radius
-#             pos_next_3 = pos_des + ee_3_offset
-#             q3_next = self.ig_chain_3.compute_inverse_geometry(np.copy(self.q3_current), pos_next_3)
-
-#             # check for collisions
-#             # TO DO...
-
-#             # get delta_t
-#             t_next = set_point[3]
-#             delta_t = t_next - t_current
-
-#             # get delta_q
-#             delta_q1 = q1_next[0] - self.q1_current[0]
-#             delta_q2 = q2_next[0] - self.q2_current[0]
-#             delta_q3 = q3_next[0] - self.q3_current[0]
-
-#             # update current position
-#             self.pos_current = pos_des
-#             self.q1_current = q1_next
-#             self.q2_current = q2_next
-#             self.q3_current = q3_next
-#             t_current = t_next
-
-#             # create array of delta X
-#             joint_trajectory_vector[i, :] = np.array([delta_q1, delta_q2, delta_q3, delta_t])
-            
-#             ## publish to geppetto viewer
-#             self.publish_joint_position_viewer(q1_next, q2_next, q3_next, delta_t)         
-
-#         ## publish to micro
-#         # self.publish_joint_position_micro(joint_trajectory_vector)
-
-#         # create graphs
-#         # self.publish_joint_position_telemetry(q1_next[0], q2_next[0], q3_next[0], t_current)
-
-#         return
-    
-
-#     def robot_controller_joint_space_trajectory(self, pos_end, task_time):
-#         # get current joint configuration in pos_start
-#         q1_start = self.q1_current
-#         q2_start = self.q2_current
-#         q3_start = self.q3_current
-        
-#         # compute joint configuration in pos_end
-#         # chain 1
-#         ee_1_offset = np.array([np.sin(0), np.cos(0), 0])*self.ee_radius
-#         pos_next_1 = pos_end + ee_1_offset
-#         q1_end = self.ig_chain_1.compute_inverse_geometry(np.copy(self.q1_current), pos_next_1)
-
-#         # chain 2
-#         ee_2_offset = np.array([-np.sin((2/3)*np.pi), np.cos((2/3)*np.pi), 0])*self.ee_radius
-#         pos_next_2 = pos_end + ee_2_offset
-#         q2_end = self.ig_chain_2.compute_inverse_geometry(np.copy(self.q2_current), pos_next_2)
-
-#         # chain 3
-#         ee_3_offset = np.array([-np.sin((4/3)*np.pi), np.cos((4/3)*np.pi), 0])*self.ee_radius
-#         pos_next_3 = pos_end + ee_3_offset
-#         q3_end = self.ig_chain_3.compute_inverse_geometry(np.copy(self.q3_current), pos_next_3)
-
-#         # get joint trajectory as delta_X
-#         joint_trajectory_vector = self.trajectory_generator.generate_trajectory_joint_space(
-#                                         np.array([q1_start, q2_start, q3_start]),
-#                                         np.array([q1_end, q2_end, q3_end]),
-#                                         task_time
-#                                     )
-        
-#         # publish trajectory as delta_X
-#         self.publish_joint_position_micro(joint_trajectory_vector)
-
-#         # update current position
-#         self.pos_current = pos_end
-#         self.q1_current = q1_end
-#         self.q2_current = q2_end
-#         self.q3_current = q3_end
-
-#         return
-
-
-#     def publish_joint_position_telemetry(self, q1, q2, q3, t_current):
-#         micro_msg = JointPositionTelemetry()
-#         micro_msg.q = [float(q1), float(q2), float(q3)]
-#         micro_msg.t = float(t_current)
-#         self.joint_position_telemetry_pub.publish(micro_msg)
-#         return
-
-
-#     def publish_joint_position_viewer(self, q1, q2, q3, delta_t):
-#         viz_msg = JointPositionViz()
-#         viz_msg.q = [   q1[0], q1[1], q1[2],
-#                         q2[0], q2[1], q2[2],
-#                         q3[0], q3[1], q3[2]]
-#         viz_msg.delta_t = float(delta_t)
-#         self.joint_position_viz_pub.publish(viz_msg)
-#         return
-    
-
-#     def publish_joint_position_micro(self, msg_array):
-#         msg_micro_array = SetPointArray()
-#         for set_point_index, msg in enumerate(msg_array):
-#             msg_micro = SetPoint()
-#             msg_micro.delta_q1 = round(msg[0], 2)          # [ millimeters ]
-#             msg_micro.delta_q2 = round(msg[1], 2)          # [ millimeters ]
-#             msg_micro.delta_q3 = round(msg[2], 2)          # [ millimeters ]
-#             msg_micro.delta_t = round(msg[3]*1e6, 1)       # [ microseconds ]
-            
-#             msg_micro_array.set_points[set_point_index] = msg_micro
-
-#         # end of array
-#         msg_micro = SetPoint()
-#         msg_micro.delta_t = float(-1)      # [ microseconds ]
-#         msg_micro_array.set_points[set_point_index+1] = msg_micro
-
-#         self.joint_position_micro_pub.publish(msg_micro_array)
-
-#         return

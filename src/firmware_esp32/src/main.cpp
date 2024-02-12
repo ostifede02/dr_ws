@@ -9,6 +9,7 @@
 // #include "configuration.h"
 // #include "error_log.h"
 // #include "callback_functions.h"
+// #include "custom_messages.h"
 
 
 void setup()
@@ -51,7 +52,7 @@ void setup()
 // 	RCCHECK(rclc_subscription_init_default(
 // 		&subscriber,
 // 		&node,
-// 		ROSIDL_GET_MSG_TYPE_SUPPORT(micro_custom_messages, msg, SetPointArray),
+// 		ROSIDL_GET_MSG_TYPE_SUPPORT(micro_custom_messages, msg, JointTrajectoryReducedArray),
 // 		"joint_position_micro"));
 
 
@@ -65,7 +66,7 @@ void setup()
     
 
 // 	// add subscription to topic
-// 	micro_custom_messages__msg__SetPointArray set_point_array_msg;	// allocate message memory
+// 	micro_custom_messages__msg__JointTrajectoryReducedArray set_point_array_msg;	// allocate message memory
 
 // 	RCCHECK(rclc_executor_add_subscription(
 // 		&executor, 
@@ -83,7 +84,7 @@ void setup()
 // 	// destroy nodes
 // 	RCCHECK(rcl_subscription_fini(&subscriber, &node));
 // 	RCCHECK(rcl_node_fini(&node));
-	return;
+// 	return;
 }
 
 
