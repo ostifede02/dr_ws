@@ -42,6 +42,7 @@ class RobotController(Node):
             10)
         self.trajectory_task_sub
 
+
         ## import urdf file path
         package_path = conf.configuration["paths"]["package_path"]
         # chain 1
@@ -182,17 +183,20 @@ class RobotController(Node):
             joint_trajectory_vector_joint_space = self.trajectory_generator.generate_trajectory_joint_space(
                 q_start, q_end, time)
 
-            # publish joint trajectory
+            # publish reduced message for microcontroller
             self.publish_joint_trajectory_reduced(joint_trajectory_vector_joint_space)
         
         else:
-            # publish joint trajectory
-            self.publish_joint_trajectory(joint_trajectory_vector)
+            # publish reduced message for microcontroller
             self.publish_joint_trajectory_reduced(joint_trajectory_vector)
+        
+        # publish full message for viewer
+        self.publish_joint_trajectory(joint_trajectory_vector)
 
         time_stop = time_.time()
         self.get_logger().info(f"computation time: {(time_stop-time_start)*1e3} milliseconds")
         return
+
 
     def publish_joint_trajectory(self, joint_trajectory_vector):
         joint_trajectory_array_msg = JointTrajectoryArray()
@@ -238,7 +242,6 @@ class RobotController(Node):
 
         self.joint_trajectory_reduced_pub.publish(joint_trajectory_array_msg)
         return
-
 
 
 def main(args=None):

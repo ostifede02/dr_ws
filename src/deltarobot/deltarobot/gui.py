@@ -7,7 +7,9 @@ from tkinter import ttk
 from deltarobot import configuration as conf
 
 from deltarobot_interfaces.msg import TrajectoryTask
+from std_msgs.msg import String
 
+from deltarobot_interfaces.srv import RobotState
 
 
 class GUI(Node):
@@ -15,10 +17,14 @@ class GUI(Node):
     def __init__(self):
         super().__init__('gui_node')
 
-        self.pub = self.create_publisher(
+        self.trajectory_task_input_pub = self.create_publisher(
             TrajectoryTask,
-            'input_gui',
+            'trajectory_task_input',
             10)
+        
+        self.robot_state_client = self.create_client(
+            RobotState, 
+            'robot_state')
         
         self.init_gui()
         
@@ -34,7 +40,7 @@ class GUI(Node):
         ## parameters
         bg_color = "#2B3499"
         fg_color = "#FFFFFF"
-        entry_font = ("Helvetica", 18, "bold")
+        entry_font = ("Helvetica", 16, "bold")
 
         ## self.window
         self.window = tk.Tk()
@@ -234,35 +240,56 @@ class GUI(Node):
             font=entry_font
         )
         self.combo_task_type.place(
-            x= 210,
+            x= 190,
             y= 577,
-            width= 236,
+            width= 350,
             height= 45
         )
         return
     
 
     def start_button_pressed(self):
-        msg = TrajectoryTask()
-        
-        try:
-            msg.pos_end.x = float(self.entry_x.get())
-            msg.pos_end.y = float(self.entry_y.get())
-            msg.pos_end.z = float(self.entry_z.get())
-            msg.time = float(self.entry_time.get())
-            msg.task_type = int(self.options_list[self.combo_task_type.get()])
-            msg.is_trajectory_absolute_coordinates = int(False)
-        except:
-            self.get_logger().error("insert valid input")
+        # check robot state
+        request_msg = String()
+        request_msg.data = "request"
+        response_msg = self.send_robot_state_request(request_msg)
 
+        # if robot is in idle, it can move
+        if response_msg.robot_state_response.data == "idle":    
+            # get trajectory task from gui
+            trajectory_task_msg = TrajectoryTask()
+            try:
+                trajectory_task_msg.pos_end.x = float(self.entry_x.get())
+                trajectory_task_msg.pos_end.y = float(self.entry_y.get())
+                trajectory_task_msg.pos_end.z = float(self.entry_z.get())
+                trajectory_task_msg.time = float(self.entry_time.get())
+                trajectory_task_msg.task_type = int(self.options_list[self.combo_task_type.get()])
+                trajectory_task_msg.is_trajectory_absolute_coordinates = int(False)
+            except:
+                self.get_logger().error("insert valid input")
+            
+            # publish task
+            self.trajectory_task_input_pub.publish(trajectory_task_msg)
+        else:
+            # manage exception
+            pass
 
-        self.pub.publish(msg)
         return
 
     def stop_button_pressed(self):
         # msg = TrajectoryTask()
 
         return
+    
+
+    def send_robot_state_request(self, robot_state_request_input):
+        request = RobotState.Request()
+        request.robot_state_request = String()
+        request.robot_state_request = robot_state_request_input
+        self.future = self.robot_state_client.call_async(request)
+        rclpy.spin_until_future_complete(self, self.future)
+        return self.future.result()
+
 
 
 
