@@ -2,6 +2,8 @@ import rclpy
 from rclpy.node import Node
 
 from deltarobot_interfaces.msg import JointTrajectoryArray
+from deltarobot_interfaces.msg import TaskAck
+
 from deltarobot import configuration as conf
 
 import pinocchio as pin
@@ -17,12 +19,17 @@ class GepettoVisualizer(Node):
     def __init__(self):
         super().__init__('gepetto_visualizer_node')
        
-        self.sub = self.create_subscription(
+        self.joint_trajectory_sub = self.create_subscription(
             JointTrajectoryArray,
             'joint_trajectory',
             self.display_callback,
-            10)
-        self.sub
+            1)
+        self.joint_trajectory_sub
+
+        self.task_ack_pub = self.create_publisher(
+            TaskAck,
+            'task_ack',
+            1)
 
         ## init robot model
         # import URDF files
@@ -71,7 +78,11 @@ class GepettoVisualizer(Node):
                 delta_t = joint_trajectory_msg.time - t_previous
                 t_previous = joint_trajectory_msg.time
                 time.sleep(delta_t)
-                
+            
+            ## publish ack
+            task_ack_msg = TaskAck()
+            task_ack_msg.task_ack = True
+            self.task_ack_pub.publish(task_ack_msg)
             return
 
 

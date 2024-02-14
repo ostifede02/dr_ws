@@ -9,7 +9,7 @@ from deltarobot import configuration as conf
 from deltarobot_interfaces.msg import TrajectoryTask
 from std_msgs.msg import String
 
-from deltarobot_interfaces.srv import RobotState
+import time as time_
 
 
 class GUI(Node):
@@ -20,13 +20,26 @@ class GUI(Node):
         self.trajectory_task_input_pub = self.create_publisher(
             TrajectoryTask,
             'trajectory_task_input',
-            10)
+            1)
         
-        self.robot_state_client = self.create_client(
-            RobotState, 
-            'robot_state')
+        ## robot state
+        self.robot_state_pub = self.create_publisher(
+            String,
+            'robot_state',
+            1)
         
+        self.robot_state_sub = self.create_subscription(
+            String,
+            'robot_state',
+            self.robot_state_callback,
+            1)
+        self.robot_state_sub
+
+        # initialize gui
         self.init_gui()
+
+        # initialize robot state
+        self.robot_state_local = "idle"
         
         return
     
@@ -249,48 +262,48 @@ class GUI(Node):
     
 
     def start_button_pressed(self):
-        # check robot state
-        request_msg = String()
-        request_msg.data = "request"
-        response_msg = self.send_robot_state_request(request_msg)
+        self.get_logger().info(f"robot_state_local: {self.robot_state_local}")
 
         # if robot is in idle, it can move
-        if response_msg.robot_state_response.data == "idle":    
-            # get trajectory task from gui
+        if self.robot_state_local == "idle":    
             trajectory_task_msg = TrajectoryTask()
+            # get trajectory task from gui
             try:
                 trajectory_task_msg.pos_end.x = float(self.entry_x.get())
                 trajectory_task_msg.pos_end.y = float(self.entry_y.get())
                 trajectory_task_msg.pos_end.z = float(self.entry_z.get())
                 trajectory_task_msg.time = float(self.entry_time.get())
                 trajectory_task_msg.task_type = int(self.options_list[self.combo_task_type.get()])
-                trajectory_task_msg.is_trajectory_absolute_coordinates = int(False)
+                trajectory_task_msg.is_trajectory_absolute_coordinates = False
             except:
                 self.get_logger().error("insert valid input")
-            
+
             # publish task
             self.trajectory_task_input_pub.publish(trajectory_task_msg)
-        else:
+        
+        elif self.robot_state_local == "run":
             # manage exception
-            pass
+            self.get_logger().warning("robot state is run!")
 
         return
 
-    def stop_button_pressed(self):
-        # msg = TrajectoryTask()
 
+    def stop_button_pressed(self):
+        self.publish_robot_state("stop")
         return
     
 
-    def send_robot_state_request(self, robot_state_request_input):
-        request = RobotState.Request()
-        request.robot_state_request = String()
-        request.robot_state_request = robot_state_request_input
-        self.future = self.robot_state_client.call_async(request)
-        rclpy.spin_until_future_complete(self, self.future)
-        return self.future.result()
+    def robot_state_callback(self, robot_state_msg):
+        self.robot_state_local = robot_state_msg.data
+        return
+    
 
-
+    def publish_robot_state(self, state):
+        # publish robot state
+        robot_state_output_msg = String()
+        robot_state_output_msg.data = state
+        self.robot_state_pub.publish(robot_state_output_msg)
+        return
 
 
 

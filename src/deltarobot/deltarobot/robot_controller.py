@@ -28,18 +28,18 @@ class RobotController(Node):
         self.joint_trajectory_reduced_pub = self.create_publisher(
             JointTrajectoryReducedArray,
             'joint_trajectory_reduced',
-            10)
+            1)
         
         self.joint_trajectory_pub = self.create_publisher(
             JointTrajectoryArray,
             'joint_trajectory',
-            10)
+            1)
         
         self.trajectory_task_sub = self.create_subscription(
             TrajectoryTask,
             'trajectory_task',
             self.robot_controller_callback,
-            10)
+            1)
         self.trajectory_task_sub
 
 
@@ -90,6 +90,7 @@ class RobotController(Node):
     
 
     def robot_controller_callback(self, trajectory_task_msg):
+        self.get_logger().info("robot_controller called")
         time_start = time_.time()
         # unpack message
         pos_start = np.array([trajectory_task_msg.pos_start.x,

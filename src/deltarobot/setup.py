@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             "gui_node = deltarobot.gui:main",
+            "game_pad_node = deltarobot.game_pad:main",
             "task_manager_node = deltarobot.task_manager:main",
             "robot_controller_node = deltarobot.robot_controller:main",
             "gepetto_visualizer_node = deltarobot.gepetto_visualizer:main",

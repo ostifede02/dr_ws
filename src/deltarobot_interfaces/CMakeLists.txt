@@ -19,7 +19,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
     "msg/JointTrajectory.msg"
     "msg/JointTrajectoryArray.msg"
     "msg/TrajectoryTask.msg"
-    "srv/RobotState.srv"
+    "msg/TaskAck.msg"
 
     # Add packages that above messages depend on
     DEPENDENCIES geometry_msgs
