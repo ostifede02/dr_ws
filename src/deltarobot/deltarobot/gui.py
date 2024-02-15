@@ -285,11 +285,16 @@ class GUI(Node):
             # manage exception
             self.get_logger().warning("robot state is run!")
 
+        elif self.robot_state_local == "stop":
+            # ignore the input
+            self.get_logger().warning("robot state is stop!")
+
         return
 
 
     def stop_button_pressed(self):
         self.publish_robot_state("stop")
+        self.raise_exception("stop")
         return
     
 
@@ -303,8 +308,26 @@ class GUI(Node):
         robot_state_output_msg = String()
         robot_state_output_msg.data = state
         self.robot_state_pub.publish(robot_state_output_msg)
+        self.robot_state_local = state
         return
 
+
+    def raise_exception(self, exception):
+        self.popup = tk.Toplevel()
+        self.popup.title("Exception")
+
+        label = tk.Label(self.popup, 
+                         text=f"The robot state is: {exception}.\nPress the button to continue.")
+        label.pack(pady=10)
+
+        button = tk.Button(self.popup, text="continue", command=self.resolve_exception)
+        button.pack(pady=5)
+        return
+    
+    def resolve_exception(self):
+        self.publish_robot_state("idle")
+        self.popup.destroy()
+        return
 
 
 def main(args=None):

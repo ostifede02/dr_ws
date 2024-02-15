@@ -66,17 +66,6 @@ class TaskManager(Node):
 
 
     def trajectory_task_input_callback(self, task_input_msg):
-        # # check robot state
-        # if self.robot_state == "run":
-        #     # raise exception
-        #     self.get_logger().warning("robot state is stop!")
-        #     return
-
-        # elif self.robot_state == "stop":
-        #     # raise exception
-        #     self.get_logger().warning("robot state is stop!")
-        #     return
-        
         task_output_msg = TrajectoryTask()
 
         # define pos_start
@@ -121,8 +110,11 @@ class TaskManager(Node):
             # update current positions
             self.pos_current = self.pos_current_volatile
             
-            # update robot state
-            self.robot_state = "idle"
+            # do not override stop state
+            if self.robot_state != "stop":
+                # update robot state
+                self.robot_state = "idle"
+
             # publish robot state
             self.publish_robot_state(self.robot_state)
 
