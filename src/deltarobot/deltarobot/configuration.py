@@ -53,12 +53,19 @@ configuration["inverse_geometry"] = {
 
 
 ##########   TRAJECTORY ROUTINES   ##########
-P2P_JOINT_TRAJECTORY        = 0
-P2P_DIRECT_TRAJECTORY       = 1
-P2P_CONTINUOUS_TRAJECTORY   = 2
-PICK_TRAJECTORY             = 3
-PLACE_TRAJECTORY            = 4
+P2P_JOINT_TRAJECTORY        = "P2P_JOINT_TRAJECTORY"
+P2P_DIRECT_TRAJECTORY       = "P2P_DIRECT_TRAJECTORY"
+P2P_CONTINUOUS_TRAJECTORY   = "P2P_CONTINUOUS_TRAJECTORY"
+PICK_TRAJECTORY             = "PICK_TRAJECTORY"
+PLACE_TRAJECTORY            = "PLACE_TRAJECTORY"
 
 ##########   ERRORS   ##########
-ERROR__INVALID_TRAJECTORY = 50
-ERROR__COLLISION_DETECTED = 51
+
+
+##########   ROBOT STATES   ##########
+ROBOT_STATE_RUN                         = "run"
+ROBOT_STATE_IDLE                        = "idle"
+ROBOT_STATE_STOP                        = "stop"
+ROBOT_STATE_REQUEST                     = "request"
+ROBOT_STATE_ERROR__INVALID_TRAJECTORY   = "error_inv_traj"
+ROBOT_STATE_ERROR__COLLISION_DETECTED   = "error_collision"

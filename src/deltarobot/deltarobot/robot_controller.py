@@ -16,8 +16,7 @@ import pinocchio as pin
 import numpy as np
 
 from os.path import join
-import time as time_
-
+import time
 
 
 class RobotController(Node):
@@ -91,7 +90,7 @@ class RobotController(Node):
 
     def robot_controller_callback(self, trajectory_task_msg):
         self.get_logger().info("robot_controller called")
-        time_start = time_.time()
+        time_start = time.time()
         # unpack message
         pos_start = np.array([trajectory_task_msg.pos_start.x,
                             trajectory_task_msg.pos_start.y,
@@ -101,8 +100,8 @@ class RobotController(Node):
                             trajectory_task_msg.pos_end.y,
                             trajectory_task_msg.pos_end.z])
         
-        delta_t_input = trajectory_task_msg.time
-        task_type = trajectory_task_msg.task_type
+        delta_t_input = trajectory_task_msg.task_time
+        task_type = trajectory_task_msg.task_type.data
         
 
         ## generate trajectory task space
@@ -147,7 +146,7 @@ class RobotController(Node):
 
         for set_point_index, set_point in enumerate(task_space_trajectory_vector):
             pos_des = set_point[0:3]
-            time = set_point[3]
+            t_set_point = set_point[3]
             
             ## compute inverse geometry
             # chain 1
@@ -168,7 +167,7 @@ class RobotController(Node):
             joint_trajectory_vector[set_point_index, 0:self.robot_nq] = np.concatenate([
                 self.q1, self.q2, self.q3
             ])
-            joint_trajectory_vector[set_point_index, self.robot_nq] = time
+            joint_trajectory_vector[set_point_index, self.robot_nq] = t_set_point
 
         # generate joint velocity profiles
         if is_joint_trajectory:
@@ -182,7 +181,7 @@ class RobotController(Node):
                 joint_trajectory_vector[len(task_space_trajectory_vector)-1, 6]])   # chain 3
             
             joint_trajectory_vector_joint_space = self.trajectory_generator.generate_trajectory_joint_space(
-                q_start, q_end, time)
+                q_start, q_end, t_set_point)
 
             # publish reduced message for microcontroller
             self.publish_joint_trajectory_reduced(joint_trajectory_vector_joint_space)
@@ -194,7 +193,7 @@ class RobotController(Node):
         # publish full message for viewer
         self.publish_joint_trajectory(joint_trajectory_vector)
 
-        time_stop = time_.time()
+        time_stop = time.time()
         self.get_logger().info(f"computation time: {(time_stop-time_start)*1e3} milliseconds")
         return
 
@@ -218,7 +217,7 @@ class RobotController(Node):
             joint_trajectory_msg.q3_2 = float(joint_trajectory[7])
             joint_trajectory_msg.q3_3 = float(joint_trajectory[8])
 
-            joint_trajectory_msg.time = float(joint_trajectory[9])
+            joint_trajectory_msg.t_set_point = float(joint_trajectory[9])
 
             joint_trajectory_array_msg.set_points.append(joint_trajectory_msg)
 
@@ -237,7 +236,7 @@ class RobotController(Node):
             joint_trajectory_msg.q1 = float(joint_trajectory[0])
             joint_trajectory_msg.q2 = float(joint_trajectory[int(nq/3)])
             joint_trajectory_msg.q3 = float(joint_trajectory[int(nq*2/3)])
-            joint_trajectory_msg.time = float(joint_trajectory[int(nq)])
+            joint_trajectory_msg.t_set_point = float(joint_trajectory[int(nq)])
 
             joint_trajectory_array_msg.set_points.append(joint_trajectory_msg)
 

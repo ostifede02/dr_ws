@@ -3,64 +3,78 @@ from rclpy.node import Node
 
 import tkinter as tk
 from tkinter import ttk
+import threading
 
 from deltarobot import configuration as conf
 
 from deltarobot_interfaces.msg import TrajectoryTask
 from std_msgs.msg import String
 
-import time as time_
 
 
 class GUI(Node):
 
     def __init__(self):
+        """
+        Initializes the GUI node.
+        """
         super().__init__('gui_node')
 
+        # Publisher for trajectory task input
         self.trajectory_task_input_pub = self.create_publisher(
             TrajectoryTask,
             'trajectory_task_input',
             1)
         
-        ## robot state
-        self.robot_state_pub = self.create_publisher(
-            String,
-            'robot_state',
-            1)
-        
-        self.robot_state_sub = self.create_subscription(
+        ## Subscribe to robot state topic
+        self.robot_state_sub__ = self.create_subscription(
             String,
             'robot_state',
             self.robot_state_callback,
-            1)
-        self.robot_state_sub
-
-        # initialize gui
-        self.init_gui()
-
-        # initialize robot state
-        self.robot_state_local = "idle"
+            10)
         
+        # Publisher for robot state
+        self.robot_state_pub = self.create_publisher(
+            String,
+            'robot_state',
+            10)
+        
+
+        # Initialize lock to avoid publishing double tasks
+        self.pub_task_lock = False
+
         return
     
 
     def relative_to_assets(self, path):
+        """
+        Generates the absolute path to the assets folder.
+        
+        Parameters:
+            path (str): The path to the asset.
+        
+        Returns:
+            str: The absolute path to the asset.
+        """
         ASSETS_PATH = conf.configuration["paths"]["gui_assets_path"]
         return str(ASSETS_PATH + path)
-        
-
+    
     def init_gui(self):
-        ## parameters
+        """
+        Initializes the graphical user interface.
+        """
+        # GUI parameters
         bg_color = "#2B3499"
         fg_color = "#FFFFFF"
         entry_font = ("Helvetica", 16, "bold")
 
-        ## self.window
+        # Initialize main window
         self.window = tk.Tk()
         self.window.title("GUI robot controller")
         self.window.geometry("640x980")
         self.window.resizable(False, False)
 
+        # Create canvas for background image
         self.canvas = tk.Canvas(
             self.window,
             height = 980,
@@ -68,8 +82,9 @@ class GUI(Node):
             bd = 0,
             highlightthickness = 0,
         )
-
         self.canvas.place(x = 0, y = 0)
+
+        # Load and display background image
         self.image_bg = tk.PhotoImage(
             file=self.relative_to_assets("bg.png"))
         self.canvas.create_image(
@@ -78,7 +93,7 @@ class GUI(Node):
             image=self.image_bg
         )
 
-        ## STOP button
+        # STOP button
         self.button_stop_img = tk.PhotoImage(
             file=self.relative_to_assets("button_stop.png"))
         self.button_stop = tk.Button(
@@ -96,7 +111,7 @@ class GUI(Node):
             height=110.0
         )
 
-        ## START button
+        # START button
         self.button_start_img = tk.PhotoImage(
             file=self.relative_to_assets("button_start.png"))
         button_start = tk.Button(
@@ -114,7 +129,7 @@ class GUI(Node):
             height=72.0
         )
 
-        ## input X coordinate
+        # Input X coordinate
         self.entry_x_img = tk.PhotoImage(
             file=self.relative_to_assets("entry_x.png"))
         self.canvas.create_image(
@@ -136,7 +151,7 @@ class GUI(Node):
             height=46
         )
 
-        ## input Y coordinate
+        # Input Y coordinate
         self.entry_y_img = tk.PhotoImage(
             file=self.relative_to_assets("entry_y.png"))
         self.canvas.create_image(
@@ -158,7 +173,7 @@ class GUI(Node):
             height=46
         )
 
-        ## input Z coordinate
+        # Input Z coordinate
         self.entry_z_img = tk.PhotoImage(
             file=self.relative_to_assets("entry_z.png"))
         self.canvas.create_image(
@@ -180,7 +195,7 @@ class GUI(Node):
             height=46
         )
 
-        ## input time
+        # Input time
         self.entry_time_img = tk.PhotoImage(
             file=self.relative_to_assets("entry_time.png"))
         self.canvas.create_image(
@@ -202,7 +217,7 @@ class GUI(Node):
             height=46
         )
 
-        ## input type
+        # Input type
         self.entry_path_type_img = tk.PhotoImage(
             file=self.relative_to_assets("entry_type.png"))
         self.canvas.create_image(
@@ -211,8 +226,8 @@ class GUI(Node):
             image=self.entry_path_type_img
         )
 
+        # Combo box for task type selection
         combostyle = ttk.Style()
-
         combostyle.theme_create('combostyle', parent='alt',
                                 settings = {'TCombobox':
                                             {'configure':
@@ -224,22 +239,14 @@ class GUI(Node):
                                             "arrowcolor": "false",
                                             }}}
                                 )
-        # ATTENTION: this applies the new s
         combostyle.theme_use('combostyle')
 
-        self.options_list = {
-            "P2P_DIRECT_TRAJECTORY": conf.P2P_DIRECT_TRAJECTORY,
-            "P2P_JOINT_TRAJECTORY": conf.P2P_JOINT_TRAJECTORY,
-            "P2P_CONTINUOUS_TRAJECTORY": conf.P2P_CONTINUOUS_TRAJECTORY,
-            "PICK_TRAJECTORY": conf.PICK_TRAJECTORY,
-            "PLACE_TRAJECTORY": conf.PLACE_TRAJECTORY}
-        
         options = ["", 
-                   "P2P_DIRECT_TRAJECTORY",
-                   "P2P_JOINT_TRAJECTORY",
-                   "P2P_CONTINUOUS_TRAJECTORY",
-                   "PICK_TRAJECTORY",
-                   "PLACE_TRAJECTORY"]
+                   conf.P2P_DIRECT_TRAJECTORY,
+                   conf.P2P_JOINT_TRAJECTORY,
+                   conf.P2P_CONTINUOUS_TRAJECTORY,
+                   conf.PICK_TRAJECTORY,
+                   conf.PLACE_TRAJECTORY]
         self.combo_task_type = ttk.Combobox(self.window, 
             values=options,
             background=bg_color,
@@ -258,61 +265,82 @@ class GUI(Node):
             width= 350,
             height= 45
         )
+
+        # spin the gui
+        self.window.mainloop()
         return
     
 
     def start_button_pressed(self):
-        self.get_logger().info(f"robot_state_local: {self.robot_state_local}")
+        """
+        Handles the start button press event.
+        """
 
-        # if robot is in idle, it can move
-        if self.robot_state_local == "idle":    
+        # If there is no lock, it can move
+        if self.pub_task_lock == False:
             trajectory_task_msg = TrajectoryTask()
-            # get trajectory task from gui
+            # Get trajectory task from GUI
             try:
-                trajectory_task_msg.pos_end.x = float(self.entry_x.get())
-                trajectory_task_msg.pos_end.y = float(self.entry_y.get())
-                trajectory_task_msg.pos_end.z = float(self.entry_z.get())
-                trajectory_task_msg.time = float(self.entry_time.get())
-                trajectory_task_msg.task_type = int(self.options_list[self.combo_task_type.get()])
-                trajectory_task_msg.is_trajectory_absolute_coordinates = False
+                trajectory_task_msg.pos_end.x       = float(self.entry_x.get())
+                trajectory_task_msg.pos_end.y       = float(self.entry_y.get())
+                trajectory_task_msg.pos_end.z       = float(self.entry_z.get())
+                trajectory_task_msg.task_time       = float(self.entry_time.get())
+                trajectory_task_msg.task_type.data  = str(self.combo_task_type.get())
+                trajectory_task_msg.is_trajectory_absolute_coordinates = True
             except:
-                self.get_logger().error("insert valid input")
+                self.get_logger().error("Insert valid input")
 
-            # publish task
+            # Publish task
             self.trajectory_task_input_pub.publish(trajectory_task_msg)
-        
-        elif self.robot_state_local == "run":
-            # manage exception
-            self.get_logger().warning("robot state is run!")
+            # set a lock to publish once
+            self.pub_task_lock = True
 
-        elif self.robot_state_local == "stop":
-            # ignore the input
-            self.get_logger().warning("robot state is stop!")
+        else:
+            # Manage exception
+            self.get_logger().warning("pub_task_lock is True!")
 
         return
 
 
     def stop_button_pressed(self):
-        self.publish_robot_state("stop")
-        self.raise_exception("stop")
+        """
+        Handles the stop button press event.
+        """
+        self.publish_robot_state(conf.ROBOT_STATE_STOP)
+        # set a lock to publishing new tasks
+        self.pub_task_lock = True
+        
+        self.raise_exception(conf.ROBOT_STATE_STOP)
         return
-    
+
 
     def robot_state_callback(self, robot_state_msg):
-        self.robot_state_local = robot_state_msg.data
+        """
+        Callback function for receiving robot state.
+        """
+        if robot_state_msg.data == conf.ROBOT_STATE_IDLE:
+            self.pub_task_lock = False
+        else:
+            self.pub_task_lock = True
+
         return
-    
+
 
     def publish_robot_state(self, state):
-        # publish robot state
+        """
+        Publishes the robot state.
+        """
+        # Publish robot state
         robot_state_output_msg = String()
         robot_state_output_msg.data = state
         self.robot_state_pub.publish(robot_state_output_msg)
-        self.robot_state_local = state
         return
 
 
     def raise_exception(self, exception):
+        """
+        Raises an exception.
+        """
         self.popup = tk.Toplevel()
         self.popup.title("Exception")
 
@@ -320,14 +348,23 @@ class GUI(Node):
                          text=f"The robot state is: {exception}.\nPress the button to continue.")
         label.pack(pady=10)
 
-        button = tk.Button(self.popup, text="continue", command=self.resolve_exception)
+        button = tk.Button(self.popup, text="Continue", command=self.resolve_exception)
         button.pack(pady=5)
         return
     
+
     def resolve_exception(self):
+        """
+        Resolves an exception.
+        """
         self.publish_robot_state("idle")
+        
+        # removes the lock to publishing new tasks
+        self.pub_task_lock = False
+        
         self.popup.destroy()
         return
+
 
 
 def main(args=None):
@@ -335,9 +372,12 @@ def main(args=None):
 
     gui_node = GUI()
 
-    # Execute the main event loop
-    gui_node.window.mainloop()
-    # rclpy.spin(gui_node)
+    # Create a thread for running the Tkinter main loop
+    gui_thread = threading.Thread(target=gui_node.init_gui)
+    gui_thread.daemon = True  # Make the thread a daemon so it terminates when the main thread terminates
+    gui_thread.start()
+
+    rclpy.spin(gui_node)
 
     gui_node.destroy_node()
     rclpy.shutdown()
@@ -345,4 +385,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-

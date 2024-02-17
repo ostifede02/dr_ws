@@ -9,71 +9,77 @@ from std_msgs.msg import String
 from deltarobot import configuration as conf
 
 import numpy as np
-import time as time_
+import time
 
 class TaskManager(Node):
 
     def __init__(self):
+        """
+        Initializes the TaskManager node.
+        """
         super().__init__('task_manager_node')
 
-        ## trajectory task
+        ## Subscribe to the trajectory task input topic
         self.trajectory_task_input_sub = self.create_subscription(
             TrajectoryTask,
             'trajectory_task_input',
             self.trajectory_task_input_callback,
             1)
-        self.trajectory_task_input_sub
 
+        ## Publish trajectory task
         self.trajectory_task_pub = self.create_publisher(
             TrajectoryTask,
             'trajectory_task',
             1)
         
-        ## trajectory ack
+        ## Subscribe to task acknowledgment topic
         self.task_ack_sub = self.create_subscription(
             TaskAck,
             'task_ack',
             self.task_ack_callback,
             1)
-        self.task_ack_sub
 
-        ## robot state
+        ## Publish robot state
         self.robot_state_pub = self.create_publisher(
             String,
             'robot_state',
-            1)
+            10)
         
+        ## Subscribe to robot state topic
         self.robot_state_sub = self.create_subscription(
             String,
             'robot_state',
             self.robot_state_callback,
-            1)
-        self.robot_state_sub
+            10)
 
-
+        # Initialize robot position
         self.pos_current = conf.configuration["trajectory"]["pos_home"]     ## after home calibration
         self.pos_current_volatile = np.empty(3)
         
-        # initialize robot state
-        self.robot_state = "idle"
-        
-
-        # publish robot state
-        self.publish_robot_state(self.robot_state)
+        # Initialize robot state
+        self.robot_state = conf.ROBOT_STATE_IDLE
 
         return
 
 
-
     def trajectory_task_input_callback(self, task_input_msg):
+        """
+        Callback function for receiving trajectory task input.
+        
+        Parameters:
+            task_input_msg (TrajectoryTask): The received trajectory task input message.
+        
+        Returns:
+            None
+        """
         task_output_msg = TrajectoryTask()
 
-        # define pos_start
+        # Define starting position
         task_output_msg.pos_start.x = float(self.pos_current[0])
         task_output_msg.pos_start.y = float(self.pos_current[1])
         task_output_msg.pos_start.z = float(self.pos_current[2])
 
-        ## define pos_end
+        # Define ending position
         if task_input_msg.is_trajectory_absolute_coordinates == True:
             task_output_msg.pos_end = task_input_msg.pos_end
         else:
@@ -81,65 +87,101 @@ class TaskManager(Node):
             task_output_msg.pos_end.y = task_input_msg.pos_end.y + self.pos_current[1]
             task_output_msg.pos_end.z = task_input_msg.pos_end.z + self.pos_current[2]
 
-        # define other parameters
-        task_output_msg.time = task_input_msg.time
-        task_output_msg.task_type = task_input_msg.task_type
+        # Define other parameters
+        task_output_msg.task_time = task_input_msg.task_time
+        task_output_msg.task_type.data = task_input_msg.task_type.data
         task_output_msg.is_trajectory_absolute_coordinates = task_input_msg.is_trajectory_absolute_coordinates
 
-        # publish task message
+
+        # Publish task message
         self.trajectory_task_pub.publish(task_output_msg)
 
-        # store the future pos_current in a volatile variable
-        #   - in case of nak, the pos_current will remain the same
-        #   - in case of ack, the pos_current will be updated with pos_current_volatile
+        # Store the future pos_current in a volatile variable
+        # In case of nak, the pos_current will remain the same
+        # In case of ack, the pos_current will be updated with pos_current_volatile
         self.pos_current_volatile[0] = task_output_msg.pos_end.x
         self.pos_current_volatile[1] = task_output_msg.pos_end.y
         self.pos_current_volatile[2] = task_output_msg.pos_end.z
         
-        # update robot state
-        self.robot_state = "run"
-        # publish robot state
+        # Update robot state
+        self.robot_state = conf.ROBOT_STATE_RUN
+        # Publish robot state
         self.publish_robot_state(self.robot_state)
-        
+
         return
 
 
     def task_ack_callback(self, task_ack_msg):
-        # the task has been succesfull
+        """
+        Callback function for receiving task acknowledgment.
+        
+        Parameters:
+            task_ack_msg (TaskAck): The received task acknowledgment message.
+        
+        Returns:
+            None
+        """
+        # The task has been successful
         if task_ack_msg.task_ack == True:
-            # update current positions
+            # Update current positions
             self.pos_current = self.pos_current_volatile
             
-            # do not override stop state
-            if self.robot_state != "stop":
-                # update robot state
-                self.robot_state = "idle"
-
-            # publish robot state
-            self.publish_robot_state(self.robot_state)
+            # Do not override stop or error states
+            if self.robot_state == conf.ROBOT_STATE_RUN:
+                # Update robot state
+                self.robot_state = conf.ROBOT_STATE_IDLE
+            else:
+                pass
 
         elif task_ack_msg.task_ack == False:
-            # raise error
+            # Raise error
+            self.robot_state = task_ack_msg.error_type.data
+        else:
             pass
-
+        
+        # Publish robot state
+        self.publish_robot_state(self.robot_state)
         return
     
 
     def robot_state_callback(self, robot_state_msg):
-        # respond with the robot state
-        if robot_state_msg.data == "request":
+        """
+        Callback function for receiving robot state.
+        
+        Parameters:
+            robot_state_msg (String): The received robot state message.
+        
+        Returns:
+            None
+        """
+        # Respond with the robot state
+        if robot_state_msg.data == conf.ROBOT_STATE_REQUEST:
             self.publish_robot_state(self.robot_state)
+        
+        # Override robot state
         else:
+            self.get_logger().info(f"new robot state: {robot_state_msg.data}")
             self.robot_state = robot_state_msg.data
+        
         return
-    
+
 
     def publish_robot_state(self, state):
-        # publish robot state
+        """
+        Publishes the robot state.
+        
+        Parameters:
+            state (str): The current state of the robot.
+        
+        Returns:
+            None
+        """
+        # Publish robot state
         robot_state_output_msg = String()
-        robot_state_output_msg.data = state
+        robot_state_output_msg.data = str(state)
         self.robot_state_pub.publish(robot_state_output_msg)
         return
+
 
 
 def main(args=None):
@@ -151,7 +193,6 @@ def main(args=None):
 
     tm_node.destroy_node()
     rclpy.shutdown()
-
 
 if __name__ == '__main__':
     main()
