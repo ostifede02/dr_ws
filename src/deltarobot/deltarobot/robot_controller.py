@@ -89,8 +89,7 @@ class RobotController(Node):
     
 
     def robot_controller_callback(self, trajectory_task_msg):
-        self.get_logger().info("robot_controller called")
-        time_start = time.time()
+        # time_start = time.time()
         # unpack message
         pos_start = np.array([trajectory_task_msg.pos_start.x,
                             trajectory_task_msg.pos_start.y,
@@ -193,8 +192,8 @@ class RobotController(Node):
         # publish full message for viewer
         self.publish_joint_trajectory(joint_trajectory_vector)
 
-        time_stop = time.time()
-        self.get_logger().info(f"computation time: {(time_stop-time_start)*1e3} milliseconds")
+        # time_stop = time.time()
+        # self.get_logger().info(f"computation time: {(time_stop-time_start)*1e3} milliseconds")
         return
 
 

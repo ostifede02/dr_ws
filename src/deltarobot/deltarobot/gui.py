@@ -31,13 +31,13 @@ class GUI(Node):
             String,
             'robot_state',
             self.robot_state_callback,
-            10)
+            1)
         
         # Publisher for robot state
         self.robot_state_pub = self.create_publisher(
             String,
             'robot_state',
-            10)
+            1)
         
 
         # Initialize lock to avoid publishing double tasks

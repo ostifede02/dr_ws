@@ -43,14 +43,14 @@ class TaskManager(Node):
         self.robot_state_pub = self.create_publisher(
             String,
             'robot_state',
-            10)
+            1)
         
         ## Subscribe to robot state topic
         self.robot_state_sub = self.create_subscription(
             String,
             'robot_state',
             self.robot_state_callback,
-            10)
+            1)
 
         # Initialize robot position
         self.pos_current = conf.configuration["trajectory"]["pos_home"]     ## after home calibration
@@ -160,7 +160,6 @@ class TaskManager(Node):
         
         # Override robot state
         else:
-            self.get_logger().info(f"new robot state: {robot_state_msg.data}")
             self.robot_state = robot_state_msg.data
         
         return
