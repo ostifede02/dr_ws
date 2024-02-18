@@ -47,9 +47,13 @@ class GamePadController(Node):
 
         # Get the gamepad device
         self.gamepad = inputs.devices.gamepads[0]
-        self.x = 0
-        self.y = 0
-        self.z = 0
+        self.x = 0                  # [ mm ]
+        self.y = 0                  # [ mm ]
+        self.z = 0                  # [ mm ]
+        self.velocity = 50          # [ mm/s ]
+        self.delta_time = 0.05      # [ s ]
+        self.MAX_VELOCITY = 250     # [ mm/s ]
+        self.MIN_VELOCITY = 10      # [ mm/s ]
 
         return
     
@@ -81,27 +85,63 @@ class GamePadController(Node):
     
 
     def read_gamepad_timer_callback(self):      
-        events = self.gamepad._do_iter(timeout=0.0005)
+        events = self.gamepad._do_iter(timeout=0.0002)
 
         # do not update gamepad states if no data available        
         if events is None:
             return
-                    
+
         for event in events:
-            if event.ev_type == 'Absolute' and event.code == 'ABS_X':
-                self.x = (event.state - 127)/10
-                if abs(self.x) < 4:
+            ## get value X coordinate
+            # joy
+            if event.code == 'ABS_X':
+                # normalized value [-1, 1]
+                self.x = (event.state-127.5)/127.5
+                if abs(self.x) < 0.2:
                     self.x = 0
+                self.x = self.x*self.velocity*self.delta_time
+            # hat
+            elif event.code == 'ABS_HAT0X':
+                self.x = event.state*self.velocity*self.delta_time
 
-            elif event.ev_type == 'Absolute' and event.code == 'ABS_Y':
-                self.y = -(event.state - 127)/10
-                if abs(self.y) < 4:
+
+            ## get value Y coordinate
+            # joy
+            elif event.code == 'ABS_Y':
+                # normalized value [-1, 1]
+                self.y = -(event.state-127.5)/127.5
+                if abs(self.y) < 0.2:
                     self.y = 0
+                self.y = self.y*self.velocity*self.delta_time
+            # hat
+            elif event.code == 'ABS_HAT0Y':
+                self.y = -event.state*self.velocity*self.delta_time
 
-            elif event.ev_type == 'Absolute' and event.code == 'ABS_RZ':
-                self.z = -(event.state - 127)/10
-                if abs(self.z) < 4:
+
+            ## get value Y coordinate
+            elif  event.code == 'ABS_RZ':
+                # normalized value [-1, 1]
+                self.z = -(event.state-127.5)/127.5
+                if abs(self.z) < 0.2:
                     self.z = 0
+                self.z = self.z*self.velocity*self.delta_time
+
+            ## set velocity
+            # increase velocity
+            elif  event.code == 'BTN_TR':
+                self.velocity += 10
+                self.velocity = min(self.velocity, self.MAX_VELOCITY)
+                
+            # decrease velocity
+            elif  event.code == 'BTN_TL':
+                self.velocity -= 10
+                self.velocity = max(self.velocity, self.MIN_VELOCITY)
+
+            ## control gripper
+                # A -> "BTN_SOUTH"
+                # B -> "BTN_WEST"
+                # X -> "BTN_NORTH"
+                # Y -> "BTN_EAST"
 
         return
     
