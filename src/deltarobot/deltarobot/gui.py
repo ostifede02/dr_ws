@@ -27,7 +27,7 @@ class GUI(Node):
             1)
         
         ## Subscribe to robot state topic
-        self.robot_state_sub__ = self.create_subscription(
+        self.robot_state_sub = self.create_subscription(
             String,
             'robot_state',
             self.robot_state_callback,
@@ -37,6 +37,14 @@ class GUI(Node):
         self.robot_state_pub = self.create_publisher(
             String,
             'robot_state',
+            1)
+        
+
+        ## Subscribe to trajectory task topic
+        self.robot_state_sub = self.create_subscription(
+            TrajectoryTask,
+            'trajectory_task',
+            self.update_display_position_callback,
             1)
         
 
@@ -266,6 +274,9 @@ class GUI(Node):
             height= 45
         )
 
+        # init popup window
+        self.popup = None
+
         # spin the gui
         self.window.mainloop()
         return
@@ -337,19 +348,54 @@ class GUI(Node):
         return
 
 
+
     def raise_exception(self, exception):
         """
         Raises an exception.
+        
+        Args:
+            exception (str): The description of the exception.
+        
+        Returns:
+            None
         """
+        if self.popup and self.popup.winfo_exists():
+            self.popup.destroy()  # Close the existing popup if it's still open
+
+
         self.popup = tk.Toplevel()
         self.popup.title("Exception")
+        
+        # Center the popup window
+        self.popup.geometry("400x200+{}+{}".format(
+            int(self.popup.winfo_screenwidth() / 2 - 200),
+            int(self.popup.winfo_screenheight() / 2 - 100))
+        )
 
-        label = tk.Label(self.popup, 
-                         text=f"The robot state is: {exception}.\nPress the button to continue.")
-        label.pack(pady=10)
+        # Set background color to blue
+        self.popup.configure(bg="#2B3499")
 
-        button = tk.Button(self.popup, text="Continue", command=self.resolve_exception)
-        button.pack(pady=5)
+        label = ttk.Label(self.popup, 
+                         text=f"The robot state is\n{str(exception).upper()}",
+                         font=("Helvetica", 16),
+                         foreground="white",  # Set text color to white
+                         background="#2B3499")  # Set label background color to blue
+        label.pack(pady=40)
+
+        button = ttk.Button(self.popup, text="CONTINUE", command=self.resolve_exception,
+                            style="Orange.TButton")  # Apply custom style
+        button.place(
+            x=40,
+            y=120,
+            width=320,
+            height=40
+        )
+
+        # Create custom style for the button
+        style = ttk.Style()
+        style.configure("Orange.TButton", foreground="orange", background="#2B3499", font=("Helvetica", 18),
+                        padding=(80, 5))
+
         return
     
 
@@ -362,7 +408,27 @@ class GUI(Node):
         # removes the lock to publishing new tasks
         self.pub_task_lock = False
         
-        self.popup.destroy()
+        if self.popup and self.popup.winfo_exists():
+            self.popup.destroy()
+        return
+    
+
+    def update_display_position_callback(self, task_msg):
+        # display x
+        x = round(task_msg.pos_end.x, 3)
+        self.entry_x.delete(0, tk.END)
+        self.entry_x.insert(0, str(x))
+
+        # display y
+        y = round(task_msg.pos_end.y, 3)
+        self.entry_y.delete(0, tk.END)
+        self.entry_y.insert(0, str(y))
+
+        # display z
+        z = round(task_msg.pos_end.z, 3)
+        self.entry_z.delete(0, tk.END)
+        self.entry_z.insert(0, str(z))
+
         return
 
 
