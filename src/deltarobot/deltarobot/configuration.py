@@ -59,13 +59,17 @@ P2P_CONTINUOUS_TRAJECTORY   = "P2P_CONTINUOUS_TRAJECTORY"
 PICK_TRAJECTORY             = "PICK_TRAJECTORY"
 PLACE_TRAJECTORY            = "PLACE_TRAJECTORY"
 
-##########   ERRORS   ##########
 
 
 ##########   ROBOT STATES   ##########
-ROBOT_STATE_RUN                         = "run"
-ROBOT_STATE_IDLE                        = "idle"
-ROBOT_STATE_STOP                        = "stop"
-ROBOT_STATE_REQUEST                     = "request"
-ROBOT_STATE_ERROR__INVALID_TRAJECTORY   = "error_inv_traj"
-ROBOT_STATE_ERROR__COLLISION_DETECTED   = "error_collision"
+ROBOT_STATE_RUN         = "run"
+ROBOT_STATE_IDLE        = "idle"
+ROBOT_STATE_STOP        = "stop"
+ROBOT_STATE_REQUEST     = "request"
+ROBOT_STATE_ERROR       = "error"
+
+
+##########   ERRORS   ##########
+
+ERROR__INVALID_TRAJECTORY              = -203
+ERROR__INVALID_COLLISION_DETECTED      = -204

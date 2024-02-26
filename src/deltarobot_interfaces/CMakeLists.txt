@@ -19,11 +19,11 @@ rosidl_generate_interfaces(${PROJECT_NAME}
     "msg/JointTrajectory.msg"
     "msg/JointTrajectoryArray.msg"
     "msg/TrajectoryTask.msg"
-    "msg/TaskAck.msg"
+    # "msg/TaskAck.msg"
 
     # Add packages that above messages depend on
     DEPENDENCIES geometry_msgs
-    DEPENDENCIES std_msgs 
+    DEPENDENCIES std_msgs
 )
 
 if(BUILD_TESTING)

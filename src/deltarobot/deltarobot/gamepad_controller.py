@@ -30,7 +30,7 @@ class GamePadController(Node):
             self.publish_task_timer_callback)
         
         # Set up timer to periodically get gamepad state
-        timer_period = 0.001  # seconds
+        timer_period = 0.0005  # seconds
         self.read_gamepad_timer = self.create_timer(
             timer_period, 
             self.read_gamepad_timer_callback)
@@ -129,12 +129,12 @@ class GamePadController(Node):
             ## set velocity
             # increase velocity
             elif  event.code == 'BTN_TR':
-                self.velocity += 10
+                self.velocity += 25
                 self.velocity = min(self.velocity, self.MAX_VELOCITY)
                 
             # decrease velocity
             elif  event.code == 'BTN_TL':
-                self.velocity -= 10
+                self.velocity -= 25
                 self.velocity = max(self.velocity, self.MIN_VELOCITY)
 
             ## control gripper

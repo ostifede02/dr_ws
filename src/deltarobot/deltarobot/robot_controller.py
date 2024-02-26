@@ -7,6 +7,8 @@ from deltarobot_interfaces.msg import JointTrajectoryArray
 
 from micro_custom_messages.msg import JointTrajectoryReduced
 from micro_custom_messages.msg import JointTrajectoryReducedArray
+from micro_custom_messages.msg import TaskAck
+
 
 from deltarobot.inverse_geometry import InverseGeometry
 from deltarobot.trajectory_generator import TrajectoryGenerator
@@ -34,12 +36,17 @@ class RobotController(Node):
             'joint_trajectory',
             1)
         
+        self.task_ack_pub = self.create_publisher(
+            TaskAck,
+            'task_ack',
+            1)
+        
         self.trajectory_task_sub = self.create_subscription(
             TrajectoryTask,
             'trajectory_task',
             self.robot_controller_callback,
             1)
-        self.trajectory_task_sub
+        
 
 
         ## import urdf file path
@@ -79,6 +86,10 @@ class RobotController(Node):
         # define initial conditions
         self.pos_current = conf.configuration["trajectory"]["pos_home"]     ## after home calibration
         self.end_effector_radius = conf.configuration["physical"]["end_effector_radius"]
+
+        # joint limits
+        self.q_min = 140    # [ mm ]
+        self.q_max = 340    # [ mm ]
 
         # initialize joint position
         self.q1 = np.zeros(3)
@@ -129,11 +140,14 @@ class RobotController(Node):
                 pos_start, pos_end, delta_t_input)
             is_joint_trajectory = False 
 
-        # check for valid trajectory
-        # if task_space_trajectory_vector == conf.ERROR__INVALID_TRAJECTORY:
-        #     # publish nak
-        #     pass
-
+        ## check for valid trajectory
+        if task_space_trajectory_vector is None:
+            # publish nak
+            self.get_logger().error("Invalid trajectory: trajectory is not feasable.")
+            nak_msg  = TaskAck()
+            nak_msg.task_ack = False
+            self.task_ack_pub.publish(nak_msg)
+            return
 
         ## inverse geometry
         joint_trajectory_vector = np.empty((len(task_space_trajectory_vector), self.robot_nq+1))
@@ -161,7 +175,13 @@ class RobotController(Node):
             self.q3 = self.ig_chain_3.compute_inverse_geometry(np.copy(self.q3), pos_des_3)
 
             # check for collisions
-            # TO DO...
+            if self.check_is_collision():
+                # publish nak
+                self.get_logger().error("Invalid position: joint out of range.")
+                nak_msg  = TaskAck()
+                nak_msg.task_ack = False
+                self.task_ack_pub.publish(nak_msg)
+                return
 
             joint_trajectory_vector[set_point_index, 0:self.robot_nq] = np.concatenate([
                 self.q1, self.q2, self.q3
@@ -179,15 +199,13 @@ class RobotController(Node):
                 joint_trajectory_vector[len(task_space_trajectory_vector)-1, 3],    # chain 2
                 joint_trajectory_vector[len(task_space_trajectory_vector)-1, 6]])   # chain 3
             
-            joint_trajectory_vector_joint_space = self.trajectory_generator.generate_trajectory_joint_space(
+            # overwrite with joint velocity profiles
+            joint_trajectory_vector = self.trajectory_generator.generate_trajectory_joint_space(
                 q_start, q_end, t_set_point)
 
-            # publish reduced message for microcontroller
-            self.publish_joint_trajectory_reduced(joint_trajectory_vector_joint_space)
         
-        else:
-            # publish reduced message for microcontroller
-            self.publish_joint_trajectory_reduced(joint_trajectory_vector)
+        # publish reduced message for microcontroller
+        self.publish_joint_trajectory_reduced(joint_trajectory_vector)
         
         # publish full message for viewer
         self.publish_joint_trajectory(joint_trajectory_vector)
@@ -195,7 +213,18 @@ class RobotController(Node):
         # time_stop = time.time()
         # self.get_logger().info(f"computation time: {(time_stop-time_start)*1e3} milliseconds")
         return
+    
 
+    def check_is_collision(self):
+        if self.q1[0] < self.q_min or self.q1[0] > self.q_max:
+            return True
+        elif self.q2[0] < self.q_min or self.q2[0] > self.q_max:
+            return True
+        elif self.q3[0] < self.q_min or self.q3[0] > self.q_max:
+            return True
+        
+        return False
+    
 
     def publish_joint_trajectory(self, joint_trajectory_vector):
         joint_trajectory_array_msg = JointTrajectoryArray()

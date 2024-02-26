@@ -2,7 +2,8 @@ import rclpy
 from rclpy.node import Node
 
 from deltarobot_interfaces.msg import JointTrajectoryArray
-from deltarobot_interfaces.msg import TaskAck
+
+from micro_custom_messages.msg import TaskAck
 
 from deltarobot import configuration as conf
 

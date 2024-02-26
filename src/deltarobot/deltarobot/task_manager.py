@@ -2,7 +2,8 @@ import rclpy
 from rclpy.node import Node
 
 from deltarobot_interfaces.msg import TrajectoryTask
-from deltarobot_interfaces.msg import TaskAck
+
+from micro_custom_messages.msg import TaskAck
 
 from std_msgs.msg import String
 
@@ -126,18 +127,17 @@ class TaskManager(Node):
             # Update current positions
             self.pos_current = self.pos_current_volatile
             
-            # Do not override stop or error states
             if self.robot_state == conf.ROBOT_STATE_RUN:
                 # Update robot state
                 self.robot_state = conf.ROBOT_STATE_IDLE
             else:
+                # Do not override stop or error states
                 pass
 
         elif task_ack_msg.task_ack == False:
             # Raise error
-            self.robot_state = task_ack_msg.error_type.data
-        else:
-            pass
+            self.robot_state = conf.ROBOT_STATE_ERROR
+        
         
         # Publish robot state
         self.publish_robot_state(self.robot_state)

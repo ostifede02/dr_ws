@@ -1,2 +1,0 @@
-bool task_ack
-std_msgs/String error_type

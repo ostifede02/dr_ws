@@ -318,7 +318,7 @@ class GUI(Node):
         Handles the stop button press event.
         """
         self.publish_robot_state(conf.ROBOT_STATE_STOP)
-        # set a lock to publishing new tasks
+        # set a lock for publishing new tasks
         self.pub_task_lock = True
         
         self.raise_exception(conf.ROBOT_STATE_STOP)
@@ -330,8 +330,16 @@ class GUI(Node):
         Callback function for receiving robot state.
         """
         if robot_state_msg.data == conf.ROBOT_STATE_IDLE:
+            # remove lock for publishing new tasks
             self.pub_task_lock = False
+        
+        elif robot_state_msg.data == conf.ROBOT_STATE_ERROR:
+            self.raise_exception(conf.ROBOT_STATE_ERROR)    
+            # set a lock for publishing new tasks
+            self.pub_task_lock = True
+
         else:
+            # set a lock for publishing new tasks
             self.pub_task_lock = True
 
         return
@@ -405,7 +413,7 @@ class GUI(Node):
         """
         self.publish_robot_state("idle")
         
-        # removes the lock to publishing new tasks
+        # removes the lock for publishing new tasks
         self.pub_task_lock = False
         
         if self.popup and self.popup.winfo_exists():
