@@ -104,6 +104,18 @@ class TaskManager(Node):
         self.pos_current_volatile[1] = task_output_msg.pos_end.y
         self.pos_current_volatile[2] = task_output_msg.pos_end.z
         
+
+        #******************** ATTENTION! remove ********************
+        # *
+        # *
+        # *
+        self.pos_current = np.copy(self.pos_current_volatile)
+        # *
+        # *
+        # *
+        #***********************************************************
+
+
         # Update robot state
         self.robot_state = conf.ROBOT_STATE_RUN
         # Publish robot state
@@ -125,8 +137,8 @@ class TaskManager(Node):
         # The task has been successful
         if task_ack_msg.task_ack == True:
             # Update current positions
-            self.pos_current = self.pos_current_volatile
-            
+            self.pos_current = np.copy(self.pos_current_volatile)
+
             if self.robot_state == conf.ROBOT_STATE_RUN:
                 # Update robot state
                 self.robot_state = conf.ROBOT_STATE_IDLE
@@ -137,7 +149,7 @@ class TaskManager(Node):
         elif task_ack_msg.task_ack == False:
             # Raise error
             self.robot_state = conf.ROBOT_STATE_ERROR
-        
+
         
         # Publish robot state
         self.publish_robot_state(self.robot_state)

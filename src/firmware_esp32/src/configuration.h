@@ -2,7 +2,7 @@
 #define CONFIGURATION_H
 
 
-#define STEPS_PER_REV 1600
+#define STEPS_PER_REV 3200
 #define D_PULLEY 12
 
 

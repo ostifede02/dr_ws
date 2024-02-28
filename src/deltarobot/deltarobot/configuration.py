@@ -21,8 +21,8 @@ configuration["physical"] = {
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 400,
-    "max_velocity": 800,
+    "max_acceleration": 200,
+    "max_velocity": 600,
 
     "delta_s_high_resolution": 0.05,        # used for path length
     "mean_distance_between_set_points": 8,
@@ -70,6 +70,3 @@ ROBOT_STATE_ERROR       = "error"
 
 
 ##########   ERRORS   ##########
-
-ERROR__INVALID_TRAJECTORY              = -203
-ERROR__INVALID_COLLISION_DETECTED      = -204

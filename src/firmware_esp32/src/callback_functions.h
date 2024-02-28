@@ -1,11 +1,14 @@
-// #ifndef CALLBACK_FUNCTIONS_H
-// #define CALLBACK_FUNCTIONS_H
+#ifndef CALLBACK_FUNCTIONS_H
+#define CALLBACK_FUNCTIONS_H
 
-// #include "stepper.h"
-// #include "configuration.h"
-// #include "custom_messages.h"
-// #include "board_pinout.h"
+#include "stepper.h"
+#include "configuration.h"
+#include "custom_messages.h"
+#include "board_pinout.h"
+#include "rcl_publisher_init.h"
+#include "error_log.h"
 
-// void trajectory_task_callback(const void * msgin);
 
-// #endif  //CALLBACK_FUNCTIONS_H
+void trajectory_task_callback(const void * msgin);
+
+#endif  //CALLBACK_FUNCTIONS_H

@@ -203,10 +203,10 @@ class RobotController(Node):
             joint_trajectory_vector = self.trajectory_generator.generate_trajectory_joint_space(
                 q_start, q_end, t_set_point)
 
-        
+
         # publish reduced message for microcontroller
         self.publish_joint_trajectory_reduced(joint_trajectory_vector)
-        
+
         # publish full message for viewer
         self.publish_joint_trajectory(joint_trajectory_vector)
 
@@ -222,7 +222,7 @@ class RobotController(Node):
             return True
         elif self.q3[0] < self.q_min or self.q3[0] > self.q_max:
             return True
-        
+
         return False
     
 
