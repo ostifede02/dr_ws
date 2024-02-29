@@ -10,7 +10,7 @@
 #include "error_log.h"
 #include "callback_functions.h"
 #include "custom_messages.h"
-#include "rcl_publisher_init.h"
+#include "rcl_publishers.h"
 
 
 void setup()
@@ -85,12 +85,11 @@ void setup()
 
 
 	// ********************  create task ack publisher  *********************
-    // rcl_publisher_t * task_ack_pub;
-	// RCCHECK(rclc_publisher_init_default(
-    //     task_ack_pub,
-    //     &node,
-    //     ROSIDL_GET_MSG_TYPE_SUPPORT(micro_custom_messages, msg, TaskAck),
-    //     "task_ack"));
+	RCCHECK(rclc_publisher_init_default(
+        &task_ack_pub,
+        &node,
+        ROSIDL_GET_MSG_TYPE_SUPPORT(micro_custom_messages, msg, TaskAck),
+        "task_ack"));
 	// **********************************************************************
 
 

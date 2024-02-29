@@ -3,6 +3,6 @@
 
 #include <rcl/rcl.h>
 
-extern rcl_publisher_t * task_ack_pub;
+extern rcl_publisher_t task_ack_pub;
 
 #endif //RCL_PUBLISHER_INIT_H

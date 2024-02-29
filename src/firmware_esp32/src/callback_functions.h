@@ -5,8 +5,8 @@
 #include "configuration.h"
 #include "custom_messages.h"
 #include "board_pinout.h"
-#include "rcl_publisher_init.h"
 #include "error_log.h"
+#include "rcl_publishers.h"
 
 
 void trajectory_task_callback(const void * msgin);
