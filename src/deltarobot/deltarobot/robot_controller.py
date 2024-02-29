@@ -198,17 +198,18 @@ class RobotController(Node):
                 joint_trajectory_vector[len(task_space_trajectory_vector)-1, 0],    # chain 1
                 joint_trajectory_vector[len(task_space_trajectory_vector)-1, 3],    # chain 2
                 joint_trajectory_vector[len(task_space_trajectory_vector)-1, 6]])   # chain 3
-            
+
             # overwrite with joint velocity profiles
             joint_trajectory_vector = self.trajectory_generator.generate_trajectory_joint_space(
                 q_start, q_end, t_set_point)
+        else:
+            # publish full message for viewer
+            self.publish_joint_trajectory(joint_trajectory_vector)
 
 
         # publish reduced message for microcontroller
         self.publish_joint_trajectory_reduced(joint_trajectory_vector)
 
-        # publish full message for viewer
-        self.publish_joint_trajectory(joint_trajectory_vector)
 
         # time_stop = time.time()
         # self.get_logger().info(f"computation time: {(time_stop-time_start)*1e3} milliseconds")

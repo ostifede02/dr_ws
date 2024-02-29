@@ -288,42 +288,28 @@ class GUI(Node):
         """
 
         # If there is no lock, it can move
-        # if self.pub_task_lock == False:
-        #     trajectory_task_msg = TrajectoryTask()
-        #     # Get trajectory task from GUI
-        #     try:
-        #         trajectory_task_msg.pos_end.x       = float(self.entry_x.get())
-        #         trajectory_task_msg.pos_end.y       = float(self.entry_y.get())
-        #         trajectory_task_msg.pos_end.z       = float(self.entry_z.get())
-        #         trajectory_task_msg.task_time       = float(self.entry_time.get())
-        #         trajectory_task_msg.task_type.data  = str(self.combo_task_type.get())
-        #         trajectory_task_msg.is_trajectory_absolute_coordinates = True
-        #     except:
-        #         self.get_logger().error("Insert valid input")
+        if self.pub_task_lock == False:
+            trajectory_task_msg = TrajectoryTask()
+            # Get trajectory task from GUI
+            try:
+                trajectory_task_msg.pos_end.x       = float(self.entry_x.get())
+                trajectory_task_msg.pos_end.y       = float(self.entry_y.get())
+                trajectory_task_msg.pos_end.z       = float(self.entry_z.get())
+                trajectory_task_msg.task_time       = float(self.entry_time.get())
+                trajectory_task_msg.task_type.data  = str(self.combo_task_type.get())
+                trajectory_task_msg.is_trajectory_absolute_coordinates = True
+            except:
+                self.get_logger().error("Insert valid input")
 
-        #     # Publish task
-        #     self.trajectory_task_input_pub.publish(trajectory_task_msg)
-        #     # set a lock to publish once
-        #     self.pub_task_lock = True
+            # Publish task
+            self.trajectory_task_input_pub.publish(trajectory_task_msg)
+            # set a lock to publish once
+            self.pub_task_lock = True
 
-        # else:
-        #     # Manage exception
-        #     self.get_logger().warning("pub_task_lock is True!")
+        else:
+            # Manage exception
+            self.get_logger().warning("pub_task_lock is True!")
 
-        trajectory_task_msg = TrajectoryTask()
-        # Get trajectory task from GUI
-        try:
-            trajectory_task_msg.pos_end.x       = float(self.entry_x.get())
-            trajectory_task_msg.pos_end.y       = float(self.entry_y.get())
-            trajectory_task_msg.pos_end.z       = float(self.entry_z.get())
-            trajectory_task_msg.task_time       = float(self.entry_time.get())
-            trajectory_task_msg.task_type.data  = str(self.combo_task_type.get())
-            trajectory_task_msg.is_trajectory_absolute_coordinates = True
-        except:
-            self.get_logger().error("Insert valid input")
-
-        # Publish task
-        self.trajectory_task_input_pub.publish(trajectory_task_msg)
         return
 
 

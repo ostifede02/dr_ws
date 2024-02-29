@@ -73,7 +73,7 @@ class GamePadController(Node):
             trajectory_task_msg.pos_end.x = float(self.x)
             trajectory_task_msg.pos_end.y = float(self.y)
             trajectory_task_msg.pos_end.z = float(self.z)
-            trajectory_task_msg.task_time = float(0.05)
+            trajectory_task_msg.task_time = float(self.delta_time)
             trajectory_task_msg.task_type.data = str(conf.P2P_DIRECT_TRAJECTORY)
             trajectory_task_msg.is_trajectory_absolute_coordinates = False
 

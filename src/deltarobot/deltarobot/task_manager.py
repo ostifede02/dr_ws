@@ -104,18 +104,7 @@ class TaskManager(Node):
         self.pos_current_volatile[1] = task_output_msg.pos_end.y
         self.pos_current_volatile[2] = task_output_msg.pos_end.z
         
-
-        #******************** ATTENTION! remove ********************
-        # *
-        # *
-        # *
-        self.pos_current = np.copy(self.pos_current_volatile)
-        # *
-        # *
-        # *
-        #***********************************************************
-
-
+        
         # Update robot state
         self.robot_state = conf.ROBOT_STATE_RUN
         # Publish robot state

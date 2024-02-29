@@ -27,25 +27,24 @@ void set_direction(char PIN_STEPPER_X_DIR, float sign)
 }
 
 
-void go_to_next_set_point(float delta_q1, float delta_q2, float delta_q3, float delta_t_micros)
+void go_to_next_set_point(float delta_q1, float delta_q2, float delta_q3, long unsigned int delta_t_micros)
 {
     // stepper 1:
-    int stepper1_half_steps = ((abs(delta_q1) / (PI * D_PULLEY))*STEPS_PER_REV);;
-    int stepper1_delay_micros = delta_t_micros / stepper1_half_steps;
-    int stepper1_counter = 0;
+    unsigned int stepper1_half_steps = 2*((abs(delta_q1) / (PI * D_PULLEY))*STEPS_PER_REV);
+    if (stepper1_half_steps == 0){
+        return;
+    }
+    unsigned int stepper1_delay_micros = delta_t_micros / stepper1_half_steps;
+    unsigned int stepper1_counter = 0;
 
-    // // stepper 2:
-    // int stepper2_half_steps = 4*((abs(delta_q2) / (PI * D_PULLEY))*STEPS_PER_REV);;
-    // int stepper2_delay_micros = delta_t_micros / stepper2_half_steps;
-    // int stepper2_counter = 0;
+    // stepper 2
 
-    // // stepper 3:
-    // int stepper3_half_steps = 4*((abs(delta_q3) / (PI * D_PULLEY))*STEPS_PER_REV);
-    // int stepper3_delay_micros = delta_t_micros / stepper3_half_steps;
-    // int stepper3_counter = 0;    
+
+    // stepper 3
+
 
     int time_dt = 0;
-    int initial_time = micros();
+    unsigned int initial_time = micros();
 
     // ******** TO DO: control all steppers simulteinously ***********
     while (true)

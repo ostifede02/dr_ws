@@ -81,9 +81,9 @@ class GepettoVisualizer(Node):
             time.sleep(delta_t)
         
         ## publish ack
-        task_ack_msg = TaskAck()
-        task_ack_msg.task_ack = True
-        self.task_ack_pub.publish(task_ack_msg)
+        # task_ack_msg = TaskAck()
+        # task_ack_msg.task_ack = True
+        # self.task_ack_pub.publish(task_ack_msg)
         return
 
 
