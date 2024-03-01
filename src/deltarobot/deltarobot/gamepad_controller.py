@@ -7,6 +7,7 @@ from deltarobot_interfaces.msg import TrajectoryTask
 from std_msgs.msg import String
 
 import inputs
+import numpy as np
 
 
 class GamePadController(Node):
@@ -96,10 +97,10 @@ class GamePadController(Node):
             # joy
             if event.code == 'ABS_X':
                 # normalized value [-1, 1]
-                self.x = (event.state-127.5)/127.5
+                x_input = (event.state-127.5)/127.5
                 if abs(self.x) < 0.2:
                     self.x = 0
-                self.x = self.x*self.velocity*self.delta_time
+                # self.x = self.x*self.velocity*self.delta_time
             # hat
             elif event.code == 'ABS_HAT0X':
                 self.x = event.state*self.velocity*self.delta_time
@@ -109,10 +110,10 @@ class GamePadController(Node):
             # joy
             elif event.code == 'ABS_Y':
                 # normalized value [-1, 1]
-                self.y = -(event.state-127.5)/127.5
+                y_input = -(event.state-127.5)/127.5
                 if abs(self.y) < 0.2:
                     self.y = 0
-                self.y = self.y*self.velocity*self.delta_time
+                # self.y = self.y*self.velocity*self.delta_time
             # hat
             elif event.code == 'ABS_HAT0Y':
                 self.y = -event.state*self.velocity*self.delta_time
@@ -121,10 +122,10 @@ class GamePadController(Node):
             ## get value Y coordinate
             elif  event.code == 'ABS_RZ':
                 # normalized value [-1, 1]
-                self.z = -(event.state-127.5)/127.5
+                z_input = -(event.state-127.5)/127.5
                 if abs(self.z) < 0.2:
                     self.z = 0
-                self.z = self.z*self.velocity*self.delta_time
+                # self.z = self.z*self.velocity*self.delta_time
 
             ## set velocity
             # increase velocity
@@ -142,6 +143,12 @@ class GamePadController(Node):
                 # B -> "BTN_WEST"
                 # X -> "BTN_NORTH"
                 # Y -> "BTN_EAST"
+
+        # normalize
+        coordinates_norm = np.linalg.norm([x_input, y_input, z_input])
+        self.x = (x_input/coordinates_norm) * self.velocity*self.delta_time
+        self.y = (y_input/coordinates_norm) * self.velocity*self.delta_time
+        self.z = (z_input/coordinates_norm) * self.velocity*self.delta_time
 
         return
     
