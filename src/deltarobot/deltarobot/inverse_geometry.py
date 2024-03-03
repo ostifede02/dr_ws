@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 '''
 This class is intended to calculate the inverse geometry of a given robot with the Gauss Newton method.
 

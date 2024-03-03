@@ -1,5 +1,6 @@
 #include "error_log.h"
 
+
 // Error handle loop
 void error_loop(void)
 {
@@ -7,7 +8,7 @@ void error_loop(void)
     {
         for (int i = 0; i < 200; ++i)
         {
-            do_half_step(PIN_STEPPER_1_STEP, i);
+            mdriver.do_half_step(PIN_STEPPER_1_STEP, i);
             delayMicroseconds(400);
         }
 

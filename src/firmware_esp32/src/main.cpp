@@ -13,6 +13,7 @@
 #include "rcl_publishers.h"
 
 
+
 void setup()
 {
     // Configure serial transport
@@ -92,9 +93,8 @@ void setup()
         "task_ack"));
 	// **********************************************************************
 
-
 	for (int i=0; i < 6400; ++i){
-		do_half_step(PIN_STEPPER_1_STEP, i);
+		mdriver.do_half_step(PIN_STEPPER_1_STEP, i);
 		delayMicroseconds(400);
 	}
 

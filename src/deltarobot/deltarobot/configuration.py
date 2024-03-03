@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import numpy as np
 
 configuration = {}
@@ -21,8 +23,8 @@ configuration["physical"] = {
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 100,
-    "max_velocity": 400,
+    "max_acceleration": 400,
+    "max_velocity": 1200,
 
     "delta_s_high_resolution": 0.05,        # used for path length
     "mean_distance_between_set_points": 8,
