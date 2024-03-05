@@ -34,11 +34,11 @@ void MotorDriver::go_to_next_set_point(float delta_q1, float delta_q2, float del
     unsigned int stepper1_delay_micros;
     float stepper1_counter;
 
-    delta_q1 = abs(delta_q1) + stepper1_remainder;
+    delta_q1 = abs(delta_q1) + delta_q1_remainder;
     stepper1_steps = delta_q1 / q_min_displacement;
-    stepper1_remainder = delta_q1 - stepper1_steps*q_min_displacement;
+    delta_q1_remainder = delta_q1 - stepper1_steps*q_min_displacement;
 
-    if (stepper1_steps != 0){
+    if (stepper1_steps != 0){   // avoid zero division
         stepper1_delay_micros = delta_t_micros / stepper1_steps;
     }
     stepper1_counter = 0;
@@ -48,11 +48,11 @@ void MotorDriver::go_to_next_set_point(float delta_q1, float delta_q2, float del
     unsigned int stepper2_delay_micros;
     float stepper2_counter;
 
-    delta_q2 = abs(delta_q2) + stepper2_remainder;
+    delta_q2 = abs(delta_q2) + delta_q2_remainder;
     stepper2_steps = delta_q2 / q_min_displacement;
-    stepper2_remainder = delta_q2 - stepper2_steps*q_min_displacement;
+    delta_q2_remainder = delta_q2 - stepper2_steps*q_min_displacement;
 
-    if (stepper2_steps != 0){
+    if (stepper2_steps != 0){   // avoid zero division
         stepper2_delay_micros = delta_t_micros / stepper2_steps;
     }
     stepper2_counter = 0;
@@ -63,47 +63,48 @@ void MotorDriver::go_to_next_set_point(float delta_q1, float delta_q2, float del
     unsigned int stepper3_delay_micros;
     float stepper3_counter;
 
-    delta_q3 = abs(delta_q3) + stepper3_remainder;
+    delta_q3 = abs(delta_q3) + delta_q3_remainder;
     stepper3_steps = delta_q3 / q_min_displacement;
-    stepper3_remainder = delta_q3 - stepper3_steps*q_min_displacement;
+    delta_q3_remainder = delta_q3 - stepper3_steps*q_min_displacement;
 
-    if (stepper3_steps != 0){
+    if (stepper3_steps != 0){   // avoid zero division
         stepper3_delay_micros = delta_t_micros / stepper3_steps;
     }
     stepper3_counter = 0;
 
 
+    // control all three steppers simultaneously
     int time_dt = 0;
     unsigned int initial_time = micros();
 
-    // ******** TO DO: control all steppers simulteinously ***********
-    while (true)
+    while ( (stepper1_counter < stepper1_steps) && 
+            (stepper2_counter < stepper2_steps) && 
+            (stepper3_counter < stepper3_steps))
     {
         time_dt = micros() - initial_time;
 
+        // stepper 1
         if( (stepper1_counter < stepper1_steps) && 
             (time_dt >= stepper1_delay_micros*stepper1_counter))
         {
             do_half_step(PIN_STEPPER_1_STEP, stepper1_counter);
             stepper1_counter += 0.5;
         }
-        else if((stepper2_counter < stepper2_steps) && 
+
+        // stepper 2
+        else if((stepper2_counter < stepper2_steps) &&
                 (time_dt >= stepper2_delay_micros*stepper2_counter))
         {
             do_half_step(PIN_STEPPER_2_STEP, stepper2_counter);
             stepper2_counter += 0.5;
         }
-        else if((stepper3_counter < stepper3_steps) && 
+
+        // stepper 3
+        else if((stepper3_counter < stepper3_steps) &&
                 (time_dt >= stepper3_delay_micros*stepper3_counter))
         {
             do_half_step(PIN_STEPPER_3_STEP, stepper3_counter);
             stepper3_counter += 0.5;
-        }
-        else if( (stepper1_counter >= stepper1_steps) && 
-            (stepper2_counter >= stepper2_steps) && 
-            (stepper3_counter >= stepper3_steps))
-        {
-            break;
         }
     }
 

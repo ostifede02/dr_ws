@@ -13,9 +13,9 @@
 class MotorDriver
 {
     private:
-        float stepper1_remainder = 0;
-        float stepper2_remainder = 0;
-        float stepper3_remainder = 0;
+        float delta_q1_remainder = 0;
+        float delta_q2_remainder = 0;
+        float delta_q3_remainder = 0;
         float q_min_displacement = (PI * D_PULLEY)/STEPS_PER_REV;
 
     public:

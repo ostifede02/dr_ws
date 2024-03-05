@@ -3,7 +3,6 @@
 
 #include "Arduino.h"
 
-#include "stepper.h"
 #include "board_pinout.h"
 #include "motor_driver.h"
 
