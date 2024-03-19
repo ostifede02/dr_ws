@@ -28,11 +28,11 @@ class InverseGeometry():
         # import parameters
         self.max_iterations = 300
         self.max_back_tracking_iterations = 30
-        self.absolute_pos_threshold = 1e-3
-        self.gradient_threshold = 1e-3
-        self.beta = 0.1
-        self.gamma = 1e-2
-        self.hessian_regu = 1e-2
+        self.absolute_pos_threshold = 1e-3      # absolute tolerance on position error
+        self.gradient_threshold = 1e-3          # absolute tolerance on gradient's norm
+        self.beta = 0.1                         # backtracking line search parameter
+        self.gamma = 1e-2                       # line search convergence parameters
+        self.hessian_regu = 1e-2                # Hessian regularization
         return
     
 

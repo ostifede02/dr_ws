@@ -229,15 +229,6 @@ class TrajectoryGenerator():
 
     def __get_path_poly_points(self, pos_start, pos_end, path_routine_type):
 
-        # if path_routine_type == conf.TASK_SPACE_DIRECT_TRAJECTORY_ROUTINE:
-        #     x1_offset = (pos_end[0] - pos_start[0])*0.333
-        #     y1_offset = (pos_end[1] - pos_start[1])*0.333
-        #     z1_offset = (pos_end[2] - pos_start[2])*0.333
-
-        #     x2_offset = (pos_start[0] - pos_end[0])*0.333
-        #     y2_offset = (pos_start[1] - pos_end[1])*0.333
-        #     z2_offset = (pos_start[2] - pos_end[2])*0.333
-
         if path_routine_type == conf.PICK_TRAJECTORY:
             x2_offset = 0
             y2_offset = 0
@@ -250,12 +241,12 @@ class TrajectoryGenerator():
         elif path_routine_type == conf.PLACE_TRAJECTORY:
             x1_offset = 0
             y1_offset = 0
-            z1_offset = min(norm(pos_start[0:2] - pos_end[0:2])*0.4, 60)
+            z1_offset = min(norm(pos_start[0:2] - pos_end[0:2])*0.4, 70)
             z1_offset = max(norm(pos_start[0:2] - pos_end[0:2])*0.4, 30)
 
             x2_offset = 0
             y2_offset = 0
-            z2_offset = min(norm(pos_start[0:2] - pos_end[0:2])*0.4, 60)
+            z2_offset = min(norm(pos_start[0:2] - pos_end[0:2])*0.4, 70)
             z2_offset = max(norm(pos_start[0:2] - pos_end[0:2])*0.4, 30)
 
         else:

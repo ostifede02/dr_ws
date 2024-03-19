@@ -10,9 +10,7 @@ configuration["paths"] = {
 }
 
 configuration["physical"] = {
-    "end_effector_radius": 40,
-    # "link_pitch": 50,
-    "end_effector_x_offset": 22.5
+    "end_effector_radius": 42
 }
 
 configuration["trajectory"] = {
@@ -25,24 +23,8 @@ configuration["trajectory"] = {
 
     "min_delta_time": 0.02,
 
-    "pos_home": np.array([0, 0, -40])
-
+    "pos_home": np.array([0, 0, -40.4])
 }
-
-configuration["inverse_geometry"] = {
-    "collision_pair": (0, 1),
-    "parameters": {
-        "max_iterations": 300,
-        "max_back_tracking_iterations": 30,
-        "absolute_pos_threshold": 1e-3,         # absolute tolerance on position error
-        "gradient_threshold": 1e-3,             # absolute tolerance on gradient's norm
-        "beta": 0.1,                            # backtracking line search parameter
-        "gamma": 1e-2,                          # line search convergence parameters
-        "hessian_regu": 1e-2                    # Hessian regularization
-    }
-}
-
-
 
 
 
