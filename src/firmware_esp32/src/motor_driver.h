@@ -24,6 +24,7 @@ class MotorDriver
             float delta_q3, long unsigned int delta_t_micros);
         void do_half_step(char PIN_STEPPER_X_STEP, int counter);
         void set_direction(char PIN_STEPPER_X_STEP, float sign);
+        void homing(void);
 };
 
 extern MotorDriver mdriver;

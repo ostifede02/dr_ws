@@ -9,6 +9,7 @@ from deltarobot_interfaces.msg import TrajectoryTask
 from micro_custom_messages.msg import TaskAck
 
 from std_msgs.msg import String
+from std_msgs.msg import Bool
 
 from deltarobot import configuration as conf
 
@@ -55,10 +56,19 @@ class TaskManager(Node):
             'robot_state',
             self.robot_state_callback,
             1)
+        
+        self.homing_sub = self.create_subscription(
+            Bool,
+            'task_homing',
+            self.update_homing_position_callback,
+            1)
+
 
         # Initialize robot position
-        self.pos_current = conf.configuration["trajectory"]["pos_home"]     ## after home calibration
-        self.pos_current_volatile = np.empty(3)
+        self.pos_current = conf.configuration["trajectory"]["pos_home"]
+        self.pos_current_volatile = conf.configuration["trajectory"]["pos_home"]
+        # self.pos_current = np.empty(3)    # uncomment if limit switch
+        # self.pos_current_volatile = np.empty(3)
         
         # Initialize robot state
         self.robot_state = conf.ROBOT_STATE_IDLE
@@ -161,7 +171,7 @@ class TaskManager(Node):
         # Respond with the robot state
         if robot_state_msg.data == conf.ROBOT_STATE_REQUEST:
             self.publish_robot_state(self.robot_state)
-        
+
         # Override robot state
         else:
             self.robot_state = robot_state_msg.data
@@ -185,6 +195,12 @@ class TaskManager(Node):
         self.robot_state_pub.publish(robot_state_output_msg)
         return
 
+    def update_homing_position_callback(self, homing_msg):
+        if homing_msg.data:
+            self.pos_current = conf.configuration["trajectory"]["pos_home"]     ## after home calibration
+            self.pos_current_volatile = conf.configuration["trajectory"]["pos_home"]     ## after home calibration
+
+        return
 
 
 def main(args=None):

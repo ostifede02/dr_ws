@@ -6,6 +6,7 @@
 #include <rclc/executor.h>
 
 #include "board_pinout.h"
+#include "motor_driver.h"
 #include "configuration.h"
 #include "error_log.h"
 #include "callback_functions.h"
@@ -14,17 +15,35 @@
 
 
 
+
 void setup()
 {
-    // Configure serial transport
-    Serial.begin(115200);
-    set_microros_serial_transports(Serial);
-    delay(1000);
+	// configure wifi transport
+	// IPAddress agent_ip(10, 42, 0, 13);
+	// size_t agent_port = 8888;
+	// char ssid[] = "ssid";
+	// char psk[] = "pwsd";
+	// set_microros_wifi_transports(ssid, psk, agent_ip, agent_port);
+
+	// configure serial transport
+	Serial.begin(115200);
+	set_microros_serial_transports(Serial);
+	delay(500);
+
 
     // initialize shift register pinout
     pinMode(I2S_DATA_PIN, OUTPUT);
     pinMode(I2S_CLOCK_PIN, OUTPUT);
     pinMode(I2S_LATCH_PIN, OUTPUT);
+
+    // initialize limit switches pinout
+    pinMode(LIMIT_SWITCH_1_PIN, INPUT);
+    pinMode(LIMIT_SWITCH_2_PIN, INPUT);
+    pinMode(LIMIT_SWITCH_3_PIN, INPUT);
+
+
+	// homing
+	// mdriver.homing();
 
 
 	// micro-ROS setup
@@ -54,7 +73,7 @@ void setup()
 	RCCHECK(rclc_executor_init(
 		&executor,
 		&support.context, 
-		1, 
+		2,
 		&allocator));
     
 
@@ -68,7 +87,7 @@ void setup()
 
 	// allocate message memory
 	micro_custom_messages__msg__JointTrajectoryReducedArray set_points_array_msg;	// allocate message memory
-	set_points_array_msg.array_size = 250;	// max capacity
+	set_points_array_msg.array_size = 400;	// max capacity
 	set_points_array_msg.set_points.capacity = set_points_array_msg.array_size;
 	set_points_array_msg.set_points.data = (micro_custom_messages__msg__JointTrajectoryReduced*) malloc(
 		set_points_array_msg.set_points.capacity * sizeof(micro_custom_messages__msg__JointTrajectoryReduced));
@@ -84,6 +103,26 @@ void setup()
 	// **********************************************************************
 
 
+	// ********************  create homing task subscriber  *********************
+	rcl_subscription_t homing_sub;
+	RCCHECK(rclc_subscription_init_default(
+		&homing_sub,
+		&node,
+		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Bool),
+		"task_homing"));
+
+	// allocate message memory
+	std_msgs__msg__Bool task_homing_msg;
+
+	// add subscription to topic
+	RCCHECK(rclc_executor_add_subscription(
+		&executor, 
+		&homing_sub, 
+		&task_homing_msg,
+		&homing_task_callback,
+		ON_NEW_DATA));
+	// **********************************************************************
+
 
 	// ********************  create task ack publisher  *********************
 	RCCHECK(rclc_publisher_init_default(
@@ -93,16 +132,13 @@ void setup()
         "task_ack"));
 	// **********************************************************************
 
-	for (int i=0; i < 6400; ++i){
-		mdriver.do_half_step(PIN_STEPPER_1_STEP, i);
-		delayMicroseconds(400);
-	}
 
 	// spin the node
   	rclc_executor_spin(&executor);		// loop*
 
 	// destroy nodes
 	RCCHECK(rcl_subscription_fini(&joint_trajectory_sub, &node));
+	RCCHECK(rcl_subscription_fini(&homing_sub, &node));
 	RCCHECK(rcl_node_fini(&node));
 	return;
 }

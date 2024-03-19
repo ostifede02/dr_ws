@@ -50,3 +50,24 @@ void trajectory_task_callback(const void * msgin)
 
     return;
 }
+
+
+void homing_task_callback(const void * msgin)
+{
+    std_msgs__msg__Bool * task_homing_msg = (std_msgs__msg__Bool *) msgin;
+
+    if (task_homing_msg->data){
+        mdriver.homing();
+    }
+    else {
+        // publish ack
+        micro_custom_messages__msg__TaskAck task_ack_msg;
+        task_ack_msg.task_ack = false;
+        RCCHECK(rcl_publish(&task_ack_pub, &task_ack_msg, NULL));
+    }
+
+    // publish ack
+    micro_custom_messages__msg__TaskAck task_ack_msg;
+    task_ack_msg.task_ack = true;
+    RCCHECK(rcl_publish(&task_ack_pub, &task_ack_msg, NULL));
+}

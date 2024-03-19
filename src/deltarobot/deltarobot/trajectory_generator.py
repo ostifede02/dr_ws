@@ -113,11 +113,11 @@ class TrajectoryGenerator():
 
         # if the trajectory is time constrained (t > 0) -> set new max velocity, else default max velocity
         if t_total_input > 0:
-            error_check = self.__get_const_velocity(t_total_input, x_total)
-            if error_check == conf.ERROR__INVALID_TRAJECTORY:
-                return error_check
+            const_velocity_ = self.__get_const_velocity(t_total_input, x_total)
+            if const_velocity_ is None:
+                return None
             else:
-                self.const_velocity = error_check
+                self.const_velocity = const_velocity_
         
         else:
             self.const_velocity = self.max_velocity_default
@@ -164,10 +164,11 @@ class TrajectoryGenerator():
         # if the trajectory is time constrained (t > 0) -> set new max velocity, else default max velocity
         if t_total_input > 0:
             self.const_acceleration = self.max_acceleration_default
-            self.const_velocity = self.__get_const_velocity(t_total_input, x_total)
-            if self.const_velocity is None:
-                ## ************** ADD error index !!! ************
+            const_velocity_ = self.__get_const_velocity(t_total_input, x_total)
+            if const_velocity_ is None:
                 return None
+            else:
+                self.const_velocity = const_velocity_
         else:
             self.const_velocity = self.max_velocity_default
             self.const_acceleration = self.max_acceleration_default
@@ -311,7 +312,7 @@ class TrajectoryGenerator():
         delta = pow(t_total * self.const_acceleration, 2)-4*x_total*self.const_acceleration
         
         if delta < 0:
-            return conf.ERROR__INVALID_TRAJECTORY
+            return None
         
         velocity = (t_total * self.const_acceleration-np.sqrt(pow(t_total * self.const_acceleration, 2)-4*x_total*self.const_acceleration))/2
         return velocity

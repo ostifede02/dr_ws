@@ -26,13 +26,13 @@ class InverseGeometry():
         self.frame_id = frame_id
 
         # import parameters
-        self.max_iterations = conf.configuration["inverse_geometry"]["parameters"]["max_iterations"]
-        self.max_back_tracking_iterations = conf.configuration["inverse_geometry"]["parameters"]["max_back_tracking_iterations"]
-        self.absolute_pos_threshold = conf.configuration["inverse_geometry"]["parameters"]["absolute_pos_threshold"]
-        self.gradient_threshold = conf.configuration["inverse_geometry"]["parameters"]["gradient_threshold"]
-        self.beta = conf.configuration["inverse_geometry"]["parameters"]["beta"]
-        self.gamma = conf.configuration["inverse_geometry"]["parameters"]["gamma"]
-        self.hessian_regu = conf.configuration["inverse_geometry"]["parameters"]["hessian_regu"]
+        self.max_iterations = 300
+        self.max_back_tracking_iterations = 30
+        self.absolute_pos_threshold = 1e-3
+        self.gradient_threshold = 1e-3
+        self.beta = 0.1
+        self.gamma = 1e-2
+        self.hessian_regu = 1e-2
         return
     
 

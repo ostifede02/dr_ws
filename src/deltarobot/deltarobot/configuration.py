@@ -10,30 +10,22 @@ configuration["paths"] = {
 }
 
 configuration["physical"] = {
-    "pulley": {
-        "n_teeth": 20,
-        "module": 3
-    },
-    "stepper": {
-        "n_steps": 1600
-    },
     "end_effector_radius": 40,
-    "link_pitch": 50,
+    # "link_pitch": 50,
     "end_effector_x_offset": 22.5
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 400,
-    "max_velocity": 1200,
+    "max_acceleration": 600,
+    "max_velocity": 300,
 
     "delta_s_high_resolution": 0.05,        # used for path length
-    "mean_distance_between_set_points": 8,
-    "min_distance_between_set_points": 20,
+    "mean_distance_between_set_points": 3,
+    "min_distance_between_set_points": 5,
 
-    "min_delta_time": 0.04,
+    "min_delta_time": 0.02,
 
-    "pos_home": np.array([0, 0, -150]),
-    "pos_neutral": np.array([0, 0, -200]),
+    "pos_home": np.array([0, 0, -40])
 
 }
 
@@ -60,6 +52,7 @@ P2P_DIRECT_TRAJECTORY       = "P2P_DIRECT_TRAJECTORY"
 P2P_CONTINUOUS_TRAJECTORY   = "P2P_CONTINUOUS_TRAJECTORY"
 PICK_TRAJECTORY             = "PICK_TRAJECTORY"
 PLACE_TRAJECTORY            = "PLACE_TRAJECTORY"
+HOMING                      = "HOMING"
 
 
 

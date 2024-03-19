@@ -18,5 +18,10 @@
 #define PIN_STEPPER_3_STEP 5
 #define PIN_STEPPER_3_DIR 6
 
+// limit switch pinout
+#define LIMIT_SWITCH_1_PIN 36
+#define LIMIT_SWITCH_2_PIN 35
+#define LIMIT_SWITCH_3_PIN 34
+
 
 #endif  //BOARD_PINOUT_H

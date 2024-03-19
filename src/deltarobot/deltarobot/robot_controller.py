@@ -91,8 +91,8 @@ class RobotController(Node):
         self.end_effector_radius = conf.configuration["physical"]["end_effector_radius"]
 
         # joint limits
-        self.q_min = 140    # [ mm ]
-        self.q_max = 340    # [ mm ]
+        self.q_min = 0    # [ mm ]
+        self.q_max = 500    # [ mm ]
 
         # initialize joint position
         self.q1 = np.zeros(3)
@@ -146,7 +146,7 @@ class RobotController(Node):
         ## check for valid trajectory
         if task_space_trajectory_vector is None:
             # publish nak
-            self.get_logger().error("Invalid trajectory: trajectory is not feasable.")
+            self.get_logger().error("Invalid trajectory: trajectory time is not feasable.")
             nak_msg  = TaskAck()
             nak_msg.task_ack = False
             self.task_ack_pub.publish(nak_msg)

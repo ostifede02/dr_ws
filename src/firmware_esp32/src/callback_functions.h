@@ -11,5 +11,6 @@
 
 
 void trajectory_task_callback(const void * msgin);
+void homing_task_callback(const void * msgin);
 
 #endif  //CALLBACK_FUNCTIONS_H

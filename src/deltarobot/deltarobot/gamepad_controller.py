@@ -10,6 +10,8 @@ from std_msgs.msg import String
 
 import inputs
 import numpy as np
+import threading
+
 
 
 class GamePadController(Node):
@@ -32,12 +34,6 @@ class GamePadController(Node):
             timer_period, 
             self.publish_task_timer_callback)
         
-        # Set up timer to periodically get gamepad state
-        timer_period = 0.0005  # seconds
-        self.read_gamepad_timer = self.create_timer(
-            timer_period, 
-            self.read_gamepad_timer_callback)
-        
         # Subscribe to robot state topic
         self.robot_state_sub = self.create_subscription(
             String,
@@ -54,7 +50,7 @@ class GamePadController(Node):
         self.y = 0                  # [ mm ]
         self.z = 0                  # [ mm ]
         self.velocity = 50          # [ mm/s ]
-        self.delta_time = 0.05      # [ s ]
+        self.delta_time = 0.15      # [ s ]
         self.MAX_VELOCITY = 250     # [ mm/s ]
         self.MIN_VELOCITY = 10      # [ mm/s ]
 
@@ -87,12 +83,45 @@ class GamePadController(Node):
         return
     
 
-    def read_gamepad_timer_callback(self):      
+    def robot_state_callback(self, robot_state_msg):
+        """
+        Callback function for receiving robot state.
+
+        Args:
+            robot_state_msg (String): The received robot state message.
+        """
+        
+        # robot is ready to receive new task
+        if robot_state_msg.data == conf.ROBOT_STATE_IDLE:
+            self.pub_task_lock = False
+        else:
+            self.pub_task_lock = True
+
+        return
+
+
+
+    # ******************************** GAMEPAD thread ***********************************
+
+    def gamepad_loop(self):
+
+        while True:
+            x, y, z = self.read_gamepad_state()
+            self.update_gamepad_commands(x, y, z)
+        # never ends
+
+
+    def read_gamepad_state(self):      
         events = self.gamepad._do_iter(timeout=0.0002)
 
         # do not update gamepad states if no data available        
         if events is None:
-            return
+            return None, None, None
+
+        x_input = None
+        y_input = None
+        z_input = None
+        sens_threshold = 0.2
 
         for event in events:
             ## get value X coordinate
@@ -100,34 +129,36 @@ class GamePadController(Node):
             if event.code == 'ABS_X':
                 # normalized value [-1, 1]
                 x_input = (event.state-127.5)/127.5
-                if abs(self.x) < 0.2:
-                    self.x = 0
-                # self.x = self.x*self.velocity*self.delta_time
+                if abs(x_input) < sens_threshold:
+                    x_input = 0
+
             # hat
             elif event.code == 'ABS_HAT0X':
-                self.x = event.state*self.velocity*self.delta_time
-
+                x_input = event.state*self.velocity*self.delta_time
+                y_input = 0
+                z_input = 0
 
             ## get value Y coordinate
             # joy
             elif event.code == 'ABS_Y':
                 # normalized value [-1, 1]
                 y_input = -(event.state-127.5)/127.5
-                if abs(self.y) < 0.2:
-                    self.y = 0
-                # self.y = self.y*self.velocity*self.delta_time
+                if abs(y_input) < sens_threshold:
+                    y_input = 0
+            
             # hat
             elif event.code == 'ABS_HAT0Y':
-                self.y = -event.state*self.velocity*self.delta_time
+                x_input = 0
+                y_input = event.state*self.velocity*self.delta_time
+                z_input = 0
 
 
-            ## get value Y coordinate
+            ## get value Zs coordinate
             elif  event.code == 'ABS_RZ':
                 # normalized value [-1, 1]
                 z_input = -(event.state-127.5)/127.5
-                if abs(self.z) < 0.2:
-                    self.z = 0
-                # self.z = self.z*self.velocity*self.delta_time
+                if abs(z_input) < sens_threshold:
+                    z_input = 0
 
             ## set velocity
             # increase velocity
@@ -146,30 +177,44 @@ class GamePadController(Node):
                 # X -> "BTN_NORTH"
                 # Y -> "BTN_EAST"
 
+        return x_input, y_input, z_input
+    
+    def update_gamepad_commands(self, x_input, y_input, z_input):
         # normalize
-        coordinates_norm = np.linalg.norm([x_input, y_input, z_input])
-        self.x = (x_input/coordinates_norm) * self.velocity*self.delta_time
-        self.y = (y_input/coordinates_norm) * self.velocity*self.delta_time
-        self.z = (z_input/coordinates_norm) * self.velocity*self.delta_time
+        if x_input is None:
+            x_norm = 0
+        else:
+            x_norm = x_input
 
+        if y_input is None:
+            y_norm = 0
+        else:
+            y_norm = y_input
+
+        if z_input is None:
+            z_norm = 0
+        else:
+            z_norm = z_input
+
+        coordinates_norm = np.linalg.norm([x_norm, y_norm, z_norm])
+        
+        if coordinates_norm == 0:
+            return
+        
+
+        # update states
+        if x_input is not None:
+            self.x = (x_input/coordinates_norm) * self.velocity*self.delta_time
+        if y_input is not None:
+            self.y = (y_input/coordinates_norm) * self.velocity*self.delta_time
+        if z_input is not None:
+            self.z = (z_input/coordinates_norm) * self.velocity*self.delta_time
+        
         return
     
+    # ******************************** GAMEPAD thread ***********************************
 
-    def robot_state_callback(self, robot_state_msg):
-        """
-        Callback function for receiving robot state.
 
-        Args:
-            robot_state_msg (String): The received robot state message.
-        """
-        
-        # robot is ready to receive new task
-        if robot_state_msg.data == conf.ROBOT_STATE_IDLE:
-            self.pub_task_lock = False
-        else:
-            self.pub_task_lock = True
-
-        return
 
 
 def main(args=None):
@@ -179,6 +224,11 @@ def main(args=None):
     rclpy.init(args=args)
 
     gp_node = GamePadController()
+
+    # Create a thread for running the Tkinter main loop
+    gp_thread = threading.Thread(target=gp_node.gamepad_loop)
+    gp_thread.daemon = True  # Make the thread a daemon so it terminates when the main thread terminates
+    gp_thread.start()
 
     rclpy.spin(gp_node)
 

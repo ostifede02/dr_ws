@@ -12,6 +12,7 @@ from deltarobot import configuration as conf
 
 from deltarobot_interfaces.msg import TrajectoryTask
 from std_msgs.msg import String
+from std_msgs.msg import Bool
 
 
 
@@ -42,6 +43,12 @@ class GUI(Node):
             'robot_state',
             1)
         
+        # Publisher for homing
+        self.homing_pub = self.create_publisher(
+            Bool,
+            'task_homing',
+            1)
+        
 
         ## Subscribe to trajectory task topic
         self.robot_state_sub = self.create_subscription(
@@ -57,6 +64,8 @@ class GUI(Node):
         return
     
 
+    # *********************************** GUI thread ***********************************
+    
     def relative_to_assets(self, path):
         """
         Generates the absolute path to the assets folder.
@@ -257,7 +266,9 @@ class GUI(Node):
                    conf.P2P_JOINT_TRAJECTORY,
                    conf.P2P_CONTINUOUS_TRAJECTORY,
                    conf.PICK_TRAJECTORY,
-                   conf.PLACE_TRAJECTORY]
+                   conf.PLACE_TRAJECTORY,
+                   conf.HOMING]
+        
         self.combo_task_type = ttk.Combobox(self.window, 
             values=options,
             background=bg_color,
@@ -284,6 +295,8 @@ class GUI(Node):
         self.window.mainloop()
         return
 
+    # ***********************************************************************************
+
 
     def start_button_pressed(self):
         """
@@ -292,7 +305,13 @@ class GUI(Node):
 
         # If there is no lock, it can move
         if self.pub_task_lock == False:
+            # if task is homing
+            if str(self.combo_task_type.get()) == conf.HOMING:
+                self.task_homing()
+                return
+
             trajectory_task_msg = TrajectoryTask()
+
             # Get trajectory task from GUI
             try:
                 trajectory_task_msg.pos_end.x       = float(self.entry_x.get())
@@ -393,7 +412,7 @@ class GUI(Node):
                          background="#2B3499")  # Set label background color to blue
         label.pack(pady=40)
 
-        button = ttk.Button(self.popup, text="CONTINUE", command=self.resolve_exception,
+        button = ttk.Button(self.popup, text="CONTINUE", command=self.solve_exception,
                             style="Orange.TButton")  # Apply custom style
         button.place(
             x=40,
@@ -410,7 +429,7 @@ class GUI(Node):
         return
     
 
-    def resolve_exception(self):
+    def solve_exception(self):
         """
         Resolves an exception.
         """
@@ -441,7 +460,33 @@ class GUI(Node):
         self.entry_z.insert(0, str(z))
 
         return
+    
+    def task_homing(self):
+        pos_current = conf.configuration["trajectory"]["pos_home"]     ## after home calibration
 
+        homing_msg = Bool()
+        homing_msg.data = True
+        self.homing_pub.publish(homing_msg)
+
+        # set a lock for publishing new tasks
+        self.pub_task_lock = True
+
+        ## update gui
+        # display x
+        x = round(pos_current[0], 3)
+        self.entry_x.delete(0, tk.END)
+        self.entry_x.insert(0, str(x))
+
+        # display y
+        y = round(pos_current[1], 3)
+        self.entry_y.delete(0, tk.END)
+        self.entry_y.insert(0, str(y))
+
+        # display z
+        z = round(pos_current[2], 3)
+        self.entry_z.delete(0, tk.END)
+        self.entry_z.insert(0, str(z))
+        return
 
 
 def main(args=None):
