@@ -2,14 +2,23 @@
 
 ShiftRegister74HC595<NUMBER_SHIFT_REG> sr(I2S_DATA_PIN, I2S_CLOCK_PIN, I2S_LATCH_PIN);
 
-
-void MotorDriver::do_half_step(char PIN_STEPPER_X_STEP, int half_step_counter)
+MotorDriver::MotorDriver(void)
 {
-    if(half_step_counter%2 == 0){
-        sr.set(PIN_STEPPER_X_STEP, HIGH);
+    // initialize stepper pins to LOW
+    sr.set(PIN_STEPPER_1_STEP, LOW);
+    sr.set(PIN_STEPPER_2_STEP, LOW);
+    sr.set(PIN_STEPPER_3_STEP, LOW);
+
+    return;
+}
+
+void MotorDriver::toggle_step_tick(char PIN_STEPPER_X_STEP, int half_ticks_total_counter)
+{
+    if(half_ticks_total_counter%2 == 0){
+        sr.set(PIN_STEPPER_X_STEP, LOW);
     }
     else {
-        sr.set(PIN_STEPPER_X_STEP, LOW);
+        sr.set(PIN_STEPPER_X_STEP, HIGH);
     }
     return;
 }
@@ -25,46 +34,46 @@ void MotorDriver::set_direction(char PIN_STEPPER_X_DIR, float sign)
     return;
 }
 
-void MotorDriver::go_to_next_set_point(float delta_q1, float delta_q2, float delta_q3, long unsigned int delta_t_micros)
+void MotorDriver::go_to_next_set_point(float delta_q1_mm, float delta_q2_mm, float delta_q3_mm, long unsigned int delta_t_micros)
 {
     // stepper 1
-    unsigned int stepper1_half_steps;
-    unsigned int stepper1_delay_micros;
-    unsigned int stepper1_counter = 0;
+    unsigned int stepper1_ticks_total;              // ONE tick is either pin HIGH or LOW
+    unsigned int stepper1_tick_delay_micros = 0;    // time period between each tick
+    unsigned int stepper1_ticks_counter = 1;
 
-    delta_q1 = abs(delta_q1) + delta_q1_remainder;
-    stepper1_half_steps = delta_q1 / q_min_displacement;
-    delta_q1_remainder = delta_q1 - (stepper1_half_steps*q_min_displacement);
+    delta_q1_mm = abs(delta_q1_mm) + delta_q1_remainder_mm;
+    stepper1_ticks_total = (delta_q1_mm / delta_q_mm_per_tick);   //  [mm / (mm/tick)] -> ticks
+    delta_q1_remainder_mm = delta_q1_mm - (stepper1_ticks_total*delta_q_mm_per_tick);
 
-    if (stepper1_half_steps != 0){   // avoid zero division
-        stepper1_delay_micros = delta_t_micros / stepper1_half_steps;
+    if (stepper1_ticks_total != 0){   // avoid zero division
+        stepper1_tick_delay_micros = delta_t_micros / stepper1_ticks_total;
     }
 
     // stepper 2
-    unsigned int stepper2_half_steps;
-    unsigned int stepper2_delay_micros;
-    unsigned int stepper2_counter = 0;
+    unsigned int stepper2_ticks_total;
+    unsigned int stepper2_tick_delay_micros;
+    unsigned int stepper2_ticks_counter = 1;
 
-    delta_q2 = abs(delta_q2) + delta_q2_remainder;
-    stepper2_half_steps = delta_q2 / q_min_displacement;
-    delta_q2_remainder = delta_q2 - (stepper2_half_steps*q_min_displacement);
+    delta_q2_mm = abs(delta_q2_mm) + delta_q2_remainder_mm;
+    stepper2_ticks_total = (delta_q2_mm / delta_q_mm_per_tick);
+    delta_q2_remainder_mm = delta_q2_mm - (stepper2_ticks_total*delta_q_mm_per_tick);
 
-    if (stepper2_half_steps != 0){   // avoid zero division
-        stepper2_delay_micros = delta_t_micros / stepper2_half_steps;
+    if (stepper2_ticks_total != 0){   // avoid zero division
+        stepper2_tick_delay_micros = delta_t_micros / stepper2_ticks_total;
     }
 
 
     // stepper 3
-    unsigned int stepper3_half_steps;
-    unsigned int stepper3_delay_micros;
-    unsigned int stepper3_counter = 0;
+    unsigned int stepper3_ticks_total;
+    unsigned int stepper3_tick_delay_micros;
+    unsigned int stepper3_ticks_counter = 1;
 
-    delta_q3 = abs(delta_q3) + delta_q3_remainder;
-    stepper3_half_steps = delta_q3 / q_min_displacement;
-    delta_q3_remainder = delta_q3 - (stepper3_half_steps*q_min_displacement);
+    delta_q3_mm = abs(delta_q3_mm) + delta_q3_remainder_mm;
+    stepper3_ticks_total = (delta_q3_mm / delta_q_mm_per_tick);
+    delta_q3_remainder_mm = delta_q3_mm - (stepper3_ticks_total*delta_q_mm_per_tick);
 
-    if (stepper3_half_steps != 0){   // avoid zero division
-        stepper3_delay_micros = delta_t_micros / stepper3_half_steps;
+    if (stepper3_ticks_total != 0){   // avoid zero division
+        stepper3_tick_delay_micros = delta_t_micros / stepper3_ticks_total;
     }
 
 
@@ -72,34 +81,34 @@ void MotorDriver::go_to_next_set_point(float delta_q1, float delta_q2, float del
     unsigned int time_dt = 0;
     unsigned int initial_time = micros();
 
-    while ( (stepper1_counter < stepper1_half_steps) && 
-            (stepper2_counter < stepper2_half_steps) && 
-            (stepper3_counter < stepper3_half_steps))
+    while ( (stepper1_ticks_counter <= stepper1_ticks_total) && 
+            (stepper2_ticks_counter <= stepper2_ticks_total) && 
+            (stepper3_ticks_counter <= stepper3_ticks_total))
     {
         time_dt = micros() - initial_time;
 
         // stepper 1
-        if( (stepper1_counter < stepper1_half_steps) && 
-            (time_dt >= stepper1_delay_micros*stepper1_counter))
+        if( (stepper1_ticks_counter <= stepper1_ticks_total) &&
+            (time_dt >= stepper1_tick_delay_micros*stepper1_ticks_counter))
         {
-            do_half_step(PIN_STEPPER_1_STEP, stepper1_counter);
-            stepper1_counter += 1;
+            toggle_step_tick(PIN_STEPPER_1_STEP, stepper1_ticks_counter);
+            stepper1_ticks_counter += 1;
         }
 
         // stepper 2
-        else if((stepper2_counter < stepper2_half_steps) &&
-                (time_dt >= stepper2_delay_micros*stepper2_counter))
+        else if((stepper2_ticks_counter <= stepper2_ticks_total) &&
+                (time_dt >= stepper2_tick_delay_micros*stepper2_ticks_counter))
         {
-            do_half_step(PIN_STEPPER_2_STEP, stepper2_counter);
-            stepper2_counter += 1;
+            toggle_step_tick(PIN_STEPPER_2_STEP, stepper2_ticks_counter);
+            stepper2_ticks_counter += 1;
         }
 
         // stepper 3
-        else if((stepper3_counter < stepper3_half_steps) &&
-                (time_dt >= stepper3_delay_micros*stepper3_counter))
+        else if((stepper3_ticks_counter <= stepper3_ticks_total) &&
+                (time_dt >= stepper3_tick_delay_micros*stepper3_ticks_counter))
         {
-            do_half_step(PIN_STEPPER_3_STEP, stepper3_counter);
-            stepper3_counter += 1;
+            toggle_step_tick(PIN_STEPPER_3_STEP, stepper3_ticks_counter);
+            stepper3_ticks_counter += 1;
         }
     }
 
@@ -139,13 +148,13 @@ void MotorDriver::homing(void)
         
         // do half step
         if (is_homing_1){
-            do_half_step(PIN_STEPPER_1_STEP, half_step_index);
+            toggle_step_tick(PIN_STEPPER_1_STEP, half_step_index);
         }
         // if (is_homing_2){
-        //     do_half_step(PIN_STEPPER_2_STEP, half_step_index);
+        //     toggle_step_tick(PIN_STEPPER_2_STEP, half_step_index);
         // }
         // if (is_homing_3){
-        //     do_half_step(PIN_STEPPER_3_STEP, half_step_index);
+        //     toggle_step_tick(PIN_STEPPER_3_STEP, half_step_index);
         // }
 
         // wait
@@ -159,9 +168,9 @@ void MotorDriver::homing(void)
     set_direction(PIN_STEPPER_1_DIR, float(-1.0));
 
     for(int i=0; i<300; ++i){
-        do_half_step(PIN_STEPPER_1_STEP, i);
-        // do_half_step(PIN_STEPPER_2_STEP, i);
-        // do_half_step(PIN_STEPPER_3_STEP, i);
+        toggle_step_tick(PIN_STEPPER_1_STEP, i);
+        // toggle_step_tick(PIN_STEPPER_2_STEP, i);
+        // toggle_step_tick(PIN_STEPPER_3_STEP, i);
         delayMicroseconds(700);
     }
 

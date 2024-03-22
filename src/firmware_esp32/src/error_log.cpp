@@ -6,9 +6,9 @@ void error_loop(void)
 {
     while (1)
     {
-        for (int i = 0; i < 200; ++i)
+        for (int i = 0; i < 2; ++i)
         {
-            mdriver.do_half_step(PIN_STEPPER_1_STEP, i);
+            mdriver.toggle_step_tick(PIN_STEPPER_1_STEP, i);
             delayMicroseconds(400);
         }
 

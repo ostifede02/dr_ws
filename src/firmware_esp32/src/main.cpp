@@ -15,14 +15,13 @@
 
 
 
-
 void setup()
 {
 	// configure wifi transport
-	// IPAddress agent_ip(10, 42, 0, 13);
+	// IPAddress agent_ip(192, 168, 113, 175);
 	// size_t agent_port = 8888;
-	// char ssid[] = "ssid";
-	// char psk[] = "pwsd";
+	// char ssid[] = "Laptop di Fede";
+	// char psk[] = "12345678";
 	// set_microros_wifi_transports(ssid, psk, agent_ip, agent_port);
 
 	// configure serial transport
@@ -40,10 +39,6 @@ void setup()
     pinMode(LIMIT_SWITCH_1_PIN, INPUT);
     pinMode(LIMIT_SWITCH_2_PIN, INPUT);
     pinMode(LIMIT_SWITCH_3_PIN, INPUT);
-
-
-	// homing
-	// mdriver.homing();
 
 
 	// micro-ROS setup
