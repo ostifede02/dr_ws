@@ -155,52 +155,84 @@ class TrajectoryGenerator():
         return set_points_vector
     
 
+    # def generate_trajectory__task_space__point_to_point__continuous(self, pos_start, pos_end, t_total_input):
+
+    #     x_total = np.linalg.norm(pos_end - pos_start)
+
+    #     n_set_points = self.__get_number_set_points(x_total)     # avoid via points too close to each other
+
+    #     # if the trajectory is time constrained (t > 0) -> set new max velocity, else default max velocity
+    #     if t_total_input > 0:
+    #         self.const_acceleration = self.max_acceleration_default
+    #         const_velocity_ = self.__get_const_velocity(t_total_input, x_total)
+    #         if const_velocity_ is None:
+    #             return None
+    #         else:
+    #             self.const_velocity = const_velocity_
+    #     else:
+    #         self.const_velocity = self.max_velocity_default
+    #         self.const_acceleration = self.max_acceleration_default
+
+        
+    #     # time scaling profile flags
+    #     self.x_acc_flag, self.t_acc_flag, t_total = self.__get_time_scaling_flags(x_total)
+
+    #     # creating the set points vector
+    #     set_points_vector = np.empty((n_set_points, 4))
+    #     set_point = np.empty(3)
+    #     set_point_prev = pos_start
+    #     x_travelled = 0
+        
+
+    #     s_instance = np.linspace(0, 1, n_set_points)
+    #     for index, s in enumerate(s_instance):
+    #         set_point = (1-s)*pos_start + s*pos_end
+            
+    #         x_travelled += np.linalg.norm(set_point - set_point_prev)            
+
+    #         if s == 1:
+    #             t_travelled = self.__get_t_next(x_total, x_total, t_total)
+    #         else:
+    #             t_travelled = self.__get_t_next(x_travelled, x_total, t_total)
+
+    #         set_points_vector[index, 0] = set_point[0]
+    #         set_points_vector[index, 1] = set_point[1]
+    #         set_points_vector[index, 2] = set_point[2]
+    #         set_points_vector[index, 3] = t_travelled
+
+    #         set_point_prev = set_point
+
+    #     return set_points_vector
+
     def generate_trajectory__task_space__point_to_point__continuous(self, pos_start, pos_end, t_total_input):
-
         x_total = np.linalg.norm(pos_end - pos_start)
-
         n_set_points = self.__get_number_set_points(x_total)     # avoid via points too close to each other
 
-        # if the trajectory is time constrained (t > 0) -> set new max velocity, else default max velocity
-        if t_total_input > 0:
-            self.const_acceleration = self.max_acceleration_default
-            const_velocity_ = self.__get_const_velocity(t_total_input, x_total)
-            if const_velocity_ is None:
-                return None
-            else:
-                self.const_velocity = const_velocity_
-        else:
-            self.const_velocity = self.max_velocity_default
-            self.const_acceleration = self.max_acceleration_default
-
+        # get overall max task time
+        t_total_constrained = max(
+            self.__get_max_time_vel_constrained(0, x_total),
+            self.__get_max_time_acc_constrained(0, x_total))
         
-        # time scaling profile flags
-        self.x_acc_flag, self.t_acc_flag, t_total = self.__get_time_scaling_flags(x_total)
+        t_total = max(t_total_constrained, t_total_input)
 
-        # creating the set points vector
         set_points_vector = np.empty((n_set_points, 4))
-        set_point = np.empty(3)
-        set_point_prev = pos_start
-        x_travelled = 0
-        
 
-        s_instance = np.linspace(0, 1, n_set_points)
+        ## define quintic polynomial coefficients
+        # a0 = 0, a1 = 0, a2 = 0
+        a3 = 10/pow(t_total, 3)
+        a4 = -15/pow(t_total, 4)
+        a5 = 6/pow(t_total, 5)
+
+        t_instance = np.linspace(0, t_total, n_set_points)
+        s_instance = self.__quintic_polinomial(0, 0, 0, a3, a4, a5, t_instance)
+
         for index, s in enumerate(s_instance):
             set_point = (1-s)*pos_start + s*pos_end
-            
-            x_travelled += np.linalg.norm(set_point - set_point_prev)            
-
-            if s == 1:
-                t_travelled = self.__get_t_next(x_total, x_total, t_total)
-            else:
-                t_travelled = self.__get_t_next(x_travelled, x_total, t_total)
 
             set_points_vector[index, 0] = set_point[0]
             set_points_vector[index, 1] = set_point[1]
             set_points_vector[index, 2] = set_point[2]
-            set_points_vector[index, 3] = t_travelled
-
-            set_point_prev = set_point
+            set_points_vector[index, 3] = t_instance[index]
 
         return set_points_vector
 
@@ -346,47 +378,47 @@ class TrajectoryGenerator():
 
 
 
-# # test the algorithm
-# import configuration as conf
-# from trajectory_generator import TrajectoryGenerator
+# test the algorithm
+import configuration as conf
+from trajectory_generator import TrajectoryGenerator
 
-# import matplotlib.pyplot as plt
-# import numpy as np
-# import time
+import matplotlib.pyplot as plt
+import numpy as np
+import time
 
 
-# def main():
-#     trajectory_generator = TrajectoryGenerator()
+def main():
+    trajectory_generator = TrajectoryGenerator()
     
-#     pos_start = np.array([0, -200, -200])
-#     pos_end = np.array([0, 200, -200])
-#     task_time = -1
-#     task_type = conf.PLACE_TRAJECTORY_ROUTINE
-#     # task_type = conf.PICK_TRAJECTORY_ROUTINE
-#     # task_type = conf.TASK_SPACE_DIRECT_TRAJECTORY_ROUTINE
-
-#     t_start = time.time()
-#     trajectory_vector = trajectory_generator.generate_trajectory(pos_start, pos_end, task_time, task_type)
-#     t_end = time.time()
-#     print(f"Computed time: {round((t_end - t_start)*1e3, 3)} [ ms ]")
+    pos_start = np.array([100, -200, -200])
+    pos_end = np.array([0, 200, -100])
+    task_time = -1
 
 
-#     fig = plt.figure()
-#     ax = fig.add_subplot(111, projection='3d')
-#     ax.plot(trajectory_vector[:,0], trajectory_vector[:,1],trajectory_vector[:,2], marker="o")
+    t_start = time.time()
+    trajectory_vector = trajectory_generator.generate_trajectory__task_space__point_to_point__continuous(pos_start, pos_end, task_time)
+    t_end = time.time()
+    print(f"Computed time: {round((t_end - t_start)*1e3, 3)} [ ms ]")
+
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot(trajectory_vector[:,0], trajectory_vector[:,1],trajectory_vector[:,2], marker="o")
+    # ax = fig.add_subplot(111)
+    # ax.plot(trajectory_vector, marker="o")
     
 
-#     # Label axes
-#     ax.set_xlabel('X Axis')
-#     ax.set_ylabel('Y Axis')
-#     ax.set_zlabel('Z Axis')
+    # Label axes
+    # ax.set_xlabel('X Axis')
+    # ax.set_ylabel('Y Axis')
+    # ax.set_zlabel('Z Axis')
 
-#     ax.grid(True)
-#     plt.show()
+    ax.grid(True)
+    plt.show()
 
 
-# if __name__ == "__main__":
-#     main()    
+if __name__ == "__main__":
+    main()    
     
 
 
@@ -404,77 +436,158 @@ class TrajectoryGenerator():
 # def main():
 #     trajectory_generator = TrajectoryGenerator()
     
-#     q_start = np.array([100, 120, 300])
-#     q_end = np.array([100, 250, 50])
+#     # q_start = np.array([100, 120, 300])
+#     # q_end = np.array([100, 250, 50])
+#     # task_time = -1
+
+#     # t_start = time.time()
+#     # trajectory_vector = trajectory_generator.generate_trajectory_joint_space(
+#     #     q_start, q_end, task_time)
+#     # t_end = time.time()
+#     # print(f"Computed time: {round((t_end - t_start)*1e3, 3)} [ ms ]")
+
+    
+#     pos_start = np.array([0, -100, -200])
+#     pos_end = np.array([0, 100, -200])
 #     task_time = -1
 
 #     t_start = time.time()
 #     trajectory_vector = trajectory_generator.generate_trajectory_joint_space(
-#         q_start, q_end, task_time)
+#         pos_start, pos_end, task_time)
 #     t_end = time.time()
 #     print(f"Computed time: {round((t_end - t_start)*1e3, 3)} [ ms ]")
 
 
+
 #     ## PLOT POSITION
 #     plt.figure()
-#     plt.plot(trajectory_vector[3,:], trajectory_vector[0,:], 'r')
-#     plt.plot(trajectory_vector[3,:], trajectory_vector[1,:], 'g')
-#     plt.plot(trajectory_vector[3,:], trajectory_vector[2,:], 'b')
+#     plt.plot(trajectory_vector[0,:], trajectory_vector[1,:], trajectory_vector[2,:], 'r')
 #     # Label axes
 #     plt.xlabel('time in sec')
 #     plt.ylabel('joint position in mm')
 #     plt.grid(True)
 
 
-#     ## PLOT VELOCITY
-#     trajectory_vector_vel = np.empty((4, len(trajectory_vector[0])))
-#     trajectory_vector_vel[0,:] = np.gradient(trajectory_vector[0,:],trajectory_vector[3,:])
-#     trajectory_vector_vel[1,:] = np.gradient(trajectory_vector[1,:],trajectory_vector[3,:])
-#     trajectory_vector_vel[2,:] = np.gradient(trajectory_vector[2,:],trajectory_vector[3,:])
+#     # ## PLOT VELOCITY
+#     # trajectory_vector_vel = np.empty((4, len(trajectory_vector[0])))
+#     # trajectory_vector_vel[0,:] = np.gradient(trajectory_vector[0,:],trajectory_vector[3,:])
 
-#     plt.figure()
-#     plt.plot(trajectory_vector[3,:], trajectory_vector_vel[0,:], 'r')
-#     plt.plot(trajectory_vector[3,:], trajectory_vector_vel[1,:], 'g')
-#     plt.plot(trajectory_vector[3,:], trajectory_vector_vel[2,:], 'b')
-#     # Label axes
-#     plt.xlabel('time in sec')
-#     plt.ylabel('joint velocity in mm/s')
-#     plt.grid(True)
+#     # plt.figure()
+#     # plt.plot(trajectory_vector[3,:], trajectory_vector_vel[0,:], 'r')
+#     # plt.plot(trajectory_vector[3,:], trajectory_vector_vel[1,:], 'g')
+#     # plt.plot(trajectory_vector[3,:], trajectory_vector_vel[2,:], 'b')
+#     # # Label axes
+#     # plt.xlabel('time in sec')
+#     # plt.ylabel('joint velocity in mm/s')
+#     # plt.grid(True)
 
 
-#     ## PLOT ACCELERATION
-#     trajectory_vector_acc = np.empty((4, len(trajectory_vector_vel[0])))
-#     trajectory_vector_acc[0,:] = np.gradient(trajectory_vector_vel[0,:],trajectory_vector[3,:])
-#     trajectory_vector_acc[1,:] = np.gradient(trajectory_vector_vel[1,:],trajectory_vector[3,:])
-#     trajectory_vector_acc[2,:] = np.gradient(trajectory_vector_vel[2,:],trajectory_vector[3,:])
+#     # ## PLOT ACCELERATION
+#     # trajectory_vector_acc = np.empty((4, len(trajectory_vector_vel[0])))
+#     # trajectory_vector_acc[0,:] = np.gradient(trajectory_vector_vel[0,:],trajectory_vector[3,:])
+#     # trajectory_vector_acc[1,:] = np.gradient(trajectory_vector_vel[1,:],trajectory_vector[3,:])
+#     # trajectory_vector_acc[2,:] = np.gradient(trajectory_vector_vel[2,:],trajectory_vector[3,:])
 
-#     plt.figure()
-#     plt.plot(trajectory_vector[3,:], trajectory_vector_acc[0,:], 'r')
-#     plt.plot(trajectory_vector[3,:], trajectory_vector_acc[1,:], 'g')
-#     plt.plot(trajectory_vector[3,:], trajectory_vector_acc[2,:], 'b')
-#     # Label axes
-#     plt.xlabel('time in sec')
-#     plt.ylabel('joint acceleration in mm/s2')
-#     plt.grid(True)
+#     # plt.figure()
+#     # plt.plot(trajectory_vector[3,:], trajectory_vector_acc[0,:], 'r')
+#     # plt.plot(trajectory_vector[3,:], trajectory_vector_acc[1,:], 'g')
+#     # plt.plot(trajectory_vector[3,:], trajectory_vector_acc[2,:], 'b')
+#     # # Label axes
+#     # plt.xlabel('time in sec')
+#     # plt.ylabel('joint acceleration in mm/s2')
+#     # plt.grid(True)
 
 
-#     ## PLOT JERK
-#     trajectory_vector_jerk = np.empty((4, len(trajectory_vector_acc[0])))
-#     trajectory_vector_jerk[0,:] = np.gradient(trajectory_vector_acc[0,:],trajectory_vector[3,:])
-#     trajectory_vector_jerk[1,:] = np.gradient(trajectory_vector_acc[1,:],trajectory_vector[3,:])
-#     trajectory_vector_jerk[2,:] = np.gradient(trajectory_vector_acc[2,:],trajectory_vector[3,:])
+#     # ## PLOT JERK
+#     # trajectory_vector_jerk = np.empty((4, len(trajectory_vector_acc[0])))
+#     # trajectory_vector_jerk[0,:] = np.gradient(trajectory_vector_acc[0,:],trajectory_vector[3,:])
+#     # trajectory_vector_jerk[1,:] = np.gradient(trajectory_vector_acc[1,:],trajectory_vector[3,:])
+#     # trajectory_vector_jerk[2,:] = np.gradient(trajectory_vector_acc[2,:],trajectory_vector[3,:])
 
-#     plt.figure()
-#     plt.plot(trajectory_vector[3,:], trajectory_vector_jerk[0,:], 'r')
-#     plt.plot(trajectory_vector[3,:], trajectory_vector_jerk[1,:], 'g')
-#     plt.plot(trajectory_vector[3,:], trajectory_vector_jerk[2,:], 'b')
-#     # Label axes
-#     plt.xlabel('time in sec')
-#     plt.ylabel('joint jerk in mm/s3')
-#     plt.grid(True)
+#     # plt.figure()
+#     # plt.plot(trajectory_vector[3,:], trajectory_vector_jerk[0,:], 'r')
+#     # plt.plot(trajectory_vector[3,:], trajectory_vector_jerk[1,:], 'g')
+#     # plt.plot(trajectory_vector[3,:], trajectory_vector_jerk[2,:], 'b')
+#     # # Label axes
+#     # plt.xlabel('time in sec')
+#     # plt.ylabel('joint jerk in mm/s3')
+#     # plt.grid(True)
 
 #     plt.show()
 
 
+
+
 # if __name__ == "__main__":
 #     main()    
+
+
+
+
+
+
+
+
+
+
+
+
+    # ## PLOT POSITION
+    # plt.figure()
+    # plt.plot(trajectory_vector[3,:], trajectory_vector[0,:], 'r')
+    # plt.plot(trajectory_vector[3,:], trajectory_vector[1,:], 'g')
+    # plt.plot(trajectory_vector[3,:], trajectory_vector[2,:], 'b')
+    # # Label axes
+    # plt.xlabel('time in sec')
+    # plt.ylabel('joint position in mm')
+    # plt.grid(True)
+
+
+    # ## PLOT VELOCITY
+    # trajectory_vector_vel = np.empty((4, len(trajectory_vector[0])))
+    # trajectory_vector_vel[0,:] = np.gradient(trajectory_vector[0,:],trajectory_vector[3,:])
+    # trajectory_vector_vel[1,:] = np.gradient(trajectory_vector[1,:],trajectory_vector[3,:])
+    # trajectory_vector_vel[2,:] = np.gradient(trajectory_vector[2,:],trajectory_vector[3,:])
+
+    # plt.figure()
+    # plt.plot(trajectory_vector[3,:], trajectory_vector_vel[0,:], 'r')
+    # plt.plot(trajectory_vector[3,:], trajectory_vector_vel[1,:], 'g')
+    # plt.plot(trajectory_vector[3,:], trajectory_vector_vel[2,:], 'b')
+    # # Label axes
+    # plt.xlabel('time in sec')
+    # plt.ylabel('joint velocity in mm/s')
+    # plt.grid(True)
+
+
+    # ## PLOT ACCELERATION
+    # trajectory_vector_acc = np.empty((4, len(trajectory_vector_vel[0])))
+    # trajectory_vector_acc[0,:] = np.gradient(trajectory_vector_vel[0,:],trajectory_vector[3,:])
+    # trajectory_vector_acc[1,:] = np.gradient(trajectory_vector_vel[1,:],trajectory_vector[3,:])
+    # trajectory_vector_acc[2,:] = np.gradient(trajectory_vector_vel[2,:],trajectory_vector[3,:])
+
+    # plt.figure()
+    # plt.plot(trajectory_vector[3,:], trajectory_vector_acc[0,:], 'r')
+    # plt.plot(trajectory_vector[3,:], trajectory_vector_acc[1,:], 'g')
+    # plt.plot(trajectory_vector[3,:], trajectory_vector_acc[2,:], 'b')
+    # # Label axes
+    # plt.xlabel('time in sec')
+    # plt.ylabel('joint acceleration in mm/s2')
+    # plt.grid(True)
+
+
+    # ## PLOT JERK
+    # trajectory_vector_jerk = np.empty((4, len(trajectory_vector_acc[0])))
+    # trajectory_vector_jerk[0,:] = np.gradient(trajectory_vector_acc[0,:],trajectory_vector[3,:])
+    # trajectory_vector_jerk[1,:] = np.gradient(trajectory_vector_acc[1,:],trajectory_vector[3,:])
+    # trajectory_vector_jerk[2,:] = np.gradient(trajectory_vector_acc[2,:],trajectory_vector[3,:])
+
+    # plt.figure()
+    # plt.plot(trajectory_vector[3,:], trajectory_vector_jerk[0,:], 'r')
+    # plt.plot(trajectory_vector[3,:], trajectory_vector_jerk[1,:], 'g')
+    # plt.plot(trajectory_vector[3,:], trajectory_vector_jerk[2,:], 'b')
+    # # Label axes
+    # plt.xlabel('time in sec')
+    # plt.ylabel('joint jerk in mm/s3')
+    # plt.grid(True)
+
+    # plt.show()
