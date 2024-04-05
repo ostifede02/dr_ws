@@ -123,21 +123,18 @@ void MotorDriver::go_to_next_set_point(float delta_q1_mm, float delta_q2_mm, flo
 void MotorDriver::homing(void)
 {
   bool is_homing_1 = true;
-  // bool is_homing_2 = true;
-  // bool is_homing_3 = true;
+  bool is_homing_2 = true;
+  bool is_homing_3 = true;
   unsigned int half_step_index = 0;
 
   set_direction(PIN_STEPPER_1_DIR, float(1.0));
-  // set_direction(PIN_STEPPER_2_DIR, float(1.0));
-  // set_direction(PIN_STEPPER_3_DIR, float(1.0));
+  set_direction(PIN_STEPPER_2_DIR, float(1.0));
+  set_direction(PIN_STEPPER_3_DIR, float(1.0));
 
   while (true)
   {
     // if all limit switches are pressed
-    // if (!is_homing_1 && !is_homing_2 && !is_homing_3){
-    //     break;
-    // }
-    if (!is_homing_1)
+    if (!is_homing_1 && !is_homing_2 && !is_homing_3)
     {
       break;
     }
@@ -147,24 +144,28 @@ void MotorDriver::homing(void)
     {
       is_homing_1 = false;
     }
-    // if (analogRead(LIMIT_SWITCH_2_PIN) == 0){
-    //     is_homing_2 = false;
-    // }
-    // if (analogRead(LIMIT_SWITCH_3_PIN) == 0){
-    //     is_homing_3 = false;
-    // }
+    if (analogRead(LIMIT_SWITCH_2_PIN) == 0)
+    {
+      is_homing_2 = false;
+    }
+    if (analogRead(LIMIT_SWITCH_3_PIN) == 0)
+    {
+      is_homing_3 = false;
+    }
 
     // do half step
     if (is_homing_1)
     {
       toggle_step_tick(PIN_STEPPER_1_STEP, half_step_index);
     }
-    // if (is_homing_2){
-    //     toggle_step_tick(PIN_STEPPER_2_STEP, half_step_index);
-    // }
-    // if (is_homing_3){
-    //     toggle_step_tick(PIN_STEPPER_3_STEP, half_step_index);
-    // }
+    if (is_homing_2)
+    {
+      toggle_step_tick(PIN_STEPPER_2_STEP, half_step_index);
+    }
+    if (is_homing_3)
+    {
+      toggle_step_tick(PIN_STEPPER_3_STEP, half_step_index);
+    }
 
     // wait
     delayMicroseconds(500);
@@ -179,8 +180,8 @@ void MotorDriver::homing(void)
   for (int i = 0; i < 300; ++i)
   {
     toggle_step_tick(PIN_STEPPER_1_STEP, i);
-    // toggle_step_tick(PIN_STEPPER_2_STEP, i);
-    // toggle_step_tick(PIN_STEPPER_3_STEP, i);
+    toggle_step_tick(PIN_STEPPER_2_STEP, i);
+    toggle_step_tick(PIN_STEPPER_3_STEP, i);
     delayMicroseconds(700);
   }
 

@@ -20,7 +20,6 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            "task_manager_node = deltarobot.task_manager:main",
             "robot_controller_node = deltarobot.robot_controller:main",
         ],
     },

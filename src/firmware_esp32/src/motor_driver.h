@@ -14,7 +14,7 @@ private:
   float delta_q1_remainder_mm = 0;
   float delta_q2_remainder_mm = 0;
   float delta_q3_remainder_mm = 0;
-  float ticks_per_mm = 161.9;  // after manual calibration
+  float ticks_per_mm = 81;  // after manual calibration
 
 public:
   MotorDriver();

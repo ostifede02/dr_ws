@@ -14,15 +14,6 @@ configuration["physical"] = {
 }
 
 configuration["trajectory"] = {
-    "max_acceleration": 250,
-    "max_velocity": 120,
-
-    "delta_s_high_resolution": 0.05,        # used for path length
-    "mean_distance_between_set_points": 3,
-    "min_distance_between_set_points": 5,
-
-    "min_delta_time": 0.02,
-
     "pos_home": np.array([0, 0, -40.4])
 }
 

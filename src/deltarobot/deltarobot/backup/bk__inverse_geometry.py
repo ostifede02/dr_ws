@@ -86,12 +86,7 @@ class InverseGeometry():
         # print("Iteration %d, ||pos_des-x||=%f, norm(gradient)=%f"%(i, norm(e), grad_norm))
         return q_next
     
-
-    '''
-    
-        Compute inverse geomtery ...
-    
-    '''
+    # method computes inverse geomtery
     def compute_inverse_geometry(self, q, pos_des):
         q_next = q
 
@@ -112,24 +107,16 @@ class InverseGeometry():
 
 
 
-
-
-
-
-###################################################################################################
-#                                                                                                 #
-#                                       test the algorithm                                        #
-#                                                                                                 #
-###################################################################################################
-
+# ***********************************************************************************************
+## test the algorithm
+# from os.path import join
 
 # import pinocchio as pin
-# from os.path import join
 
 
 # def main():
 #     # import urdf file path
-#     package_path = "/home/ostifede02/dr_ws/src/deltarobot_description"
+#     package_path = "/home/ostifede02/Documents/2dr_ws/src/deltarobot_description"
 #     # chain 1
 #     urdf_file_name_chain_1 = "deltarobot_c1.urdf"
 #     urdf_file_path_chain_1 = join(join(package_path, "urdf"), urdf_file_name_chain_1)
