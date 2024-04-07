@@ -2,39 +2,48 @@
 
 import numpy as np
 
-configuration = {}
 
-configuration["paths"] = {
-    "package_path": "/home/ostifede02/dr_ws/src/deltarobot_description",
-    "gui_assets_path": "/home/ostifede02/dr_ws/assets/gui/",
-}
+## absolute paths
+package_path = "/home/ostifede02/dr_ws/src/deltarobot_description"
+gui_assets_path = "/home/ostifede02/dr_ws/assets/gui/"
 
-configuration["physical"] = {
-    "end_effector_radius": 42
-}
+## urdf filenames
+urdf_filename_1 = "deltarobot_1.urdf"   # chain 1
+urdf_filename_2 = "deltarobot_2.urdf"   # chain 2
+urdf_filename_3 = "deltarobot_3.urdf"   # chain 3
 
-configuration["trajectory"] = {
-    "pos_home": np.array([0, 0, -40.4])
-}
+## inverse geometry frame IDs
+frame_id_1 = 10   # chain 1
+frame_id_2 = 10   # chain 2
+frame_id_3 = 10   # chain 3
+
+
+## pos home
+pos_home = np.array([0, 0, -45])
+
+## joint limits
+q_min = 189     # [ mm ]
+q_max = 394     # [ mm ]
+
+## trajectory limits
+max_vel                 = 80
+max_acc                 = 250
+via_points_distance     = 3
+via_points_threshold    = 10
+
+## physical properties
+# link_length = 400     --> set in deltarobot_description
+end_effector_radius = 42
 
 
 
 ##########   TRAJECTORY ROUTINES   ##########
-P2P_JOINT_TRAJECTORY        = "P2P_JOINT_TRAJECTORY"
-P2P_DIRECT_TRAJECTORY       = "P2P_DIRECT_TRAJECTORY"
-P2P_CONTINUOUS_TRAJECTORY   = "P2P_CONTINUOUS_TRAJECTORY"
-PICK_TRAJECTORY             = "PICK_TRAJECTORY"
-PLACE_TRAJECTORY            = "PLACE_TRAJECTORY"
-HOMING                      = "HOMING"
-
+PTP_JOINT_SPACE_TRAJECTORY      = "PTP_JOINT_SPACE_TRAJECTORY"
+PTP_TASK_SPACE_TRAJECTORY       = "PTP_TASK_SPACE_TRAJECTORY"
 
 
 ##########   ROBOT STATES   ##########
-ROBOT_STATE_RUN         = "run"
 ROBOT_STATE_IDLE        = "idle"
+ROBOT_STATE_RUN         = "run"
 ROBOT_STATE_STOP        = "stop"
-ROBOT_STATE_REQUEST     = "request"
 ROBOT_STATE_ERROR       = "error"
-
-
-##########   ERRORS   ##########

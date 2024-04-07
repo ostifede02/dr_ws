@@ -15,24 +15,22 @@ from numpy.linalg import norm, inv
 import numpy as np
 import pinocchio as pin
 
-from deltarobot import configuration as conf
-
 
 class InverseGeometry():
 
     def __init__(self, model, data, frame_id):
-        self.model = model
-        self.data = data
-        self.frame_id = frame_id
+        self.model      = model
+        self.data       = data
+        self.frame_id   = frame_id
 
         # import parameters
-        self.max_iterations = 300
-        self.max_back_tracking_iterations = 30
-        self.absolute_pos_threshold = 1e-3      # absolute tolerance on position error
-        self.gradient_threshold = 1e-3          # absolute tolerance on gradient's norm
-        self.beta = 0.1                         # backtracking line search parameter
-        self.gamma = 1e-2                       # line search convergence parameters
-        self.hessian_regu = 1e-2                # Hessian regularization
+        self.max_iterations                 = 300
+        self.max_back_tracking_iterations   = 30
+        self.absolute_pos_threshold         = 1e-3  # absolute tolerance on position error
+        self.gradient_threshold             = 1e-3  # absolute tolerance on gradient's norm
+        self.beta                           = 0.1   # backtracking line search parameter
+        self.gamma                          = 1e-2  # line search convergence parameters
+        self.hessian_regu                   = 1e-2  # Hessian regularization
         return
     
 

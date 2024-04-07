@@ -13,4 +13,4 @@ float32 q3_1    # [millimiters]
 float32 q3_2    # [millimiters]
 float32 q3_3    # [millimiters]
 
-float32 t_set_point    # [seconds]
+float32 t_via_point    # [seconds]

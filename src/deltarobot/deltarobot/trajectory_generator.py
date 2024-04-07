@@ -6,12 +6,13 @@ from numpy.linalg import norm
 
 
 class TrajectoryGenerator():
-    def __init__(self):
+    
+    def __init__(self, max_vel, max_acc, via_points_distance, via_points_threshold):
         # define parameters
-        self.max_velocity_default               = 120   # [ mm/s ]
-        self.max_acceleration_default           = 250   # [ mm/s2 ]
-        self.min_distance_between_via_points    = 8     # [ mm ]
-        self.mean_distance_between_via_points   = 3     # [ mm ]
+        self.max_vel                = max_vel               # [ mm/s ]
+        self.max_acc                = max_acc               # [ mm/s2 ]
+        self.via_points_distance    = via_points_distance   # [ mm ]
+        self.via_points_threshold   = via_points_threshold  # [ mm ]
         
         return
     
@@ -20,7 +21,7 @@ class TrajectoryGenerator():
         Calculate the trajectory ...
     
     '''
-    def task_space_ptp(self, pos_start, pos_end, T):
+    def ptp_task_space(self, pos_start, pos_end, T):
         path_length = norm(pos_end - pos_start)
 
         # get overall max task time
@@ -63,12 +64,12 @@ class TrajectoryGenerator():
 
 
     def get_feasible_time_vel_constrained(self, q_0, q_f):
-        T = abs((15*(q_0-q_f))/(8*self.max_velocity_default))
+        T = abs((15*(q_0-q_f))/(8*self.max_vel))
         return T
     
 
     def get_feasible_time_acc_constrained(self, q_0, q_f):
-        T = (np.sqrt(10)*np.sqrt(q_f-q_0)) / (pow(3, 0.25)*np.sqrt(self.max_acceleration_default))
+        T = (np.sqrt(10)*np.sqrt(q_f-q_0)) / (pow(3, 0.25)*np.sqrt(self.max_acc))
         return T
     
 
@@ -85,10 +86,10 @@ class TrajectoryGenerator():
     def get_number_via_points(self, path_length):
         
         # if the travel distance is to short -> go directly there
-        if path_length <= self.min_distance_between_via_points:
+        if path_length <= self.via_points_threshold:
             n_via_points = 2
         else:
-            n_via_points = int(path_length/self.mean_distance_between_via_points)
+            n_via_points = int(path_length/self.via_points_distance)
         
         return n_via_points
 
@@ -118,7 +119,7 @@ class TrajectoryGenerator():
 
 
 #     t_start = time.time()
-#     trajectory_vector = trajectory_generator.task_space_ptp(pos_start, pos_end, T)
+#     trajectory_vector = trajectory_generator.ptp_task_space(pos_start, pos_end, T)
 #     t_end = time.time()
 #     print(f"Computed time: {round((t_end - t_start)*1e3, 3)} [ ms ]")
 

@@ -3,41 +3,17 @@
 
 import rclpy
 from rclpy.node import Node
-
-from deltarobot_interfaces.msg import TrajectoryTask
-from deltarobot_interfaces.msg import JointTrajectory
-from deltarobot_interfaces.msg import JointTrajectoryArray
-
-from micro_custom_messages.msg import JointTrajectoryReduced
-from micro_custom_messages.msg import JointTrajectoryReducedArray
-from micro_custom_messages.msg import TaskAck
-
-
-from deltarobot.inverse_geometry import InverseGeometry
-from deltarobot.trajectory_generator import TrajectoryGenerator
-from deltarobot import configuration as conf
-
-import pinocchio as pin
-import numpy as np
-
-from os.path import join
-import time
-
+from deltarobot.delta_robot import DeltaRobot
 
 class RobotController(Node):
 
     def __init__(self):
         super().__init__('robot_controller_node')
         
-        ## define robot parameters
-
         ## define publishers and subscribers
         
-        ## import urdf models
-        
-        ## init InverseGeometry
-        
-        ## init TrajectoryGenerator
+        ## init DeltaRobot
+        self.robot = DeltaRobot()
 
         return
     
@@ -48,6 +24,10 @@ class RobotController(Node):
     ###################################################################################
 
     def input_cmds__move__task_space__ptp__callback(self, msg):
+        ## unpack message
+
+        ## generate joint trajectory
+
         return
     
     def input_cmds__gripper__em__callback(self, msg):
@@ -57,17 +37,17 @@ class RobotController(Node):
         return
 
 
-    def robot_state_callback(self, msg):
+    def robot_state__callback(self, msg):
         return
     
 
-    def robot_feedback_callback(self, msg):
+    def robot_feedback__ack__callback(self, msg):
         return
     
 
     ###################################################################################
     #                                                                                 #
-    #                               PUBLISH FUNCTIONS                                 #
+    #                             PUBLISHING FUNCTIONS                                #
     #                                                                                 #
     ###################################################################################
 
@@ -89,10 +69,6 @@ class RobotController(Node):
     #                                UTILS FUNCTIONS                                  #
     #                                                                                 #
     ###################################################################################
-
-    def import_robot_model(self):
-        return
-
 
 
 
