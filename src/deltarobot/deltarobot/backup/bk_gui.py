@@ -19,46 +19,42 @@ from std_msgs.msg import Bool
 class GUI(Node):
 
     def __init__(self):
-
+        """
+        Initializes the GUI node.
+        """
         super().__init__('gui_node')
 
-
-        #**********************************************************#
-        #                     define publishers                    #
-        #**********************************************************#
-        
-        # publish input commands
-        self.input_cmds__move__task_space__ptp__pub = self.create_publisher(
+        # Publisher for trajectory task input
+        self.trajectory_task_input_pub = self.create_publisher(
             TrajectoryTask,
-            'input_cmds/move/task_space/ptp',
+            'trajectory_task_input',
             1)
         
-        self.input_cmds__gripper__em__pub = self.create_publisher(
-            Bool,
-            'input_cmds/gripper/em',
+        ## Subscribe to robot state topic
+        self.robot_state_sub = self.create_subscription(
+            String,
+            'robot_state',
+            self.robot_state_callback,
             1)
         
-        self.input_cmds__homing__pub = self.create_publisher(
-            Bool,
-            'input_cmds/homing',
-            1)
-        
-        ## publish robot state
-        self.robot_state__pub = self.create_publisher(
+        # Publisher for robot state
+        self.robot_state_pub = self.create_publisher(
             String,
             'robot_state',
             1)
+        
+        # Publisher for homing
+        self.homing_pub = self.create_publisher(
+            Bool,
+            'task_homing',
+            1)
+        
 
-
-        #**********************************************************#
-        #                     define subscribers                   #
-        #**********************************************************#
-
-        ## subscribe to /robot_state topic
-        self.robot_state__sub = self.create_subscription(
-            String,
-            'robot_state',
-            self.robot_state__callback,
+        ## Subscribe to trajectory task topic
+        self.robot_state_sub = self.create_subscription(
+            TrajectoryTask,
+            'trajectory_task',
+            self.update_display_position_callback,
             1)
         
 
@@ -68,14 +64,22 @@ class GUI(Node):
         return
     
 
-
-    ###################################################################################
-    #                                                                                 #
-    #                                 GUI APP LOOP                                    #
-    #                                                                                 #
-    ###################################################################################
-
-    def gui_app_loop(self):
+    # *********************************** GUI thread ***********************************
+    
+    def relative_to_assets(self, path):
+        """
+        Generates the absolute path to the assets folder.
+        
+        Parameters:
+            path (str): The path to the asset.
+        
+        Returns:
+            str: The absolute path to the asset.
+        """
+        ASSETS_PATH = conf.configuration["paths"]["gui_assets_path"]
+        return str(ASSETS_PATH + path)
+    
+    def init_gui(self):
         """
         Initializes the graphical user interface.
         """
@@ -258,9 +262,11 @@ class GUI(Node):
         combostyle.theme_use('combostyle')
 
         options = ["", 
-                   conf.PTP_TASK_SPACE_TRAJECTORY,
-                   conf.GRIPPER_OPEN,
-                   conf.GRIPPER_CLOSED,
+                   conf.P2P_DIRECT_TRAJECTORY,
+                   conf.P2P_JOINT_TRAJECTORY,
+                   conf.P2P_CONTINUOUS_TRAJECTORY,
+                   conf.PICK_TRAJECTORY,
+                   conf.PLACE_TRAJECTORY,
                    conf.HOMING]
         
         self.combo_task_type = ttk.Combobox(self.window, 
@@ -289,55 +295,100 @@ class GUI(Node):
         self.window.mainloop()
         return
 
+    # ***********************************************************************************
 
-    ###################################################################################
-    #                                                                                 #
-    #                            BUTTON PRESSED FUNCTIONS                             #
-    #                                                                                 #
-    ###################################################################################
 
     def start_button_pressed(self):
+        """
+        Handles the start button press event.
+        """
+
         # If there is no lock, it can move
         if self.pub_task_lock == False:
-            
-            task_type  = str(self.combo_task_type.get())
+            # if task is homing
+            if str(self.combo_task_type.get()) == conf.HOMING:
+                self.task_homing()
+                return
 
-            if task_type == conf.PTP_TASK_SPACE_TRAJECTORY:
-                self.input_cmds__move__task_space__ptp__publish()
-            elif task_type == conf.HOMING:
-                self.input_cmds__homing__publish()
-            elif task_type == conf.GRIPPER_OPEN:
-                self.input_cmds__gripper__em__publish(True)
-            elif task_type == conf.GRIPPER_CLOSED:
-                self.input_cmds__gripper__em__publish(False)
+            trajectory_task_msg = TrajectoryTask()
 
+            # Get trajectory task from GUI
+            try:
+                trajectory_task_msg.pos_end.x       = float(self.entry_x.get())
+                trajectory_task_msg.pos_end.y       = float(self.entry_y.get())
+                trajectory_task_msg.pos_end.z       = float(self.entry_z.get())
+                trajectory_task_msg.task_time       = float(self.entry_time.get())
+                trajectory_task_msg.task_type.data  = str(self.combo_task_type.get())
+                trajectory_task_msg.is_trajectory_absolute_coordinates = True
+            except:
+                self.get_logger().error("Insert valid input")
+
+            # Publish task
+            self.trajectory_task_input_pub.publish(trajectory_task_msg)
             # set a lock to publish once
             self.pub_task_lock = True
 
         else:
             # Manage exception
-            self.get_logger().warning("Publishing lock is True!")
+            self.get_logger().warning("pub_task_lock is True!")
 
         return
 
-    def stop_button_pressed(self):
 
-        self.robot_state__publish(conf.ROBOT_STATE_STOP)
+    def stop_button_pressed(self):
+        """
+        Handles the stop button press event.
+        """
+        self.publish_robot_state(conf.ROBOT_STATE_STOP)
         # set a lock for publishing new tasks
         self.pub_task_lock = True
         
-        self.popup__raise_exception(conf.ROBOT_STATE_STOP)
+        self.raise_exception(conf.ROBOT_STATE_STOP)
         return
 
 
-    ###################################################################################
-    #                                                                                 #
-    #                               EXCEPTIONS FUNCTIONS                              #
-    #                                                                                 #
-    ###################################################################################
+    def robot_state_callback(self, robot_state_msg):
+        """
+        Callback function for receiving robot state.
+        """
+        if robot_state_msg.data == conf.ROBOT_STATE_IDLE:
+            # remove lock for publishing new tasks
+            self.pub_task_lock = False
+        
+        elif robot_state_msg.data == conf.ROBOT_STATE_ERROR:
+            self.raise_exception(conf.ROBOT_STATE_ERROR)
+            # set a lock for publishing new tasks
+            self.pub_task_lock = True
 
-    def popup__raise_exception(self, exception):
+        else:
+            # set a lock for publishing new tasks
+            self.pub_task_lock = True
 
+        return
+
+
+    def publish_robot_state(self, state):
+        """
+        Publishes the robot state.
+        """
+        # Publish robot state
+        robot_state_output_msg = String()
+        robot_state_output_msg.data = state
+        self.robot_state_pub.publish(robot_state_output_msg)
+        return
+
+
+
+    def raise_exception(self, exception):
+        """
+        Raises an exception.
+        
+        Args:
+            exception (str): The description of the exception.
+        
+        Returns:
+            None
+        """
         if self.popup and self.popup.winfo_exists():
             self.popup.destroy()  # Close the existing popup if it's still open
 
@@ -376,114 +427,21 @@ class GUI(Node):
                         padding=(80, 5))
 
         return
+    
 
     def solve_exception(self):
-        # override robot state
-        self.robot_state__publish(conf.ROBOT_STATE_IDLE)
+        """
+        Resolves an exception.
+        """
+        self.publish_robot_state(conf.ROBOT_STATE_IDLE)
         
         # removes the lock for publishing new tasks
         self.pub_task_lock = False
-
-        # remove popup window        
+        
         if self.popup and self.popup.winfo_exists():
             self.popup.destroy()
-
         return
     
-
-    ###################################################################################
-    #                                                                                 #
-    #                              CALLBACK FUNCTIONS                                 #
-    #                                                                                 #
-    ###################################################################################
-
-    def robot_state__callback(self, msg):
-
-        if msg.data == conf.ROBOT_STATE_IDLE:
-            # remove lock for publishing new tasks
-            self.pub_task_lock = False
-        
-        elif msg.data == conf.ROBOT_STATE_ERROR:
-            self.popup__raise_exception(conf.ROBOT_STATE_ERROR)
-            # set a lock for publishing new tasks
-            self.pub_task_lock = True
-
-        else:
-            # set a lock for publishing new tasks
-            self.pub_task_lock = True
-
-        return
-
-
-    ###################################################################################
-    #                                                                                 #
-    #                             PUBLISHING FUNCTIONS                                #
-    #                                                                                 #
-    ###################################################################################
-
-    def robot_state__publish(self, state):
-        # Publish robot state
-        msg_out = String()
-        msg_out.data = state
-        self.robot_state__pub.publish(msg_out)
-        return
-
-    def input_cmds__move__task_space__ptp__publish(self):
-        msg = TrajectoryTask()
-
-        msg.pos_end.x       = float(self.entry_x.get())
-        msg.pos_end.y       = float(self.entry_y.get())
-        msg.pos_end.z       = float(self.entry_z.get())
-        msg.time_total      = float(self.entry_time.get())
-
-        # Publish task
-        self.input_cmds__move__task_space__ptp__pub.publish(msg)
-        return    
-    
-    def input_cmds__homing__publish(self):
-        msg = Bool()
-        msg.data = True
-        self.input_cmds__homing__pub.publish(msg)
-        return
-
-    def input_cmds__gripper__em__publish(self, status):
-        msg = Bool()
-        msg.data = status
-        self.input_cmds__gripper__em__pub.publish(msg)
-        return
-
-
-    ###################################################################################
-    #                                                                                 #
-    #                                    UTILS                                        #
-    #                                                                                 #
-    ###################################################################################
-    
-    def relative_to_assets(self, path):
-        """
-        Generates the absolute path to the assets folder.
-        
-        Parameters:
-            path (str): The path to the asset.
-        
-        Returns:
-            str: The absolute path to the asset.
-        """
-        ASSETS_PATH = conf.gui_assets_path
-        return str(ASSETS_PATH + path)
-    
-
-
-
-
-
-
-
-
-
-
-
-
 
     def update_display_position_callback(self, task_msg):
         # display x
@@ -504,7 +462,7 @@ class GUI(Node):
         return
     
     def task_homing(self):
-        pos_current = conf.pos_home     ## after home calibration
+        pos_current = conf.configuration["trajectory"]["pos_home"]     ## after home calibration
 
         homing_msg = Bool()
         homing_msg.data = True
@@ -537,7 +495,7 @@ def main(args=None):
     gui_node = GUI()
 
     # Create a thread for running the Tkinter main loop
-    gui_thread = threading.Thread(target=gui_node.gui_app_loop)
+    gui_thread = threading.Thread(target=gui_node.init_gui)
     gui_thread.daemon = True  # Make the thread a daemon so it terminates when the main thread terminates
     gui_thread.start()
 

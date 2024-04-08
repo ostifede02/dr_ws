@@ -22,24 +22,27 @@ frame_id_3 = 10   # chain 3
 pos_home = np.array([0, 0, -45])
 
 ## joint limits
-q_min = 189     # [ mm ]
-q_max = 394     # [ mm ]
+q_min = 0     # [ mm ]
+q_max = 500     # [ mm ]
 
 ## trajectory limits
-max_vel                 = 80
+max_vel                 = 140
 max_acc                 = 250
 via_points_distance     = 3
 via_points_threshold    = 10
 
 ## physical properties
 # link_length = 400     --> set in deltarobot_description
-end_effector_radius = 42
+end_effector_radius = 42    # [ mm ]
 
 
 
 ##########   TRAJECTORY ROUTINES   ##########
-PTP_JOINT_SPACE_TRAJECTORY      = "PTP_JOINT_SPACE_TRAJECTORY"
 PTP_TASK_SPACE_TRAJECTORY       = "PTP_TASK_SPACE_TRAJECTORY"
+PTP_JOINT_SPACE_TRAJECTORY      = "PTP_JOINT_SPACE_TRAJECTORY"
+HOMING                          = "HOMING"
+GRIPPER_OPEN                    = "GRIPPER_OPEN"
+GRIPPER_CLOSED                  = "GRIPPER_CLOSED"
 
 
 ##########   ROBOT STATES   ##########

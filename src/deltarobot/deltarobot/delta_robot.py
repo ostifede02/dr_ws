@@ -1,22 +1,22 @@
+#!/usr/bin/env python3
+
 import numpy as np
-
-from os.path import join
-
 import pinocchio as pin
 
 from deltarobot.inverse_geometry import InverseGeometry
 from deltarobot.trajectory_generator import TrajectoryGenerator
 
-from deltarobot import configuration as conf
+from os.path import join
 
 
 class DeltaRobot():
 
-    def __init__(self):
-        ## define robot parameters
+    def __init__(self, conf):
+        ## define robot initial parameters after homing
         self.pos_current            = conf.pos_home
         self.pos_current_volatile   = conf.pos_home
 
+        ## offsets of the end-effector
         end_effector_radius = conf.end_effector_radius
         self.ee_1_offset = np.array([np.sin(0), np.cos(0), 0])*end_effector_radius
         self.ee_2_offset = np.array([-np.sin((2/3)*np.pi), np.cos((2/3)*np.pi), 0])*end_effector_radius
@@ -32,9 +32,10 @@ class DeltaRobot():
         self.q3 = np.zeros(3)
         
         ## import urdf model
-        model_1, data_1 = self.init_robot_model(conf.urdf_filename_1)   # chain 1
-        model_2, data_2 = self.init_robot_model(conf.urdf_filename_2)   # chain 2
-        model_3, data_3 = self.init_robot_model(conf.urdf_filename_3)   # chain 3
+        model_1, data_1 = self.init_robot_model(conf.package_path, conf.urdf_filename_1)   # chain 1
+        model_2, data_2 = self.init_robot_model(conf.package_path, conf.urdf_filename_2)   # chain 2
+        model_3, data_3 = self.init_robot_model(conf.package_path, conf.urdf_filename_3)   # chain 3
+
 
         ## init InverseGeometry
         self.ig_1 = InverseGeometry(model_1, data_1, conf.frame_id_1)    # chain 1
@@ -48,6 +49,9 @@ class DeltaRobot():
             via_points_distance     = conf.via_points_distance,     # [ mm ]
             via_points_threshold    = conf.via_points_threshold     # [ mm ]
         )
+
+        ## init robot state
+        self.robot_state = conf.ROBOT_STATE_IDLE
 
         return
     
@@ -75,7 +79,7 @@ class DeltaRobot():
             pos_des_3 = via_point[0:3] + self.ee_3_offset
             self.q3 = self.ig_3.compute_inverse_geometry(self.q3, pos_des_3)
             
-            ## check for joint limits
+            ## if one joint exceeds the joint limit
             if self.is_joint_collision(self.q1[0], self.q2[0], self.q3[0]):
                 return None
             
@@ -100,6 +104,17 @@ class DeltaRobot():
     #                                                                                 #
     ###################################################################################
 
+    def init_robot_model(self, package_path, urdf_filename):
+        ## import urdf file path
+        urdf_file_path = join(join(package_path, "urdf"), urdf_filename)
+
+        ## Load the urdf model
+        model = pin.buildModelFromUrdf(urdf_file_path)
+        data = model.createData()
+        
+        return model, data
+    
+
     def is_joint_collision(self, q1, q2, q3):
         
         if q1 < self.q_min or q1 > self.q_max:
@@ -112,32 +127,19 @@ class DeltaRobot():
         return False
 
 
-    def init_robot_model(self, urdf_filename):
-        ## import urdf file path
-        package_path = conf.package_path
-        urdf_file_name = urdf_filename
-        urdf_file_path = join(join(package_path, "urdf"), urdf_file_name)
-
-        ## Load the urdf model
-        model = pin.buildModelFromUrdf(urdf_file_path)
-        data = model.createData()
-        
-        return model, data
-    
-
-    def update_pos_current(self):
+    def update_robot_position(self):
         self.pos_current = self.pos_current_volatile
         return
+    
+    def get_robot_position(self):
+        return self.pos_current
 
-
-
-
-
-
-
-
-
-
+    def update_robot_state(self, robot_state):
+        self.robot_state = robot_state
+        return
+    
+    def get_robot_state(self):
+        return self.robot_state
 
 
 
@@ -151,63 +153,68 @@ class DeltaRobot():
 #                                                                                                 #
 ###################################################################################################
 
-import time
+# import time
+# from deltarobot import configuration as conf
 
 
-def main():
-    robot = DeltaRobot()
-    print("***********  HOME  ***********")
-    print(f"pos_current: {robot.pos_current}\n\n")
+# def main():
+#     robot = DeltaRobot(conf)
+#     print("***********  HOME  ***********")
+#     print(f"pos_current: {robot.pos_current}\n\n")
 
 
-    #
-    #   travel nr.1
-    #
-    print("***********  travel nr.1  ***********")
+#     #
+#     #   travel nr.1
+#     #
+#     print("***********  travel nr.1  ***********")
 
-    pos_end = np.array([20, -60, -320])
-    time_total = -1
+#     pos_end = np.array([999, 999, 999])
+#     time_total = -1
 
-    t_start = time.time()
-    joint_trajectory = robot.generate_joint_trajectory__ptp_task_space(pos_end, time_total)
-    t_end = time.time()
+#     print(f"pos_start: {robot.pos_current}")
+#     print(f"pos_end: {pos_end}\n")
 
-    if joint_trajectory is None:
-        print("[ERROR!] joints limit exceeded!")
-    else:
-        robot.update_pos_current()
-        print(joint_trajectory)
-        print(f"\n\nComputed time: {round((t_end - t_start)*1e3, 3)} [ ms ]")
+#     t_start = time.time()
+#     joint_trajectory = robot.generate_joint_trajectory__ptp_task_space(pos_end, time_total)
+#     t_end = time.time()
 
-    print(f"pos_end: {pos_end}")
-    print(f"pos_current: {robot.pos_current}\n\n")
+#     if joint_trajectory is None:
+#         print("[ERROR!] joints limit exceeded!")
+#     else:
+#         robot.update_robot_position()
+#         print(joint_trajectory)
+#         print(f"\n\nComputed time: {round((t_end - t_start)*1e3, 3)} [ ms ]")
 
-
-
-    #
-    #   travel nr.2
-    #
-    print("***********  travel nr.2  ***********")
-
-    pos_end = np.array([60, 100, -180])
-    time_total = 4.62
-
-    t_start = time.time()
-    joint_trajectory = robot.generate_joint_trajectory__ptp_task_space(pos_end, time_total)
-    t_end = time.time()
-
-    if joint_trajectory is None:
-        print("[ERROR!] joints limit exceeded!")
-    else:
-        robot.update_pos_current()
-        print(joint_trajectory)
-        print(f"\nComputed time: {round((t_end - t_start)*1e3, 3)} [ ms ]")
-
-    print(f"pos_end: {pos_end}")
-    print(f"pos_current: {robot.pos_current}\n\n")
-
-    return
+#     print(f"pos_current: {robot.pos_current}\n\n")
 
 
-if __name__ == "__main__":
-    main()
+
+#     #
+#     #   travel nr.2
+#     #
+#     print("***********  travel nr.2  ***********")
+
+#     pos_end = np.array([60, 100, -180])
+#     time_total = 4.62
+
+#     print(f"pos_start: {robot.pos_current}")
+#     print(f"pos_end: {pos_end}\n")
+
+#     t_start = time.time()
+#     joint_trajectory = robot.generate_joint_trajectory__ptp_task_space(pos_end, time_total)
+#     t_end = time.time()
+
+#     if joint_trajectory is None:
+#         print("[ERROR!] joints limit exceeded!")
+#     else:
+#         robot.update_robot_position()
+#         print(joint_trajectory)
+#         print(f"\nComputed time: {round((t_end - t_start)*1e3, 3)} [ ms ]")
+
+#     print(f"pos_current: {robot.pos_current}\n\n")
+
+#     return
+
+
+# if __name__ == "__main__":
+#     main()

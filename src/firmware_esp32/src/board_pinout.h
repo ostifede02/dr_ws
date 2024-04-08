@@ -7,7 +7,6 @@
 #define I2S_CLOCK_PIN 16
 #define I2S_LATCH_PIN 17
 
-
 // motor driver pinout
 #define PIN_STEPPER_1_STEP 1
 #define PIN_STEPPER_1_DIR 2
@@ -23,5 +22,4 @@
 #define LIMIT_SWITCH_2_PIN 35
 #define LIMIT_SWITCH_3_PIN 34
 
-
-#endif  //BOARD_PINOUT_H
+#endif  // BOARD_PINOUT_H

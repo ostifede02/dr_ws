@@ -9,8 +9,9 @@
 #include "motor_driver.h"
 #include "error_log.h"
 #include "callback_functions.h"
-#include "custom_messages.h"
 #include "rcl_publishers.h"
+
+#include "robot_interfaces.h"
 
 void setup()
 {
@@ -36,6 +37,9 @@ void setup()
   pinMode(LIMIT_SWITCH_2_PIN, INPUT);
   pinMode(LIMIT_SWITCH_3_PIN, INPUT);
 
+  // initialize gripper pinout
+  // ...
+
   // micro-ROS setup
   rcl_allocator_t allocator = rcl_get_default_allocator();
   rclc_support_t support;
@@ -45,55 +49,81 @@ void setup()
 
   // create node
   rcl_node_t node;
-  RCCHECK(rclc_node_init_default(&node, "motor_driver_node", "", &support));
+  RCCHECK(rclc_node_init_default(&node, "micro_controller_node", "", &support));
 
   // create executor
   rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
-  RCCHECK(rclc_executor_init(&executor, &support.context, 2, &allocator));
+  RCCHECK(rclc_executor_init(&executor, &support.context, 3, &allocator));
 
-  // ********************  create joint trajectory subscriber  *********************
-  rcl_subscription_t joint_trajectory_sub;
-  RCCHECK(rclc_subscription_init_default(
-	  &joint_trajectory_sub, &node,
-	  ROSIDL_GET_MSG_TYPE_SUPPORT(micro_custom_messages, msg, JointTrajectoryReducedArray),
-	  "joint_trajectory_reduced"));
-
-  // allocate message memory
-  micro_custom_messages__msg__JointTrajectoryReducedArray set_points_array_msg;	 // allocate message memory
-  set_points_array_msg.array_size = 400;										 // max capacity
-  set_points_array_msg.set_points.capacity = set_points_array_msg.array_size;
-  set_points_array_msg.set_points.data = (micro_custom_messages__msg__JointTrajectoryReduced*)malloc(
-	  set_points_array_msg.set_points.capacity * sizeof(micro_custom_messages__msg__JointTrajectoryReduced));
-  set_points_array_msg.set_points.size = 0;
-
-  // add subscription to topic
-  RCCHECK(rclc_executor_add_subscription(&executor, &joint_trajectory_sub, &set_points_array_msg,
-										 &trajectory_task_callback, ON_NEW_DATA));
-  // **********************************************************************
-
-  // ********************  create homing task subscriber  *********************
-  rcl_subscription_t homing_sub;
-  RCCHECK(rclc_subscription_init_default(&homing_sub, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Bool),
-										 "task_homing"));
+  /********************************************************************************************************************
+   *
+   *                            robot_cmds/move/joint_trajectory subscriber
+   *
+   ********************************************************************************************************************/
+  rcl_subscription_t robot_cmds__move__joint_trajectory__sub;
+  RCCHECK(rclc_subscription_init_default(&robot_cmds__move__joint_trajectory__sub, &node,
+                                         ROSIDL_GET_MSG_TYPE_SUPPORT(micro_custom_messages, msg, JointTrajectoryArray),
+                                         "robot_cmds/move/joint_trajectory"));
 
   // allocate message memory
-  std_msgs__msg__Bool task_homing_msg;
+  micro_custom_messages__msg__JointTrajectoryArray via_points_array_msg;  // allocate message memory
+  via_points_array_msg.array_size = 400;                                  // max capacity
+  via_points_array_msg.via_points.capacity = via_points_array_msg.array_size;
+  via_points_array_msg.via_points.data = (micro_custom_messages__msg__JointTrajectory*)malloc(
+      via_points_array_msg.via_points.capacity * sizeof(micro_custom_messages__msg__JointTrajectory));
+  via_points_array_msg.via_points.size = 0;
 
   // add subscription to topic
-  RCCHECK(rclc_executor_add_subscription(&executor, &homing_sub, &task_homing_msg, &homing_task_callback, ON_NEW_DATA));
-  // **********************************************************************
+  RCCHECK(rclc_executor_add_subscription(&executor, &robot_cmds__move__joint_trajectory__sub, &via_points_array_msg,
+                                         &robot_cmds__move__joint_trajectory__callback, ON_NEW_DATA));
 
-  // ********************  create task ack publisher  *********************
-  RCCHECK(rclc_publisher_init_default(&task_ack_pub, &node,
-									  ROSIDL_GET_MSG_TYPE_SUPPORT(micro_custom_messages, msg, TaskAck), "task_ack"));
-  // **********************************************************************
+  /********************************************************************************************************************
+   *
+   *                                    robot_cmds/homing subscriber
+   *
+   ********************************************************************************************************************/
+  rcl_subscription_t robot_cmds__homing__sub;
+  RCCHECK(rclc_subscription_init_default(&robot_cmds__homing__sub, &node,
+                                         ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Bool), "robot_cmds/homing"));
+
+  // allocate message memory
+  std_msgs__msg__Bool robot_cmds__homing__msg;
+
+  // add subscription to topic
+  RCCHECK(rclc_executor_add_subscription(&executor, &robot_cmds__homing__sub, &robot_cmds__homing__msg,
+                                         &robot_cmds__homing__callback, ON_NEW_DATA));
+
+  /********************************************************************************************************************
+   *
+   *                                    robot_cmds/gripper/em subscriber
+   *
+   ********************************************************************************************************************/
+  rcl_subscription_t robot_cmds__gripper__em__sub;
+  RCCHECK(rclc_subscription_init_default(&robot_cmds__gripper__em__sub, &node,
+                                         ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Bool), "robot_cmds/gripper/em"));
+
+  // allocate message memory
+  std_msgs__msg__Bool robot_cmds__gripper__em__msg;
+
+  // add subscription to topic
+  RCCHECK(rclc_executor_add_subscription(&executor, &robot_cmds__gripper__em__sub, &robot_cmds__gripper__em__msg,
+                                         &robot_cmds__gripper__em__callback, ON_NEW_DATA));
+
+  /********************************************************************************************************************
+   *
+   *                                    feedback/task_ack publisher
+   *
+   ********************************************************************************************************************/
+  RCCHECK(rclc_publisher_init_default(&feedback__task_ack__pub, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Bool),
+                                      "feedback/task_ack"));
 
   // spin the node
   rclc_executor_spin(&executor);  // loop*
 
   // destroy nodes
-  RCCHECK(rcl_subscription_fini(&joint_trajectory_sub, &node));
-  RCCHECK(rcl_subscription_fini(&homing_sub, &node));
+  RCCHECK(rcl_subscription_fini(&robot_cmds__move__joint_trajectory__sub, &node));
+  RCCHECK(rcl_subscription_fini(&robot_cmds__homing__sub, &node));
+  RCCHECK(rcl_subscription_fini(&robot_cmds__gripper__em__sub, &node));
   RCCHECK(rcl_node_fini(&node));
   return;
 }

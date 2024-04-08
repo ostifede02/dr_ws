@@ -28,9 +28,8 @@ find_package(rosidl_default_generators REQUIRED)
 # find_package(geometry_msgs REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/JointTrajectoryReduced.msg"
-  "msg/JointTrajectoryReducedArray.msg"
-  "msg/TaskAck.msg"
+  "msg/JointTrajectory.msg"
+  "msg/JointTrajectoryArray.msg"
   # DEPENDENCIES std_msgs
   # DEPENDENCIES geometry_msgs
 )

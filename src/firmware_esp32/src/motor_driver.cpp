@@ -38,7 +38,7 @@ void MotorDriver::set_direction(char PIN_STEPPER_X_DIR, float sign)
   return;
 }
 
-void MotorDriver::go_to_next_set_point(float delta_q1_mm, float delta_q2_mm, float delta_q3_mm,
+void MotorDriver::go_to_next_via_point(float delta_q1_mm, float delta_q2_mm, float delta_q3_mm,
                                        long unsigned int delta_t_micros)
 {
   // stepper 1
@@ -140,15 +140,15 @@ void MotorDriver::homing(void)
     }
 
     // check if limit switch is pressed
-    if (analogRead(LIMIT_SWITCH_1_PIN) == 0)
+    if (analogRead(LIMIT_SWITCH_1_PIN) > 0)
     {
       is_homing_1 = false;
     }
-    if (analogRead(LIMIT_SWITCH_2_PIN) == 0)
+    if (analogRead(LIMIT_SWITCH_2_PIN) > 0)
     {
       is_homing_2 = false;
     }
-    if (analogRead(LIMIT_SWITCH_3_PIN) == 0)
+    if (analogRead(LIMIT_SWITCH_3_PIN) > 0)
     {
       is_homing_3 = false;
     }
@@ -168,7 +168,7 @@ void MotorDriver::homing(void)
     }
 
     // wait
-    delayMicroseconds(500);
+    delayMicroseconds(700);
     half_step_index += 1;
   }
 
@@ -176,6 +176,8 @@ void MotorDriver::homing(void)
 
   // go back by default offset
   set_direction(PIN_STEPPER_1_DIR, float(-1.0));
+  set_direction(PIN_STEPPER_2_DIR, float(-1.0));
+  set_direction(PIN_STEPPER_3_DIR, float(-1.0));
 
   for (int i = 0; i < 300; ++i)
   {

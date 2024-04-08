@@ -1,16 +1,5 @@
 #!/usr/bin/env python3
 
-
-'''
-This class is intended to calculate the inverse geometry of a given robot with the Gauss Newton method.
-
-The key-methods for using this class are:
-    + __init__ -> model, data, frame_id
-    + compute_inverse_geometry: q, pos_des -> q_des
-        
-'''
-
-
 from numpy.linalg import norm, inv
 import numpy as np
 import pinocchio as pin
