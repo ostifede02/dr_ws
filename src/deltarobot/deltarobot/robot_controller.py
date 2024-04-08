@@ -109,10 +109,11 @@ class RobotController(Node):
         time_total = msg_in.time_total
 
         ## generate joint trajectory
-        joint_trajectory = self.robot.generate_joint_trajectory__ptp_task_space(pos_end, time_total)
+        joint_trajectory = self.robot.generate_joint_trajectory__task_space__ptp(pos_end, time_total)
 
         if joint_trajectory is None:
             self.get_logger().error("joint limit exceeded!")
+            self.update_robot_state(conf.ROBOT_STATE_ERROR)
             return
 
         ## publish message

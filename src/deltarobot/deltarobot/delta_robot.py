@@ -62,7 +62,7 @@ class DeltaRobot():
     #                                                                                 #
     ###################################################################################
 
-    def generate_joint_trajectory__ptp_task_space(self, pos_end, time_total):
+    def generate_joint_trajectory__task_space__ptp(self, pos_end, time_total):
         ## get task space trajectory
         via_points_trajectory = self.tg.ptp_task_space(self.pos_current, pos_end, time_total)
 
