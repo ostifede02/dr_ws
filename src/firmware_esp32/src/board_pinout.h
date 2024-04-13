@@ -22,4 +22,7 @@
 #define LIMIT_SWITCH_2_PIN 35
 #define LIMIT_SWITCH_3_PIN 34
 
+// gripper pinout
+#define ELECTRO_MAGNET_PIN 32
+
 #endif  // BOARD_PINOUT_H

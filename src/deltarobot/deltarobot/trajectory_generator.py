@@ -20,21 +20,11 @@ class TrajectoryGenerator():
         Calculate the trajectory ...
     
     '''
-    def ptp_task_space(self, pos_start, pos_end, T):
+    def task_space__ptp(self, pos_start, pos_end, T):
         path_length = norm(pos_end - pos_start)
-
-        # get overall max task time
-        T_constrained = max(
-            self.get_feasible_time_vel_constrained(0, path_length),
-            self.get_feasible_time_acc_constrained(0, path_length))
         
-        #############################################
-        #                                           #
-        #     raise WARNING if T < feasible time    #
-        #                                           #
-        #############################################
-
-        T = max(T_constrained, T)
+        T_best_effort = self.get_best_effort_time(path_length)
+        T = max(T_best_effort, T)
 
         # initialize array
         n_via_points = self.get_number_via_points(path_length)
@@ -69,6 +59,26 @@ class TrajectoryGenerator():
 
     def get_feasible_time_acc_constrained(self, q_0, q_f):
         T = (np.sqrt(10)*np.sqrt(q_f-q_0)) / (pow(3, 0.25)*np.sqrt(self.max_acc))
+        return T
+    
+    def is_time_feasable(self, T, path_length):
+        # get T that does not exceed velocity and acceleration limits
+        T_constrained = max(
+            self.get_feasible_time_vel_constrained(0, path_length),
+            self.get_feasible_time_acc_constrained(0, path_length))
+        
+        ## time not feasable
+        if T < T_constrained:
+            return False
+        
+        return True
+    
+    def get_best_effort_time(self, path_length):
+        # get T that does not exceed velocity and acceleration limits
+        T = max(
+            self.get_feasible_time_vel_constrained(0, path_length),
+            self.get_feasible_time_acc_constrained(0, path_length))
+        
         return T
     
 
@@ -118,7 +128,7 @@ class TrajectoryGenerator():
 
 
 #     t_start = time.time()
-#     trajectory_vector = trajectory_generator.ptp_task_space(pos_start, pos_end, T)
+#     trajectory_vector = trajectory_generator.task_space__ptp(pos_start, pos_end, T)
 #     t_end = time.time()
 #     print(f"Computed time: {round((t_end - t_start)*1e3, 3)} [ ms ]")
 

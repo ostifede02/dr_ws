@@ -118,7 +118,7 @@ class GUI(Node):
             highlightthickness=0,
             bg=bg_color,
             activebackground=bg_color,
-            command=lambda: self.stop_button_pressed()
+            command=lambda: self.stop__button_pressed()
         )
         self.button_stop.place(
             x=64.0,
@@ -136,7 +136,7 @@ class GUI(Node):
             highlightthickness=0,
             bg=bg_color,
             activebackground=bg_color,
-            command=lambda: self.start_button_pressed()
+            command=lambda: self.start__button_pressed()
         )
         button_start.place(
             x=64.0,
@@ -296,7 +296,7 @@ class GUI(Node):
     #                                                                                 #
     ###################################################################################
 
-    def start_button_pressed(self):
+    def start__button_pressed(self):
         # If there is no lock, it can move
         if self.pub_task_lock == False:
             
@@ -320,13 +320,13 @@ class GUI(Node):
 
         return
 
-    def stop_button_pressed(self):
+    def stop__button_pressed(self):
 
         self.robot_state__publish(conf.ROBOT_STATE_STOP)
         # set a lock for publishing new tasks
         self.pub_task_lock = True
         
-        self.popup__raise_exception(conf.ROBOT_STATE_STOP)
+        self.raise_exception__popup(conf.ROBOT_STATE_STOP)
         return
 
 
@@ -336,7 +336,7 @@ class GUI(Node):
     #                                                                                 #
     ###################################################################################
 
-    def popup__raise_exception(self, exception):
+    def raise_exception__popup(self, exception):
 
         if self.popup and self.popup.winfo_exists():
             self.popup.destroy()  # Close the existing popup if it's still open
@@ -361,7 +361,7 @@ class GUI(Node):
                          background="#2B3499")  # Set label background color to blue
         label.pack(pady=40)
 
-        button = ttk.Button(self.popup, text="CONTINUE", command=self.solve_exception,
+        button = ttk.Button(self.popup, text="CONTINUE", command=self.solve_exception__button_pressed,
                             style="Orange.TButton")  # Apply custom style
         button.place(
             x=40,
@@ -377,7 +377,7 @@ class GUI(Node):
 
         return
 
-    def solve_exception(self):
+    def solve_exception__button_pressed(self):
         # override robot state
         self.robot_state__publish(conf.ROBOT_STATE_IDLE)
         
@@ -404,7 +404,7 @@ class GUI(Node):
             self.pub_task_lock = False
         
         elif msg.data == conf.ROBOT_STATE_ERROR:
-            self.popup__raise_exception(conf.ROBOT_STATE_ERROR)
+            self.raise_exception__popup(conf.ROBOT_STATE_ERROR)
             # set a lock for publishing new tasks
             self.pub_task_lock = True
 

@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            "pnp_node = deltarobot_inputs.pick_n_place:main",
             "gui_node = deltarobot_inputs.gui:main",
             "gamepad_controller_node = deltarobot_inputs.gamepad_controller:main",
         ],

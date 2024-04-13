@@ -111,8 +111,9 @@ class RobotController(Node):
         ## generate joint trajectory
         joint_trajectory = self.robot.generate_joint_trajectory__task_space__ptp(pos_end, time_total)
 
+        ## joint trajectory not valid
         if joint_trajectory is None:
-            self.get_logger().error("joint limit exceeded!")
+            self.get_logger().error("Trajectory is not valid!")
             self.update_robot_state(conf.ROBOT_STATE_ERROR)
             return
 
@@ -128,6 +129,7 @@ class RobotController(Node):
     
     def input_cmds__homing__callback(self, msg):
         self.robot_cmds__homing__pub.publish(msg)
+        self.robot.update_robot_position(conf.pos_home)
         self.update_robot_state(conf.ROBOT_STATE_RUN)
         return
 

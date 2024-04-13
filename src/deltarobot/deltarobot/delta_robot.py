@@ -64,7 +64,11 @@ class DeltaRobot():
 
     def generate_joint_trajectory__task_space__ptp(self, pos_end, time_total):
         ## get task space trajectory
-        via_points_trajectory = self.tg.ptp_task_space(self.pos_current, pos_end, time_total)
+        via_points_trajectory = self.tg.task_space__ptp(self.pos_current, pos_end, time_total)
+
+        ## time total not feasable for given v_max and a_max
+        if via_points_trajectory is None:
+            return None
 
         ## compute inverse geometry for each via point
         joint_trajectory = np.empty((len(via_points_trajectory), 4))
@@ -127,8 +131,11 @@ class DeltaRobot():
         return False
 
 
-    def update_robot_position(self):
-        self.pos_current = self.pos_current_volatile
+    def update_robot_position(self, pos=None):
+        if pos is None:
+            self.pos_current = self.pos_current_volatile
+        else:
+            self.pos_current = pos
         return
     
     def get_robot_position(self):
@@ -175,7 +182,7 @@ class DeltaRobot():
 #     print(f"pos_end: {pos_end}\n")
 
 #     t_start = time.time()
-#     joint_trajectory = robot.generate_joint_trajectory__ptp_task_space(pos_end, time_total)
+#     joint_trajectory = robot.generate_joint_trajectory__task_space__ptp(pos_end, time_total)
 #     t_end = time.time()
 
 #     if joint_trajectory is None:
@@ -201,7 +208,7 @@ class DeltaRobot():
 #     print(f"pos_end: {pos_end}\n")
 
 #     t_start = time.time()
-#     joint_trajectory = robot.generate_joint_trajectory__ptp_task_space(pos_end, time_total)
+#     joint_trajectory = robot.generate_joint_trajectory__task_space__ptp(pos_end, time_total)
 #     t_end = time.time()
 
 #     if joint_trajectory is None:
