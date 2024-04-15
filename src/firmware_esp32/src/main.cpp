@@ -6,10 +6,10 @@
 #include <rclc/executor.h>
 
 #include "board_pinout.h"
-#include "motor_driver.h"
-#include "error_log.h"
-#include "callback_functions.h"
-#include "rcl_publishers.h"
+#include "motor_driver/motor_driver.h"
+#include "error_log/error_log.h"
+#include "uros_subscribers/callback_functions.h"
+#include "uros_publishers/uros_publishers.h"
 
 #include "robot_interfaces.h"
 

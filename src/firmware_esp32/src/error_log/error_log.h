@@ -4,7 +4,7 @@
 #include "Arduino.h"
 
 #include "board_pinout.h"
-#include "motor_driver.h"
+#include "motor_driver/motor_driver.h"
 
 #define RCCHECK(fn)                                                                                                    \
   {                                                                                                                    \
