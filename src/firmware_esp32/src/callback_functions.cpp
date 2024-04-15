@@ -16,30 +16,30 @@ void robot_cmds__move__joint_trajectory__callback(const void* msgin)
     float delta_time;
     unsigned long int delta_time_micros;
 
-    for (int set_point_index = 0; set_point_index < n_via_points - 1; ++set_point_index)
+    for (int via_point_index = 0; via_point_index < n_via_points - 1; ++via_point_index)
     {
         // stepper 1
-        delta_q1 = via_points_array_msg->via_points.data[set_point_index + 1].q1 -
-        via_points_array_msg->via_points.data[set_point_index].q1;
+        delta_q1 = via_points_array_msg->via_points.data[via_point_index + 1].q1 -
+        via_points_array_msg->via_points.data[via_point_index].q1;
 
         // stepper 2
-        delta_q2 = via_points_array_msg->via_points.data[set_point_index + 1].q2 -
-        via_points_array_msg->via_points.data[set_point_index].q2;
+        delta_q2 = via_points_array_msg->via_points.data[via_point_index + 1].q2 -
+        via_points_array_msg->via_points.data[via_point_index].q2;
 
         // stepper 3
-        delta_q3 = via_points_array_msg->via_points.data[set_point_index + 1].q3 -
-        via_points_array_msg->via_points.data[set_point_index].q3;
+        delta_q3 = via_points_array_msg->via_points.data[via_point_index + 1].q3 -
+        via_points_array_msg->via_points.data[via_point_index].q3;
 
         // delta time
-        delta_time = via_points_array_msg->via_points.data[set_point_index + 1].t_via_point -
-        via_points_array_msg->via_points.data[set_point_index].t_via_point;
+        delta_time = via_points_array_msg->via_points.data[via_point_index + 1].t_via_point -
+        via_points_array_msg->via_points.data[via_point_index].t_via_point;
         delta_time_micros = delta_time * 1000000;
 
         mdriver.set_direction(PIN_STEPPER_1_DIR, delta_q1);
         mdriver.set_direction(PIN_STEPPER_2_DIR, delta_q2);
         mdriver.set_direction(PIN_STEPPER_3_DIR, delta_q3);
 
-        mdriver.go_to_next_via_point(delta_q1, delta_q2, delta_q3, delta_time_micros);
+        mdriver.move_steppers_async(delta_q1, delta_q2, delta_q3, delta_time_micros);
     }
 
     // publish ack

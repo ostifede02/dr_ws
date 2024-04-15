@@ -3,7 +3,7 @@ from pinocchio.visualize import GepettoVisualizer
 import numpy as np
 import time
 
-from inverse_geometry import InverseGeometry
+from deltarobot.inverse_geometry import InverseGeometry
 
 from os.path import join, abspath, dirname
 

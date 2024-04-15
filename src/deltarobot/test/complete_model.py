@@ -1,10 +1,10 @@
 import pinocchio as pin
 from pinocchio.visualize import GepettoVisualizer
 
-from inverse_geometry import InverseGeometry
+from deltarobot.inverse_geometry import InverseGeometry
 import deltarobot.configuration as conf
 
-from os.path import join, abspath, dirname
+from os.path import join
 import numpy as np
 import time
 
@@ -13,12 +13,14 @@ import time
 # Load the URDF model.
 urdf_file_name = "deltarobot.urdf"
 
-package_path = conf.configuration["paths"]["package_path"]
+package_path = conf.package_path
 urdf_file_path = join(join(package_path, "urdf"), urdf_file_name)
 mesh_dir = join(package_path, "meshes")
 
 # Initialize the model
 model, collision_model, visual_model = pin.buildModelsFromUrdf(urdf_file_path, mesh_dir, geometry_types=[pin.GeometryType.COLLISION,pin.GeometryType.VISUAL])
+data = model.createData()
+
 robot = pin.RobotWrapper(model, collision_model, visual_model)
 
 # Initialize the viewer
@@ -27,14 +29,15 @@ viz.initViewer(loadModel=True)
 viz.loadViewerModel("pinocchio")
 
 
+print(visual_model)
 
 frame_1_id = 10
 frame_2_id = 22
 frame_3_id = 34
 
-ig_1 = InverseGeometry(robot, frame_1_id, 10)
-ig_2 = InverseGeometry(robot, frame_2_id, 10)
-ig_3 = InverseGeometry(robot, frame_3_id, 10)
+ig_1 = InverseGeometry(model, data, frame_1_id)
+ig_2 = InverseGeometry(model, data, frame_2_id)
+ig_3 = InverseGeometry(model, data, frame_3_id)
 
 
 ee_radius = 25
@@ -78,4 +81,4 @@ while True:
         print(q)
         viz.display(q)
 
-        time.sleep(3)
+        time.sleep(0.1)

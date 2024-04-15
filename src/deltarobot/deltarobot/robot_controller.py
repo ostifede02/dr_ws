@@ -185,7 +185,7 @@ class RobotController(Node):
 
         ## publish joint trajectory
         self.robot_cmds__move__joint_trajectory__pub.publish(msg_out)
-        return    
+        return
     
     def robot_state__publish(self, state):
         # Publish robot state

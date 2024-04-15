@@ -14,7 +14,7 @@ PI = np.pi
  - link length: 400 mm
 '''
 # define carriage stroke
-carriage_stroke = 150
+carriage_stroke = 250
 carriage_stroke_start = 140
 # define link lengths
 link_length = 400
@@ -79,9 +79,9 @@ def main():
                alpha=1)
     
     # Plot the rails
-    ax.plot(carriage_1_steps[:, 0], carriage_1_steps[:, 1], carriage_1_steps[:, 2], linestyle='-', linewidth=5)
-    ax.plot(carriage_2_steps[:, 0], carriage_2_steps[:, 1], carriage_2_steps[:, 2], linestyle='-', linewidth=5)
-    ax.plot(carriage_3_steps[:, 0], carriage_3_steps[:, 1], carriage_3_steps[:, 2], linestyle='-', linewidth=5)
+    ax.plot(carriage_1_steps[:, 0], carriage_1_steps[:, 1], carriage_1_steps[:, 2], "r", linestyle='-', linewidth=5)
+    ax.plot(carriage_2_steps[:, 0], carriage_2_steps[:, 1], carriage_2_steps[:, 2], "g", linestyle='-', linewidth=5)
+    ax.plot(carriage_3_steps[:, 0], carriage_3_steps[:, 1], carriage_3_steps[:, 2], "b", linestyle='-', linewidth=5)
 
     # Label axes
     ax.set_xlabel('X Axis')
@@ -89,7 +89,8 @@ def main():
     ax.set_zlabel('Z Axis')
 
     # Show the plot
-    ax.view_init(elev=0, azim=0)
+    ax.view_init(elev=15, azim=30)
+    ax.set_box_aspect([1,1,1])
     plt.show()
 
     return

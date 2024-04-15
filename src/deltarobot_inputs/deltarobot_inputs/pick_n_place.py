@@ -71,8 +71,8 @@ class PicknPlace(Node):
         self.schedule_index = 0
         
         ## pattern movements
-        self.x_goal         = 0
-        self.y_goal         = 100
+        self.x_goal         = 60
+        self.y_goal         = 120
         self.z_goal         = -240
         self.z_retraction   = 40
   
