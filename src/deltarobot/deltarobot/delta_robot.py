@@ -66,31 +66,34 @@ class DeltaRobot():
         ## get task space trajectory
         via_points_trajectory = self.tg.task_space__ptp(self.pos_current, pos_end, time_total)
 
-        ## time total not feasable for given v_max and a_max
         if via_points_trajectory is None:
             return None
 
-        ## compute inverse geometry for each via point
         joint_trajectory = np.empty((len(via_points_trajectory), 4))
+        
+        ## compute inverse geometry for each via point
         for index, via_point in enumerate(via_points_trajectory):
             # chain 1
             pos_des_1 = via_point[0:3] + self.ee_1_offset
-            self.q1 = self.ig_1.compute_inverse_geometry(self.q1, pos_des_1)
+            self.q1 = self.ig_1.solve_inverse_geometry(np.zeros(3), pos_des_1)
+            # self.q1 = self.ig_1.solve_inverse_geometry(self.q1, pos_des_1)
             # chain 2
             pos_des_2 = via_point[0:3] + self.ee_2_offset
-            self.q2 = self.ig_2.compute_inverse_geometry(self.q2, pos_des_2)
+            self.q2 = self.ig_2.solve_inverse_geometry(np.zeros(3), pos_des_2)
+            # self.q2 = self.ig_2.solve_inverse_geometry(self.q2, pos_des_2)
             # chain 3
             pos_des_3 = via_point[0:3] + self.ee_3_offset
-            self.q3 = self.ig_3.compute_inverse_geometry(self.q3, pos_des_3)
+            self.q3 = self.ig_3.solve_inverse_geometry(np.zeros(3), pos_des_3)
+            # self.q3 = self.ig_3.solve_inverse_geometry(self.q3, pos_des_3)
             
             ## if one joint exceeds the joint limit
             if self.is_joint_collision(self.q1[0], self.q2[0], self.q3[0]):
                 return None
             
             ## pack joint positions
-            joint_trajectory[index, 0] = round(self.q1[0], 3)       # q1    [ mm ]       
-            joint_trajectory[index, 1] = round(self.q2[0], 3)       # q2    [ mm ]
-            joint_trajectory[index, 2] = round(self.q3[0], 3)       # q3    [ mm ]
+            joint_trajectory[index, 0] = round(self.q1[0], 6)       # q1    [ mm ]       
+            joint_trajectory[index, 1] = round(self.q2[0], 6)       # q2    [ mm ]
+            joint_trajectory[index, 2] = round(self.q3[0], 6)       # q3    [ mm ]
             joint_trajectory[index, 3] = round(via_point[3], 6)     # time  [ sec ]
 
         ## update pos current volatile --> definitive pos current will be updated after ack

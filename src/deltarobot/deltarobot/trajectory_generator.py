@@ -26,6 +26,9 @@ class TrajectoryGenerator():
         T_best_effort = self.get_best_effort_time(path_length)
         T = max(T_best_effort, T)
 
+        if T == 0:
+            return None
+
         # initialize array
         n_via_points = self.get_number_via_points(path_length)
         via_points_vector = np.empty((n_via_points, 4))
@@ -120,7 +123,12 @@ class TrajectoryGenerator():
 
 
 # def main():
-#     trajectory_generator = TrajectoryGenerator()
+#     trajectory_generator = TrajectoryGenerator(
+#         max_vel                 = 250,
+#         max_acc                 = 100,
+#         via_points_distance     = 15,
+#         via_points_threshold    = 0
+#     )
     
 #     pos_start = np.array([100, -200, -200])
 #     pos_end = np.array([0, 200, -100])
@@ -136,6 +144,7 @@ class TrajectoryGenerator():
 #     fig = plt.figure()
 #     ax = fig.add_subplot(111, projection='3d')
 #     ax.plot(trajectory_vector[:,0], trajectory_vector[:,1],trajectory_vector[:,2], marker="o")
+
 #     ax.grid(True)
     
 #     plt.show()

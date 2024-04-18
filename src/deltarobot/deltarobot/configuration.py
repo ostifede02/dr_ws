@@ -26,8 +26,8 @@ q_min = 0     # [ mm ]
 q_max = 500     # [ mm ]
 
 ## trajectory limits
-max_vel                 = 400   # [ mm/s ]
-max_acc                 = 200   # [ mm/s2 ]
+max_vel                 = 1200   # [ mm/s ]
+max_acc                 = 800   # [ mm/s2 ]
 via_points_distance     = 3     # [ mm ]
 via_points_threshold    = 10    # [ mm ]
 

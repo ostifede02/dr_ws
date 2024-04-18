@@ -13,14 +13,28 @@
 class MotorDriver
 {
     private:
-        float MM_PER_STEP = 0.025;  // after manual calibration
+        /*
+            D = 12.22
+            steps_per_revolution = 200 * 8 = 1600
+            MM_PER_STEP = pi*D / steps_per_revolution = pi*D / 1600
 
+            pi*D : 1600 == MM_PER_STEP : 1
+            MM_PER_STEP = pi*D*1 / 1600
+
+            MM_PER_STEP = pi*12.22/1600 = 0.023993913891792
+
+        */
+        // float MM_PER_STEP = 0.023993913891792;
+        float MM_PER_STEP = 0.025000000;
+        
         float delta_q_remainder_mm[3]   = {0.0, 0.0, 0.0};
         int PIN_STEPPERS_STEP[3]        = {PIN_STEPPER_1_STEP, PIN_STEPPER_2_STEP, PIN_STEPPER_3_STEP};
         int PIN_STEPPERS_STEP__state[3] = {LOW, LOW, LOW};
 
         int get_total_stepper_ticks(float delta_q, int stepper_index);
-        int get_delay_step_ticks(int stepper_ticks_total, int delta_t_micros);
+        int get_delay_stepper_ticks(int stepper_ticks_total, int delta_t_micros);
+        void toggle_stepper_step_tick(int stepper_index);
+        void set_direction(char PIN_STEPPER_X_STEP, float sign);
 
     public:
         MotorDriver();
@@ -31,8 +45,6 @@ class MotorDriver
                                     int delta_t_micros);
         void homing(void);
 
-        void toggle_stepper_step_tick(int stepper_index);
-        void set_direction(char PIN_STEPPER_X_STEP, float sign);
 };
 
 extern MotorDriver mdriver;

@@ -62,7 +62,7 @@ class PicknPlace(Node):
         
 
         ## homing
-        self.input_cmds__homing__publish()
+        # self.input_cmds__homing__publish()
 
         # Initialize lock to avoid publishing double tasks
         self.pub_task_lock = True
@@ -84,48 +84,18 @@ class PicknPlace(Node):
             self.pub_task_lock = False
 
         return
-    
+
 
     def timer_callback(self):
 
         if self.pub_task_lock == False:
 
             if self.schedule_index == 0:
-                self.input_cmds__move__task_space__ptp__publish(self.x_goal, self.y_goal, self.z_goal+self.z_retraction, 2),
+                self.input_cmds__move__task_space__ptp__publish(0, 0, -45, 1)
 
             elif self.schedule_index == 1:
-                self.input_cmds__move__task_space__ptp__publish(self.x_goal, self.y_goal, self.z_goal, 2),
-
-            elif self.schedule_index == 2:
-                self.input_cmds__gripper__em__publish(False),   # closed
-
-            elif self.schedule_index == 3:
-                self.input_cmds__move__task_space__ptp__publish(-self.x_goal, -self.y_goal, self.z_goal+self.z_retraction, -1),
-
-            elif self.schedule_index == 4:
-                self.input_cmds__move__task_space__ptp__publish(-self.x_goal, -self.y_goal, self.z_goal, 2),
-
-            elif self.schedule_index == 5:
-                self.input_cmds__gripper__em__publish(True),    # open
-
-            elif self.schedule_index == 6:
-                self.input_cmds__move__task_space__ptp__publish(-self.x_goal, -self.y_goal, self.z_goal+self.z_retraction, 2),
-
-            elif self.schedule_index == 7:
-                self.input_cmds__move__task_space__ptp__publish(-self.x_goal, -self.y_goal, self.z_goal, 2),
-
-            elif self.schedule_index == 8:
-                self.input_cmds__gripper__em__publish(False),   # closed
-
-            elif self.schedule_index == 9:
-                self.input_cmds__move__task_space__ptp__publish(self.x_goal, self.y_goal, self.z_goal+self.z_retraction, -1),
-
-            elif self.schedule_index == 10:
-                self.input_cmds__move__task_space__ptp__publish(self.x_goal, self.y_goal, self.z_goal, 2),
-
-            elif self.schedule_index == 11:
-                self.input_cmds__gripper__em__publish(True),    # open
-                self.schedule_index = -1
+                self.input_cmds__move__task_space__ptp__publish(0, 0, -100, 1)
+                self.schedule_index = -1   
 
             self.schedule_index += 1
             
@@ -133,6 +103,82 @@ class PicknPlace(Node):
             self.pub_task_lock = True
 
         return
+
+
+
+    # def timer_callback(self):
+
+    #     if self.pub_task_lock == False:
+
+    #         if self.schedule_index == 0:
+    #             self.input_cmds__move__task_space__ptp__publish(-150, 0, -225, 5)
+
+    #         elif self.schedule_index == 1:
+    #             self.input_cmds__move__task_space__ptp__publish(0, 0, -200, -1)
+            
+    #         elif self.schedule_index == 2:
+    #             self.input_cmds__move__task_space__ptp__publish(150, 0, -225, -1)
+
+    #         elif self.schedule_index == 3:
+    #             self.input_cmds__move__task_space__ptp__publish(0, 0, -200, 5)
+    #             self.schedule_index = -1   
+
+    #         self.schedule_index += 1
+            
+    #         ## set lock
+    #         self.pub_task_lock = True
+
+    #     return
+
+
+
+    # def timer_callback(self):
+
+    #     if self.pub_task_lock == False:
+
+    #         if self.schedule_index == 0:
+    #             self.input_cmds__move__task_space__ptp__publish(self.x_goal, self.y_goal, self.z_goal+self.z_retraction, 5),
+
+    #         elif self.schedule_index == 1:
+    #             self.input_cmds__move__task_space__ptp__publish(self.x_goal, self.y_goal, self.z_goal, 2),
+
+    #         elif self.schedule_index == 2:
+    #             self.input_cmds__gripper__em__publish(False),   # closed
+
+    #         elif self.schedule_index == 3:
+    #             self.input_cmds__move__task_space__ptp__publish(-self.x_goal, -self.y_goal, self.z_goal+self.z_retraction, 5),
+
+    #         elif self.schedule_index == 4:
+    #             self.input_cmds__move__task_space__ptp__publish(-self.x_goal, -self.y_goal, self.z_goal, 2),
+
+    #         elif self.schedule_index == 5:
+    #             self.input_cmds__gripper__em__publish(True),    # open
+
+    #         elif self.schedule_index == 6:
+    #             self.input_cmds__move__task_space__ptp__publish(-self.x_goal, -self.y_goal, self.z_goal+self.z_retraction, 5),
+
+    #         elif self.schedule_index == 7:
+    #             self.input_cmds__move__task_space__ptp__publish(-self.x_goal, -self.y_goal, self.z_goal, 2),
+
+    #         elif self.schedule_index == 8:
+    #             self.input_cmds__gripper__em__publish(False),   # closed
+
+    #         elif self.schedule_index == 9:
+    #             self.input_cmds__move__task_space__ptp__publish(self.x_goal, self.y_goal, self.z_goal+self.z_retraction, 5),
+
+    #         elif self.schedule_index == 10:
+    #             self.input_cmds__move__task_space__ptp__publish(self.x_goal, self.y_goal, self.z_goal, 2),
+
+    #         elif self.schedule_index == 11:
+    #             self.input_cmds__gripper__em__publish(True),    # open
+    #             self.schedule_index = -1
+
+    #         self.schedule_index += 1
+            
+    #         ## set lock
+    #         self.pub_task_lock = True
+
+    #     return
 
 
     def input_cmds__move__task_space__ptp__publish(self, x, y, z, t):

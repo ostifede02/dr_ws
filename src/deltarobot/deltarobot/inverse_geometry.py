@@ -21,7 +21,7 @@ class InverseGeometry():
         self.gamma                          = 1e-2  # line search convergence parameters
         self.hessian_regu                   = 1e-2  # Hessian regularization
         return
-    
+
 
     # Gauss-Newton algorithm
     def gauss_newton_step(self, q, pos, pos_des, J):
@@ -79,7 +79,7 @@ class InverseGeometry():
         Compute inverse geomtery ...
     
     '''
-    def compute_inverse_geometry(self, q, pos_des):
+    def solve_inverse_geometry(self, q, pos_des):
         q_next = q
 
         while q_next is not None:
