@@ -75,21 +75,20 @@ class DeltaRobot():
         for index, via_point in enumerate(via_points_trajectory):
             # chain 1
             pos_des_1 = via_point[0:3] + self.ee_1_offset
-            self.q1 = self.ig_1.solve_inverse_geometry(np.zeros(3), pos_des_1)
-            # self.q1 = self.ig_1.solve_inverse_geometry(self.q1, pos_des_1)
+            self.q1 = self.ig_1.solve_inverse_geometry(self.q1, pos_des_1)
+
             # chain 2
             pos_des_2 = via_point[0:3] + self.ee_2_offset
-            self.q2 = self.ig_2.solve_inverse_geometry(np.zeros(3), pos_des_2)
-            # self.q2 = self.ig_2.solve_inverse_geometry(self.q2, pos_des_2)
+            self.q2 = self.ig_2.solve_inverse_geometry(self.q2, pos_des_2)
+
             # chain 3
             pos_des_3 = via_point[0:3] + self.ee_3_offset
-            self.q3 = self.ig_3.solve_inverse_geometry(np.zeros(3), pos_des_3)
-            # self.q3 = self.ig_3.solve_inverse_geometry(self.q3, pos_des_3)
+            self.q3 = self.ig_3.solve_inverse_geometry(self.q3, pos_des_3)
             
             ## if one joint exceeds the joint limit
             if self.is_joint_collision(self.q1[0], self.q2[0], self.q3[0]):
                 return None
-            
+
             ## pack joint positions
             joint_trajectory[index, 0] = round(self.q1[0], 6)       # q1    [ mm ]       
             joint_trajectory[index, 1] = round(self.q2[0], 6)       # q2    [ mm ]
@@ -120,7 +119,7 @@ class DeltaRobot():
         data = model.createData()
         
         return model, data
-    
+
 
     def is_joint_collision(self, q1, q2, q3):
         
@@ -137,8 +136,9 @@ class DeltaRobot():
     def update_robot_position(self, pos=None):
         if pos is None:
             self.pos_current = self.pos_current_volatile
-        else:
-            self.pos_current = pos
+        else:   # override position
+            self.pos_current            = pos
+            self.pos_current_volatile   = pos
         return
     
     def get_robot_position(self):

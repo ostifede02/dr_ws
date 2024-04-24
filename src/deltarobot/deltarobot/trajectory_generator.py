@@ -26,8 +26,8 @@ class TrajectoryGenerator():
         T_best_effort = self.get_best_effort_time(path_length)
         T = max(T_best_effort, T)
 
-        if T == 0:
-            return None
+        # if T == 0:
+        #     return None
 
         # initialize array
         n_via_points = self.get_number_via_points(path_length)

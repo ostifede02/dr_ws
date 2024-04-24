@@ -100,12 +100,12 @@ class RobotController(Node):
     ###################################################################################
 
     def input_cmds__move__task_space__ptp__callback(self, msg_in):
+        
         ## unpack msg
         pos_end = np.empty(3)
         pos_end[0] = msg_in.pos_end.x
         pos_end[1] = msg_in.pos_end.y
         pos_end[2] = msg_in.pos_end.z
-
         time_total = msg_in.time_total
 
         ## generate joint trajectory
@@ -179,6 +179,7 @@ class RobotController(Node):
             joint_via_point_msg.q1              = float(joint_via_point[0])
             joint_via_point_msg.q2              = float(joint_via_point[1])
             joint_via_point_msg.q3              = float(joint_via_point[2])
+
             joint_via_point_msg.t_via_point     = float(joint_via_point[3])
 
             msg_out.via_points.append(joint_via_point_msg)

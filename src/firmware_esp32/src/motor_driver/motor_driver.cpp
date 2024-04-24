@@ -46,7 +46,7 @@ int MotorDriver::get_total_stepper_ticks(float delta_q_mm, int stepper_index)
     int stepper_ticks_total;
 
     // adding error compensation
-    delta_q_mm += delta_q_remainder_mm[stepper_index];
+    // delta_q_mm += delta_q_remainder_mm[stepper_index];
     // calculating ticks, where two ticks are one (micro-)step
     stepper_ticks_total = 2.0F * delta_q_mm / MM_PER_STEP;
     
@@ -59,10 +59,13 @@ int MotorDriver::get_total_stepper_ticks(float delta_q_mm, int stepper_index)
 
 int MotorDriver::get_delay_stepper_ticks(int stepper_ticks_total, int delta_t_micros)
 {
-    int stepper_tick_delay_micros = 0;
+    int stepper_tick_delay_micros;
 
     if (stepper_ticks_total != 0) {  // avoid zero division
         stepper_tick_delay_micros = delta_t_micros / stepper_ticks_total;
+    }
+    else {
+        stepper_tick_delay_micros = 0;
     }
 
     return stepper_tick_delay_micros;
@@ -75,19 +78,19 @@ void MotorDriver::move_steppers_async(float delta_q1_mm, float delta_q2_mm, floa
 {
     // stepper 1
     set_direction(PIN_STEPPER_1_DIR, delta_q1_mm);
-    int stepper1_ticks_counter      = 0;
+    int stepper1_ticks_counter      = 1;
     int stepper1_ticks_total        = get_total_stepper_ticks(delta_q1_mm, STEPPER1_IDX);
     int stepper1_tick_delay_micros  = get_delay_stepper_ticks(stepper1_ticks_total, delta_t_micros);
     
     // stepper 2
     set_direction(PIN_STEPPER_2_DIR, delta_q2_mm);
-    int stepper2_ticks_counter      = 0;
+    int stepper2_ticks_counter      = 1;
     int stepper2_ticks_total        = get_total_stepper_ticks(delta_q2_mm, STEPPER2_IDX);
     int stepper2_tick_delay_micros  = get_delay_stepper_ticks(stepper2_ticks_total, delta_t_micros);
     
     // stepper 3
     set_direction(PIN_STEPPER_3_DIR, delta_q3_mm);
-    int stepper3_ticks_counter      = 0;
+    int stepper3_ticks_counter      = 1;
     int stepper3_ticks_total        = get_total_stepper_ticks(delta_q3_mm, STEPPER3_IDX);
     int stepper3_tick_delay_micros  = get_delay_stepper_ticks(stepper3_ticks_total, delta_t_micros);
 
@@ -99,16 +102,13 @@ void MotorDriver::move_steppers_async(float delta_q1_mm, float delta_q2_mm, floa
     int time_dt = 0;
     int initial_time = micros();
 
-    while ( (stepper1_ticks_counter < stepper1_ticks_total) && 
-            (stepper2_ticks_counter < stepper2_ticks_total) &&
-            (stepper3_ticks_counter < stepper3_ticks_total))
+    while (true)
     {
-
         time_dt = micros() - initial_time;
 
         // stepper 1
-        if ((stepper1_ticks_counter < stepper1_ticks_total) &&
-            (time_dt >= stepper1_tick_delay_micros * (stepper1_ticks_counter + 1))) {
+        if ((stepper1_ticks_counter <= stepper1_ticks_total) &&
+            (time_dt >= stepper1_tick_delay_micros * stepper1_ticks_counter)) {
 
             toggle_stepper_step_tick(STEPPER1_IDX);
             stepper1_ticks_counter += 1;
@@ -116,8 +116,8 @@ void MotorDriver::move_steppers_async(float delta_q1_mm, float delta_q2_mm, floa
         }
 
         // stepper 2
-        else if ((stepper2_ticks_counter < stepper2_ticks_total) &&
-                 (time_dt >= stepper2_tick_delay_micros * (stepper2_ticks_counter + 1))) {
+        else if ((stepper2_ticks_counter <= stepper2_ticks_total) &&
+                 (time_dt >= stepper2_tick_delay_micros * stepper2_ticks_counter)) {
 
             toggle_stepper_step_tick(STEPPER2_IDX);
             stepper2_ticks_counter += 1;
@@ -125,58 +125,21 @@ void MotorDriver::move_steppers_async(float delta_q1_mm, float delta_q2_mm, floa
         }
 
         // stepper 3
-        else if ((stepper3_ticks_counter < stepper3_ticks_total) &&
-                 (time_dt >= stepper3_tick_delay_micros * (stepper3_ticks_counter + 1))) {
+        else if ((stepper3_ticks_counter <= stepper3_ticks_total) &&
+                 (time_dt >= stepper3_tick_delay_micros * stepper3_ticks_counter)) {
 
             toggle_stepper_step_tick(STEPPER3_IDX);
             stepper3_ticks_counter += 1;
 
         }
+
+        if( (stepper1_ticks_counter > stepper1_ticks_total) && 
+            (stepper2_ticks_counter > stepper2_ticks_total) &&
+            (stepper3_ticks_counter > stepper3_ticks_total))
+        {
+            break;
+        }
     }
-
-
-    // while ((stepper1_ticks_counter < stepper1_ticks_total))
-    // {
-
-    //     time_dt = micros() - initial_time;
-
-    //     // stepper 1
-    //     if ((stepper1_ticks_counter < stepper1_ticks_total) &&
-    //         (time_dt >= stepper1_tick_delay_micros * (stepper1_ticks_counter + 1))) {
-
-    //         toggle_stepper_step_tick(STEPPER1_IDX);
-    //         stepper1_ticks_counter += 1;
-
-    //     }
-    // }
-
-
-
-    // while ( (stepper1_ticks_counter < stepper1_ticks_total) && 
-    //         (stepper3_ticks_counter < stepper3_ticks_total)) 
-    // {
-
-    //     time_dt = micros() - initial_time;
-
-    //     // stepper 1
-    //     if ((stepper1_ticks_counter < stepper1_ticks_total) &&
-    //         (time_dt >= stepper1_tick_delay_micros * (stepper1_ticks_counter + 1))) {
-
-    //         toggle_stepper_step_tick(STEPPER1_IDX);
-    //         stepper1_ticks_counter += 1;
-
-    //     }
-
-    //     // stepper 3
-    //     else if ((stepper3_ticks_counter < stepper3_ticks_total) &&
-    //              (time_dt >= stepper3_tick_delay_micros * (stepper3_ticks_counter + 1))) {
-
-    //         toggle_stepper_step_tick(STEPPER3_IDX);
-    //         stepper3_ticks_counter += 1;
-
-    //     }
-    // }
-
 
     return;
 }

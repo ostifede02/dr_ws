@@ -59,21 +59,21 @@ while True:
         ee_1_offset = np.array([np.sin(0), np.cos(0), 0])*ee_radius + np.array([np.cos(0), np.sin(0), 0])*h/2
         pos_next_1 = pos_des + ee_1_offset
 
-        q1 = ig_1.compute_inverse_geometry(q, pos_next_1)
+        q1 = ig_1.solve_inverse_geometry(q, pos_next_1)
         q1[3:5] = q1[1:3]
 
         # chain 2 - green
         ee_2_offset = np.array([-np.sin((2/3)*np.pi), np.cos((2/3)*np.pi), 0])*ee_radius  + np.array([-np.cos((2/3)*np.pi), -np.sin((2/3)*np.pi), 0])*h/2
         pos_next_2 = pos_des + ee_2_offset
         
-        q2 = ig_2.compute_inverse_geometry(q, pos_next_2)
+        q2 = ig_2.solve_inverse_geometry(q, pos_next_2)
         q2[8:10] = q2[6:8]
 
         # chain 3 - blue
         ee_3_offset = np.array([-np.sin((4/3)*np.pi), np.cos((4/3)*np.pi), 0])*ee_radius + np.array([np.cos((4/3)*np.pi), np.sin((4/3)*np.pi), 0])*h/2
         pos_next_3 = pos_des + ee_3_offset
         
-        q3 = ig_3.compute_inverse_geometry(q, pos_next_3)
+        q3 = ig_3.solve_inverse_geometry(q, pos_next_3)
         q3[13:15] = q3[11:13]
 
 
