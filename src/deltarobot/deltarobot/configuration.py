@@ -5,7 +5,7 @@ import numpy as np
 
 ## absolute paths
 package_path = "/home/ostifede02/dr_ws/src/deltarobot_description"
-gui_assets_path = "/home/ostifede02/dr_ws/assets/gui/"
+gui_assets_path = "/home/ostifede02/dr_ws/src/deltarobot_inputs/assets/gui/"
 
 ## urdf filenames
 urdf_filename_1 = "deltarobot_1.urdf"   # chain 1
